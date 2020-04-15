@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FileBuddyMobileClient</string>
+    <string name="app_title">File Buddy</string>
+    <string name="email">Enter your E-Mail</string>
+    <string name="password">Enter your password</string>
+    <string name="login">LOGIN</string>
+    <string name="register">REGISTER</string>
+</resources>
