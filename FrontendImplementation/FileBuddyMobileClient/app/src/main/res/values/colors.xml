@@ -5,4 +5,5 @@
     <color name="colorText">#FFFFFF </color>
     <color name="colorTextDark">#E5E5E5</color>
     <color name="colorBackground">#000000</color>
+    <color name="colorLastAction">#41C92F</color>
 </resources>

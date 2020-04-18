@@ -5,4 +5,8 @@
     <string name="password">Enter your password</string>
     <string name="login">LOGIN</string>
     <string name="register">REGISTER</string>
+    <string name="newMac">Detected MAC</string>
+    <string name="foundedMac">XX-XX-XX-XX</string>
+    <string name="name">Name</string>
+    <string name="addMac">Add now!</string>
 </resources>
