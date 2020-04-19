@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace FileBuddyUI.UI.ViewModels
+namespace FileBuddyUI.UI.Helper
 {
     /// <summary>
     /// Implements the base functionalities for a view model

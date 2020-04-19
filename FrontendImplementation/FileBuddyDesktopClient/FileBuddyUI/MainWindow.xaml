@@ -60,7 +60,8 @@
         <Button Content="Login"
                 Background="{StaticResource BuddyOrange}"
                 Foreground="WhiteSmoke"
-                Margin="90 20 90 0"/>
+                Margin="90 20 90 0"
+                Command="{Binding OnShowMainOverview}"/>
 
         <Button Content="Register"
                 Background="{StaticResource BuddyDarkOrange}"

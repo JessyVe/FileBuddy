@@ -1,4 +1,5 @@
-﻿using FileBuddyUI.UI.Views;
+﻿using FileBuddyUI.UI.ViewModels;
+using FileBuddyUI.UI.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,13 @@ namespace FileBuddyUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly MainViewModel _mainViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+            _mainViewModel = new MainViewModel();
+            DataContext = _mainViewModel;
         }
 
         private void OnClose(object sender, RoutedEventArgs e)

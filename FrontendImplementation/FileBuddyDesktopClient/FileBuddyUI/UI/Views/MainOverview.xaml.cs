@@ -21,6 +21,7 @@ namespace FileBuddyUI.UI.Views
         {
             InitializeComponent();
         }
+
         private void OnClose(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.Close();

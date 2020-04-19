@@ -25,9 +25,26 @@
             }
         ]]>
     </x:Code>
+
+    <Window.Resources>
+        <Storyboard x:Key="MenuOpen">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="60"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="200"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="MenuClose">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="60"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+
     <Grid Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.12*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -36,21 +53,61 @@
                 HorizontalAlignment="Right"
                 Click="OnClose"
                 Margin="5">
-            <materialDesign:PackIcon Kind="Close" 
+            <materialDesign:PackIcon Kind="Close"                                      
                                      Foreground="{StaticResource BuddyGrey}"
-                                     Width="25"
-                                     Height="25"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"/>
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"/>
         </Button>
 
-        <dragablz:TabablzControl Grid.Row="1" BorderThickness="0">
+        <Grid VerticalAlignment="Stretch" 
+              Grid.Row="1">
+            <StackPanel VerticalAlignment="Center" 
+                        HorizontalAlignment="Left" 
+                        Orientation="Horizontal"
+                        Margin="10">
+                <materialDesign:PopupBox PlacementMode="BottomAndAlignLeftEdges" 
+                                         StaysOpen="False"
+                                         Height="25">
+                    <materialDesign:PopupBox.ToggleContent>
+                        <materialDesign:PackIcon Foreground="{StaticResource BuddyGrey}" 
+                                                 Kind="UserCircle"/>
+                    </materialDesign:PopupBox.ToggleContent>
+                    
+                    <StackPanel>
+                        <Button x:Name="BtAccountSettings" 
+                                Content="Account"
+                                FontSize="12"/>
+                        <Separator/>
+                        <Button x:Name="BtLogout" 
+                                Content="Logout"
+                                FontSize="12"/>
+                    </StackPanel>
+                </materialDesign:PopupBox>
+                <TextBlock Name="UserName"
+                           Text="{Binding Username}" 
+                           Foreground="{StaticResource BuddyGrey}" 
+                           VerticalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
+        <dragablz:TabablzControl Grid.Row="2" BorderThickness="0">
             <dragablz:TabablzControl.InterTabController>
                 <dragablz:InterTabController />
             </dragablz:TabablzControl.InterTabController>
             <TabItem Header="Dowloads">
                 <StackPanel Height="500" Orientation="Vertical">
-
+                    <ListView Grid.Column="0" 
+                              Grid.Row="2"
+                              x:Name="lvAvailableFiles"
+                              ItemsSource="{Binding AvailableFiles}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <materialDesign:Card>
+                                    <Label Content="{Binding FileName}" FontWeight="Bold" />
+                                </materialDesign:Card>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Share">
@@ -64,6 +121,5 @@
                 </StackPanel>
             </TabItem>
         </dragablz:TabablzControl>
-
     </Grid>
 </Window>
