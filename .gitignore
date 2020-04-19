@@ -8,3 +8,5 @@ FrontendImplementation/FileBuddyDesktopClient/FileBuddyClient/obj/Debug/
 FrontendImplementation/FileBuddyDesktopClient/FileBuddyClient/bin/Debug/
 FrontendImplementation/FileBuddyDesktopClient/FileBuddyUI/bin/Debug/
 BackendImplementation/FileBuddyBackend/FileBuddyDTO/bin/Debug/
+BackendImplementation/FileBuddyBackend/API/bin/Debug/
+BackendImplementation/FileBuddyBackend/WebSocketServer/bin/Debug/
