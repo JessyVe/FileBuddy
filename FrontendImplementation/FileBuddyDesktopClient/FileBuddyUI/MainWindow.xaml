@@ -1,0 +1,69 @@
+﻿<Window x:Class="FileBuddyUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        WindowStyle="None"
+       
+        Title="Login" Height="550" Width="350"
+        WindowStartupLocation="CenterScreen">
+
+    <StackPanel Background="Black"
+                VerticalAlignment="Stretch">
+
+        <Button Background="{x:Null}" 
+                BorderThickness="0" 
+                HorizontalAlignment="Right"
+                Click="OnClose"
+                Margin="5">
+            <materialDesign:PackIcon Kind="Close" 
+                                     Foreground="{StaticResource BuddyGrey}"
+                                     Width="25"
+                                     Height="25"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
+        </Button>
+            
+            <Label Content="File Buddy" 
+               FontWeight="Bold"
+               FontSize="21"
+               Foreground="{StaticResource BuddyOrange}"
+               HorizontalAlignment="Center"
+               Margin="0 90 0 0"/>
+
+            <TextBox Name="txMail"
+                     Foreground="{StaticResource BuddyGrey}"
+                     materialDesign:HintAssist.Hint="Email"                 
+                     materialDesign:HintAssist.IsFloating="true"
+                     Margin="70 10">
+            </TextBox>
+
+        <PasswordBox Name="txPassword"
+                     Foreground="{StaticResource BuddyGrey}"
+                     materialDesign:HintAssist.Hint="Password"                 
+                     materialDesign:HintAssist.IsFloating="true"
+                     Margin="70 5">
+        </PasswordBox>
+
+        <Button Content="Login"
+                Background="{StaticResource BuddyOrange}"
+                Foreground="WhiteSmoke"
+                Margin="90 20 90 0"/>
+
+        <Button Content="Register"
+                Background="{StaticResource BuddyDarkOrange}"
+                Foreground="#CFB8A4"
+                Margin="90 8"
+                BorderThickness="0"/>
+
+        <Label Foreground="{StaticResource BuddyGrey}" 
+               HorizontalAlignment="Center"
+               Margin="0 90">
+            <TextBlock TextDecorations="Underline">Login with MAC</TextBlock>
+        </Label>
+
+    </StackPanel>
+</Window>
