@@ -73,9 +73,16 @@ namespace BackendTests.DatabaseAccessTests
         }
 
         [TestMethod]
-        public void GetUserInformation()
+        public async Task GetUserInformation()
         {
+            // setup new user
+            var registeredUserObject = await _firebaseAccess.RegisterUser(_newTestUser1);
 
+            // retrieve user
+            var retrievedUserInformation = await _firebaseAccess.GetUserInformation(registeredUserObject.HashId);
+
+            // verify
+            Assert.IsTrue(registeredUserObject.CompareTo(retrievedUserInformation) == 0);
         }
 
         [TestMethod]

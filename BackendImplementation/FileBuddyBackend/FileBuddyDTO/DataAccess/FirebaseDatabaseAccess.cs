@@ -104,6 +104,11 @@ namespace SharedRessources.DataAccess
         public async Task<User> GetUserInformation(string userHashId)
         {
             var response = await _firebaseClient.Child($"user/{userHashId}/userinformation").OnceAsync<User>();
+            if(response.Count == 1)
+                foreach(var firebaseObject in response)
+                {
+                    return firebaseObject.Object;
+                }
             return null;
         }
 
@@ -115,12 +120,8 @@ namespace SharedRessources.DataAccess
 
         public async Task<IList<UserGroup>> GetGroupInformationOfUser(string userHashId)
         {
-            var response = await _firebaseClient.Child($"user/{userHashId}/groups").OnceAsync<IList<UserGroup>>();
-            if (response.Count == 1)
-            {
-                return response.GetEnumerator().Current.Object;
-            }
-            return new List<UserGroup>();
+            var response = await _firebaseClient.Child($"user/{userHashId}/groups").OnceSingleAsync<IList<UserGroup>>();
+            return response;
         }
     }
 }
