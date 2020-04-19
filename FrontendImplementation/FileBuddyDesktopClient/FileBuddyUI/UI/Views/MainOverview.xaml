@@ -14,8 +14,17 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="FileBuddy" 
-        Height="450" Width="400">
-
+        Height="450" Width="400"
+        
+        MouseLeftButtonDown="WindowMouseLeftButtonDown">
+    <x:Code>
+        <![CDATA[            
+            private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+            {
+                DragMove();
+            }
+        ]]>
+    </x:Code>
     <Grid Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>

@@ -9,8 +9,17 @@
         WindowStyle="None"
        
         Title="Login" Height="550" Width="350"
-        WindowStartupLocation="CenterScreen">
-
+        WindowStartupLocation="CenterScreen"
+        
+        MouseLeftButtonDown="WindowMouseLeftButtonDown">
+    <x:Code>
+        <![CDATA[            
+            private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+            {
+                DragMove();
+            }
+        ]]>
+    </x:Code>
     <StackPanel Background="Black"
                 VerticalAlignment="Stretch">
 
