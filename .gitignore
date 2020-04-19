@@ -5,3 +5,5 @@ BackendImplementation/FileBuddyBackend/API/obj/Debug/
 BackendImplementation/FileBuddyBackend/BackendTests/bin/Debug/
 BackendImplementation/FileBuddyBackend/BackendTests/obj/Debug/
 FrontendImplementation/FileBuddyDesktopClient/FileBuddyClient/obj/Debug/
+FrontendImplementation/FileBuddyDesktopClient/FileBuddyClient/bin/Debug/
+FrontendImplementation/FileBuddyDesktopClient/FileBuddyUI/bin/Debug/

@@ -1,9 +1,9 @@
-﻿<Window x:Class="FileBuddyUI.Views.MainOverview"
+﻿<Window x:Class="FileBuddyUI.UI.Views.MainOverview"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FileBuddyUI.Views"
+        xmlns:local="clr-namespace:FileBuddyUI.UI.Views"
         mc:Ignorable="d"
         
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
@@ -46,12 +46,12 @@
             </TabItem>
             <TabItem Header="Share">
                 <StackPanel Height="500" Orientation="Vertical">
-                   
+
                 </StackPanel>
             </TabItem>
             <TabItem Header="Buddys">
                 <StackPanel Height="500" Orientation="Vertical">
-                    
+
                 </StackPanel>
             </TabItem>
         </dragablz:TabablzControl>

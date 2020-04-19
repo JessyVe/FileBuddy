@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace FileBuddyUI.Views
+namespace FileBuddyUI.UI.Views
 {
     /// <summary>
     /// Interaction logic for MainOverview.xaml
@@ -21,7 +21,6 @@ namespace FileBuddyUI.Views
         {
             InitializeComponent();
         }
-
         private void OnClose(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.Close();
