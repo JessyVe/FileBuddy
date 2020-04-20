@@ -35,7 +35,7 @@ namespace API.Controllers
         /// <param name="macAddress"></param>
         /// <param name="password"></param>
         [Route("login/macaddress/{macAddress}/{password}")]
-        public async Task<ActionResult<User>> LoginWithMacAddress(string macAddress, string password)
+        public async Task<User> LoginWithMacAddress(string macAddress, string password)
         {
             var result = await _dataAccess.LoginWithMacAddress(macAddress, password);
             return result;

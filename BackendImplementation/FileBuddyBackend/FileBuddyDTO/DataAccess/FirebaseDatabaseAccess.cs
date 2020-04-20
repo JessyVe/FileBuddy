@@ -84,6 +84,11 @@ namespace SharedRessources.DataAccess
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Fetching files on start of client.
+        /// </summary>
+        /// <param name="userHashId"></param>
+        /// <returns></returns>
         public async Task<IList<SharedFile>> FetchAvailableFiles(string userHashId)
         {
             var response = await _firebaseClient.Child($"fetch/files/{userHashId}").OnceAsync<IList<SharedFile>>();
