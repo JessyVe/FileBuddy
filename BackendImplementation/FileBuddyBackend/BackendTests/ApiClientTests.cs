@@ -2,8 +2,6 @@
 using SharedRessources.DataAccess;
 using SharedRessources.Dtos;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BackendTests
@@ -29,6 +27,18 @@ namespace BackendTests
             {
                 HashId = "User2"
             };
+        }
+
+        [TestMethod]
+        public async Task LoginWithMacAddress()
+        {
+
+        }
+
+        [TestMethod]
+        public async Task LoginWithMailAddress()
+        {
+
         }
 
         [TestMethod]

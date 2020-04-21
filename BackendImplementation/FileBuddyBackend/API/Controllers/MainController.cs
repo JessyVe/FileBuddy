@@ -61,7 +61,7 @@ namespace API.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost("register"), DisableRequestSizeLimit]
-        public User PostRegisterUser(User user)
+        public User RegisterUser(User user)
         {
             Log.Debug("RegisterUser()-Method was called.");
             var result = _dataAccess.RegisterUser(user).Result;
