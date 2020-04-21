@@ -49,7 +49,7 @@ namespace API.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [Route("login/macaddress/{mailAddress}/{password}")]
-        public async Task<ActionResult<User>> LoginWithMailAddress(string mailAddress, string password)
+        public async Task<User> LoginWithMailAddress(string mailAddress, string password)
         {
             var result = await _dataAccess.LoginWithMailAddress(mailAddress, password);
             return result;
@@ -61,10 +61,11 @@ namespace API.Controllers
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        [Route("register/{user}")]
-        public async Task<ActionResult<User>> RegisterUser(User user)
+        [HttpPost("register"), DisableRequestSizeLimit]
+        public ActionResult<User> PostRegisterUser(User user)
         {
-            var result = await _dataAccess.RegisterUser(user);
+            Log.Debug("RegisterUser()-Method was called.");
+            var result = _dataAccess.RegisterUser(user).Result;
             return result;
         }
 
@@ -77,7 +78,7 @@ namespace API.Controllers
         /// <returns></returns>
         [Route("upload")]//{userId}/{userGroups}")]
         [HttpPost, DisableRequestSizeLimit]
-        public async Task<IActionResult> Upload()//string userId, IList<UserGroup> userGroups)
+        public async Task<IActionResult> Upload()// string userId, string filename, IList<UserGroup> userGroups)
         {
             try
             {
@@ -147,7 +148,7 @@ namespace API.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [Route("update/user/{user}")]
-        public async Task<ActionResult> UpdateUserInformation(User user)
+        public async Task<IActionResult> UpdateUserInformation(User user)
         {
             try
             {
@@ -172,8 +173,8 @@ namespace API.Controllers
         /// <param name="userId"></param>
         /// <param name="jsonGroupInformation"></param>
         /// <returns></returns>
-        [Route("update/groups/{userId}/{groupInformation}")]
-        public async Task<ActionResult> UpdateGroupInformationOfUser(string userId, IList<UserGroup> userGroups)
+        [Route("update/groups/{userId}/{userGroups}")]
+        public async Task<IActionResult> UpdateGroupInformationOfUser(string userId, IList<UserGroup> userGroups)
         {
             try
             {

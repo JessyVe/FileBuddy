@@ -1,28 +1,44 @@
-﻿using SharedRessources.Dtos;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SharedRessources.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SharedRessources.DataAccess
 {
-    public class ApiClient
+    public class ApiClient : ApiClientBase
     {
-        private HttpClient _client = new HttpClient();
-        private string _baseAddress;
-        private int _port;
+        // TODO: Extract into configuration
+        private string _baseAddress = "https://localhost";
+        private string _controllerPath = "api/filebuddy";
+        private int _port = 5001;
 
         public ApiClient()
         {
-            _client.BaseAddress = new Uri($"{_baseAddress}:{_port}/");
+            _client = new HttpClient
+            {
+                BaseAddress = new Uri($"{_baseAddress}:{_port}")
+            };
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        public async Task<User> Test()
+        {
+            var result = await ExecuteCall<Task<User>>("Test");
+            return result.Result;
+        }
+
+        /// <summary>
+        /// Returns the current user object to 
+        /// ensure that it is synchronised over all devices. 
+        /// </summary>
+        /// <param name="macAddress"></param>
+        /// <param name="password"></param>
         public async Task<User> LoginWithMacAddress(string macAddress, string password)
         {
             var requestUrl = $"login/macaddress/{macAddress}/{password}";
@@ -30,11 +46,112 @@ namespace SharedRessources.DataAccess
             return result;
         }
 
-        private async Task<T> ExecuteCall<T>(string requestUrl)
+        /// <summary>
+        /// Returns the current user object to 
+        /// ensure that it is synchronised over all devices. 
+        /// </summary>
+        /// <param name="mailAddress"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<User> LoginWithMailAddress(string mailAddress, string password)
         {
-            using var streamTask = _client.GetStreamAsync(requestUrl);
-            var response = await JsonSerializer.DeserializeAsync<T>(await streamTask);
-            return response;
+            var requestUrl = $"login/macaddress/{mailAddress}/{password}";
+            var result = await ExecuteCall<User>(requestUrl);
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the user object with the assigned 
+        /// user id needed for further transactions.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<User> RegisterUser(User user)
+        {
+            var requestUrl = $"{_controllerPath}/register";
+            var result = await ExecutePostCall<User, User>(requestUrl, user);
+            return result;
+        }
+
+        /// <summary>
+        /// Uploads given files and makes them available for
+        /// definited users.
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="userGroups"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Upload(string userId, string filename, IList<UserGroup> userGroups)
+        {
+            var requestUrl = $"upload/{filename}/{userId}/{userGroups}";
+            var result = await ExecuteCall<IActionResult>(requestUrl);
+            return result;
+        }
+
+        /// <summary>
+        /// Uploads given files and makes them available for
+        /// definited users.
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="userGroups"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Download(string userId, IList<string> filehashes)
+        {
+            var requestUrl = $"download/{userId}/{filehashes}";
+            var result = await ExecuteCall<IActionResult>(requestUrl);
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a dictionary containing all available files for the user. 
+        /// (Key=userId of sender; Value=list of file names)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<IList<SharedFile>> FetchAvailableFiles(string userId)
+        {
+            var requestUrl = $"fetch/files/{userId}";
+            var result = await ExecuteCall<IList<SharedFile>>(requestUrl);
+            return result;
+        }
+
+        /// <summary>
+        /// Updates user-specific settings.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> UpdateUserInformation(User user)
+        {
+            var requestUrl = $"update/user/{user}";
+            var result = await ExecuteCall<IActionResult>(requestUrl);
+            return result;
+        }
+
+        /// <summary>
+        /// Updates the group informations for an user.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="jsonGroupInformation"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> UpdateGroupInformationOfUser(string userId, IList<UserGroup> userGroups)
+        {
+            var requestUrl = $"update/groups/{userId}/{userGroups}";
+            var result = await ExecuteCall<IActionResult>(requestUrl);
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a a collection containing user groups 
+        /// created by the user. With this method user groups
+        /// can be synchronized over all devices.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="jsonGroupInformation"></param>
+        /// <returns></returns>
+        public async Task<IList<UserGroup>> GetGroupInformation(string userId)
+        {
+            var requestUrl = $"fetch/groups/{userId}";
+            var result = await ExecuteCall<IList<UserGroup>>(requestUrl);
+            return result;
         }
     }
 }

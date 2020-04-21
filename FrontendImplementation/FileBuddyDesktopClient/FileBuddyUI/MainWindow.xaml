@@ -47,33 +47,38 @@
                      Foreground="{StaticResource BuddyGrey}"
                      materialDesign:HintAssist.Hint="Email"                 
                      materialDesign:HintAssist.IsFloating="true"
-                     Margin="70 10">
+                     Margin="70 10"
+                     Text="{Binding MailAddress}">
             </TextBox>
 
-        <PasswordBox Name="txPassword"
+        <!--<PasswordBox Name="txPassword"
                      Foreground="{StaticResource BuddyGrey}"
                      materialDesign:HintAssist.Hint="Password"                 
                      materialDesign:HintAssist.IsFloating="true"
-                     Margin="70 5">
-        </PasswordBox>
+                     Margin="70 5"
+                     Password="{Binding Password}">
+        </PasswordBox>-->
 
         <Button Content="Login"
                 Background="{StaticResource BuddyOrange}"
                 Foreground="WhiteSmoke"
                 Margin="90 20 90 0"
-                Command="{Binding OnShowMainOverview}"/>
+                Command="{Binding OnLoginCommand}"/>
 
         <Button Content="Register"
                 Background="{StaticResource BuddyDarkOrange}"
                 Foreground="#CFB8A4"
                 Margin="90 8"
-                BorderThickness="0"/>
+                BorderThickness="0"
+                Command="{Binding OnRegisterCommand}"/>
 
         <Label Foreground="{StaticResource BuddyGrey}" 
                HorizontalAlignment="Center"
                Margin="0 90">
             <TextBlock TextDecorations="Underline">Login with MAC</TextBlock>
         </Label>
+
+        <materialDesign:Snackbar MessageQueue="{Binding SnackbarMessageQueue}" />
 
     </StackPanel>
 </Window>
