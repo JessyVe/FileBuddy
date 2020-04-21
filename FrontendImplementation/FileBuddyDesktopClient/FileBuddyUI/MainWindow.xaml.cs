@@ -22,12 +22,12 @@ namespace FileBuddyUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly MainViewModel _mainViewModel;
+        private readonly MainWindowViewModel _mainViewModel;
 
         public MainWindow()
         {
             InitializeComponent();
-            _mainViewModel = new MainViewModel();
+            _mainViewModel = new MainWindowViewModel();
             DataContext = _mainViewModel;
         }
 
