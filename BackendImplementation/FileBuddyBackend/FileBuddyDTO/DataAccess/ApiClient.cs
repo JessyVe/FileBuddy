@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using SharedRessources.Dtos;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace SharedRessources.DataAccess
 {
+    /// <summary>
+    /// Implements methods to access the FileBuddy API
+    /// </summary>
     public class ApiClient : ApiClientBase
     {
         // TODO: Extract into configuration

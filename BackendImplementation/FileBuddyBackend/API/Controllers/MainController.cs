@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -35,9 +34,9 @@ namespace API.Controllers
         /// <param name="macAddress"></param>
         /// <param name="password"></param>
         [Route("login/macaddress/{macAddress}/{password}")]
-        public async Task<User> LoginWithMacAddress(string macAddress, string password)
+        public User LoginWithMacAddress(string macAddress, string password)
         {
-            var result = await _dataAccess.LoginWithMacAddress(macAddress, password);
+            var result = _dataAccess.LoginWithMacAddress(macAddress, password).Result;
             return result;
         }
 
@@ -49,9 +48,9 @@ namespace API.Controllers
         /// <param name="password"></param>
         /// <returns></returns>
         [Route("login/macaddress/{mailAddress}/{password}")]
-        public async Task<User> LoginWithMailAddress(string mailAddress, string password)
+        public User LoginWithMailAddress(string mailAddress, string password)
         {
-            var result = await _dataAccess.LoginWithMailAddress(mailAddress, password);
+            var result = _dataAccess.LoginWithMailAddress(mailAddress, password).Result;
             return result;
         }
 
@@ -62,7 +61,7 @@ namespace API.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost("register"), DisableRequestSizeLimit]
-        public ActionResult<User> PostRegisterUser(User user)
+        public User PostRegisterUser(User user)
         {
             Log.Debug("RegisterUser()-Method was called.");
             var result = _dataAccess.RegisterUser(user).Result;
@@ -78,7 +77,7 @@ namespace API.Controllers
         /// <returns></returns>
         [Route("upload")]//{userId}/{userGroups}")]
         [HttpPost, DisableRequestSizeLimit]
-        public async Task<IActionResult> Upload()// string userId, string filename, IList<UserGroup> userGroups)
+        public IActionResult Upload()// string userId, string filename, IList<UserGroup> userGroups)
         {
             try
             {
@@ -112,7 +111,7 @@ namespace API.Controllers
         }
 
         [HttpGet("download/{filename}/")]//{userId}/{filehashes}")]
-        public async Task<IActionResult> Download(string filename)//string userId, IList<string> filehashes)
+        public IActionResult Download(string filename)//string userId, IList<string> filehashes)
         {
             // Retrieve some file from some service
             var folderName = "Resources";
@@ -125,7 +124,7 @@ namespace API.Controllers
                 throw new ArgumentOutOfRangeException($"Unable to find Content Type for file name {filePath}.");
             }
 
-            var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            var bytes = System.IO.File.ReadAllBytesAsync(filePath);
             return PhysicalFile(filePath, contentType, Path.GetFileName(filePath));
         }
 
@@ -136,9 +135,9 @@ namespace API.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [Route("fetch/files/{userId}")]
-        public async Task<IList<SharedFile>> FetchAvailableFiles(string userId)
+        public IList<SharedFile> FetchAvailableFiles(string userId)
         {
-            var result = await _dataAccess.FetchAvailableFiles(userId);
+            var result = _dataAccess.FetchAvailableFiles(userId).Result;
             return result;
         }
 
@@ -148,11 +147,11 @@ namespace API.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [Route("update/user/{user}")]
-        public async Task<IActionResult> UpdateUserInformation(User user)
+        public IActionResult UpdateUserInformation(User user)
         {
             try
             {
-                var success = await _dataAccess.UpdateUserInformation(user);
+                var success = _dataAccess.UpdateUserInformation(user).Result;
                 if (success)
                 {
                     return Accepted();
@@ -174,11 +173,11 @@ namespace API.Controllers
         /// <param name="jsonGroupInformation"></param>
         /// <returns></returns>
         [Route("update/groups/{userId}/{userGroups}")]
-        public async Task<IActionResult> UpdateGroupInformationOfUser(string userId, IList<UserGroup> userGroups)
+        public IActionResult UpdateGroupInformationOfUser(string userId, IList<UserGroup> userGroups)
         {
             try
             {
-                var success = await _dataAccess.UpdateGroupInformationOfUser(userId, userGroups);
+                var success = _dataAccess.UpdateGroupInformationOfUser(userId, userGroups).Result;
                 if (success)
                 {
                     return Accepted();
@@ -203,9 +202,9 @@ namespace API.Controllers
         /// <param name="jsonGroupInformation"></param>
         /// <returns></returns>
         [Route("fetch/groups/{userId}")]
-        public async Task<IList<UserGroup>> GetGroupInformation(string userId)
+        public IList<UserGroup> GetGroupInformation(string userId)
         {
-            var result = await _dataAccess.GetGroupInformationOfUser(userId);
+            var result = _dataAccess.GetGroupInformationOfUser(userId).Result;
             return result;
         }
     }
