@@ -4,11 +4,12 @@ using System.Windows.Input;
 
 namespace FileBuddyUI.UI.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
         public ICommand OnShowMainOverview { get; set; }
+        public ICommand OnLogin { get; set; }
 
-        public MainViewModel()
+        public MainWindowViewModel()
         {
             OnShowMainOverview = new RelayCommand(o => ShowMainOverview());
         }
