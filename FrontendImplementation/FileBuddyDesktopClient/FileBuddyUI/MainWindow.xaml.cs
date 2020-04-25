@@ -35,5 +35,10 @@ namespace FileBuddyUI
         {
             Application.Current.MainWindow.Close();
         }
+
+        private void OnWindowMinimize(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
     }
 }
