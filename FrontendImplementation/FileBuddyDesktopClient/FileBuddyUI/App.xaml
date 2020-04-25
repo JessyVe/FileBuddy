@@ -5,6 +5,8 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
+          
+
             <ResourceDictionary.MergedDictionaries>
               
                 <!-- secondary colour -->
@@ -22,6 +24,7 @@
                     <!-- Own colors-->
                     <SolidColorBrush x:Key="BuddyOrange" Color="#F39223"/>
                     <SolidColorBrush x:Key="BuddyDarkOrange" Color="#7F4C12"/>
+                    <SolidColorBrush x:Key="BuddyDarkOrange_opac" Opacity="0.5" Color="#7F4C12"/>
                     <SolidColorBrush x:Key="BuddyGreen" Color="#41C92F"/>
                     <SolidColorBrush x:Key="BuddyDarkGrey" Color="#131313"/>
                     <SolidColorBrush x:Key="BuddyGrey" Color="#707070"/>
