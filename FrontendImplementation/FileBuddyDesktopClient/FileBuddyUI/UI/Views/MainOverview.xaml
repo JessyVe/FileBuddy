@@ -48,16 +48,47 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Background="{x:Null}" 
-                BorderThickness="0" 
-                HorizontalAlignment="Right"
-                Click="OnClose"
-                Margin="5">
-            <materialDesign:PackIcon Kind="Close"                                      
-                                     Foreground="{StaticResource BuddyGrey}"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"/>
-        </Button>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Button Background="{x:Null}" 
+                    BorderThickness="0" 
+                    Grid.Column="1"
+                    Click="OnWindowMinimize">
+                <materialDesign:PackIcon Kind="WindowMinimize"                                      
+                                         Foreground="{StaticResource BuddyGrey}"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch">                
+                </materialDesign:PackIcon>               
+            </Button>
+        
+            <Button Background="{x:Null}" 
+                    BorderThickness="0" 
+                    HorizontalAlignment="Right"
+                    Grid.Column="2"
+                    Click="OnWindowMaximize">
+                <materialDesign:PackIcon Kind="WindowMaximize"                                      
+                                         Foreground="{StaticResource BuddyGrey}"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch">
+                </materialDesign:PackIcon>
+            </Button>
+            <Button Background="{x:Null}" 
+                    BorderThickness="0" 
+                    HorizontalAlignment="Right"
+                    Grid.Column="3"
+                    Click="OnClose">
+                <materialDesign:PackIcon Kind="WindowClose"                                      
+                                         Foreground="{StaticResource BuddyGrey}"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch">
+                </materialDesign:PackIcon>
+            </Button>
+        </Grid>
 
         <Grid VerticalAlignment="Stretch" 
               Grid.Row="1">
@@ -90,36 +121,59 @@
             </StackPanel>
         </Grid>
 
-        <dragablz:TabablzControl Grid.Row="2" BorderThickness="0">
-            <dragablz:TabablzControl.InterTabController>
-                <dragablz:InterTabController />
-            </dragablz:TabablzControl.InterTabController>
-            <TabItem Header="Dowloads">
-                <StackPanel Height="500" Orientation="Vertical">
-                    <ListView Grid.Column="0" 
-                              Grid.Row="2"
-                              x:Name="lvAvailableFiles"
-                              ItemsSource="{Binding AvailableFiles}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <materialDesign:Card>
-                                    <Label Content="{Binding FileName}" FontWeight="Bold" />
-                                </materialDesign:Card>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Share">
-                <StackPanel Height="500" Orientation="Vertical">
+        <Grid Grid.Row="2"
+               Drop="File_Drop" 
+               AllowDrop="true" 
+               DragEnter="cDragArea_DragEnter" 
+               DragLeave="cDragArea_DragLeave">
 
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Buddys">
-                <StackPanel Height="500" Orientation="Vertical">
+            <Label Background="{StaticResource BuddyDarkOrange_opac}"                   
+                        Foreground="DarkGray" 
+                        FontSize="13"
+                        Name="lbDragNDrop"
+                        FontWeight="Bold" 
+                        HorizontalAlignment="Stretch"
+                        VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        Visibility="Hidden">
+                <TextBlock Name="txDeleteFile" TextDecorations="Underline">Drop files!</TextBlock>
+            </Label>
 
-                </StackPanel>
-            </TabItem>
-        </dragablz:TabablzControl>
+            <dragablz:TabablzControl x:Name="tabControl" 
+                                     BorderThickness="0"
+                                     Visibility="Visible">
+                <dragablz:TabablzControl.InterTabController>
+                    <dragablz:InterTabController />
+                </dragablz:TabablzControl.InterTabController>
+                <TabItem Header="Dowloads">
+                    <StackPanel Height="500" Orientation="Vertical">
+                        
+                        <ListView Grid.Column="0" 
+                                  Grid.Row="2"
+                                  x:Name="lvAvailableFiles"
+                                  ItemsSource="{Binding AvailableFiles}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:Card>
+                                        <Label Content="{Binding FileName}" FontWeight="Bold" />
+                                    </materialDesign:Card>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                        
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Share">
+                    <StackPanel Height="500" Orientation="Vertical">
+                        <TextBlock Foreground="{StaticResource BuddyGrey}">Hello World!</TextBlock>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Buddys">
+                    <StackPanel Height="500" Orientation="Vertical">
+                        <TextBlock Foreground="{StaticResource BuddyGrey}">Hello World!</TextBlock>
+                    </StackPanel>
+                </TabItem>
+            </dragablz:TabablzControl>
+        </Grid>
     </Grid>
 </Window>
