@@ -47,7 +47,7 @@ namespace API.Controllers
         /// <param name="mailAddress"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        [Route("login/macaddress/{mailAddress}/{password}")]
+        [Route("login/mailaddress/{mailAddress}/{password}")]
         public User LoginWithMailAddress(string mailAddress, string password)
         {
             var result = _dataAccess.LoginWithMailAddress(mailAddress, password).Result;
