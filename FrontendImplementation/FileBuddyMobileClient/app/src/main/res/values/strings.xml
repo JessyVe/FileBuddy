@@ -9,4 +9,7 @@
     <string name="foundedMac">XX-XX-XX-XX</string>
     <string name="name">Name</string>
     <string name="addMac">Add now!</string>
+    <string name="line_1">Line 1</string>
+    <string name="line_2">Line 2</string>
+    <string name="search">search</string>
 </resources>
