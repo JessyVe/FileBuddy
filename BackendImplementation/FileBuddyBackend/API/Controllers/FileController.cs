@@ -86,7 +86,13 @@ namespace API.Controllers
                 Log.Error(errorText);
                 return BadRequest(errorText);
             }
-            _fileDataAccess.FileDownloaded(userId, fileHash);
+
+            _fileDataAccess.FileDownloaded(new DownloadTransaction()
+            {
+                FileHashId = fileHash, 
+                DowloadUserHashId = userId, 
+                TransactionDate = DateTime.Now
+            });
             return PhysicalFile(apiPath, contentType, Path.GetFileName(apiPath));
         }
     }

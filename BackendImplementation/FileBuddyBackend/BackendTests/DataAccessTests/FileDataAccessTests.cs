@@ -12,6 +12,7 @@ namespace BackendTests.DataAccessTests
     {
         private readonly IFileDataAccess _fileDataAccess;
         private SharedFile _sharedFile;
+        private IList<string> _authorizedAccessGrantedTo;
 
         private const string FileHash = "HashId1";
         private const string APIPath = "demo/path/text.txt";
@@ -21,12 +22,16 @@ namespace BackendTests.DataAccessTests
             _fileDataAccess = new FileDataAccess();
             _sharedFile = new SharedFile()
             {
-                AuthorizedAccessGrantedTo = new List<string>(),
                 HashId = FileHash,
                 APIPath = APIPath, 
                 FileName = "test.txt", 
                 OwnerUserId = "TestOwner", 
                 UploadDate = DateTime.Now
+            };
+
+            _authorizedAccessGrantedTo = new List<string>()
+            {
+                "User1", "User2", "User3"
             };
         }
 
@@ -40,7 +45,7 @@ namespace BackendTests.DataAccessTests
         public async Task GetApiPathOfFileTest()
         {
             // arrange
-            await _fileDataAccess.UploadFile(_sharedFile);
+            await _fileDataAccess.UploadFile(_sharedFile, _authorizedAccessGrantedTo);
 
             // act
             var retrievedApiPath = await _fileDataAccess.GetApiPathOfFile(FileHash);
