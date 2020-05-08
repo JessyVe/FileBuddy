@@ -5,6 +5,9 @@ namespace SharedRessources.Services
 {
     public static class JsonConverter
     {
+        private static readonly log4net.ILog Log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Returns a json string representing the given object.
         /// </summary>
@@ -41,7 +44,7 @@ namespace SharedRessources.Services
 
             } catch(Exception ex)
             {
-                // TODO: Implement logging
+                Log.ErrorFormat("Unable to parse given string", ex);
                 return false;
             } 
         }

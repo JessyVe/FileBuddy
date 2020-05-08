@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace SharedRessources.DataAccess
+namespace SharedRessources.DataAccess.ApiAccess
 {
     /// <summary>
     /// Implements the basic structure for sending requests to 
