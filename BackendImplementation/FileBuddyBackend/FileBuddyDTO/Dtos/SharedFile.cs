@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SharedRessources.Dtos
 {
@@ -11,6 +10,5 @@ namespace SharedRessources.Dtos
         public string HashId { get; set; }
 
         public string APIPath { get; set; }
-        public IList<string> AuthorizedAccessGrantedTo { get; set; } // list of user hashes being allow to download to file next to the owner
     }
 }

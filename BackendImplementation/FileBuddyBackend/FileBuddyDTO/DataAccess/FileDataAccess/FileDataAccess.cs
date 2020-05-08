@@ -1,5 +1,7 @@
 ﻿using Firebase.Database.Query;
 using SharedRessources.Dtos;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SharedRessources.DataAccess.FileDataAccess
@@ -25,23 +27,42 @@ namespace SharedRessources.DataAccess.FileDataAccess
         }
 
         /// <summary>
-        /// Saves information about successfull file uploads to the API.
+        /// Saves information about successfull file shares.
         /// </summary>
-        /// <param name="apiPath"></param>
-        /// <param name="ownerId"></param>
-        /// <param name="receiver"></param>
-        public async Task UploadFile(SharedFile sharedFile)
+        /// <param name="sharedFile"></param>
+        /// <param name="AuthorizedAccessGrantedTo"></param>
+        /// <returns></returns>
+        public async Task UploadFile(SharedFile sharedFile, IList<string> AuthorizedAccessGrantedTo)
         {
             Log.Debug("File was uploaded to API. ");
-            var response = await _firebaseClient.Child($"files/{sharedFile.HashId}").PostAsync(sharedFile);
+            await SaveFileInformation(sharedFile);
+            await SaveAuthorizedAccessGranted(AuthorizedAccessGrantedTo, sharedFile.HashId);
+        }       
 
+        private async Task SaveFileInformation(SharedFile sharedFile)
+        {
+            var response = await _firebaseClient.Child($"files/{sharedFile.HashId}").PostAsync(sharedFile);
             if (response != null)
                 Log.Debug("Information was saved successfully!");
             else
                 Log.Debug("Response of save action was null. ");
         }
 
-        public async Task FileDownloaded(string downloaderId, string fileHash)
+        /// <summary>
+        /// Makes to shared file visible for the user.
+        /// </summary>
+        /// <param name="authorizedAccessGrantedTo"></param>
+        /// <param name="fileHashId"></param>
+        /// <returns></returns>
+        private async Task SaveAuthorizedAccessGranted(IList<string> authorizedAccessGrantedTo, string fileHashId)
+        {
+            foreach(var userHashId in authorizedAccessGrantedTo)
+            {
+                await _firebaseClient.Child($"user/{userHashId}/fetchablefiles").PostAsync<string>(fileHashId);
+            }
+        }
+
+        public async Task FileDownloaded(DownloadTransaction downloadTransaction)
         {
             // TODO: Keep a record of all download transactions.
             Log.Debug("File was downloaded. ");
