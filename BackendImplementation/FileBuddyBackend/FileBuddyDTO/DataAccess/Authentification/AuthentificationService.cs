@@ -7,21 +7,32 @@ namespace SharedRessources.DataAccess.Authentification
 {
     public class AuthentificationService : FireBaseAccessBase, IAuthentificationService
     {
-        public async Task<User> RegisterUser(User user)
+        public async Task<FullUserData> RegisterUser(FullUserData user)
         {
             Log.Debug("Attempting to register user.");
             _userHashingEngine.SetHash(user);
-            var response = await _firebaseClient.Child($"user/{user.HashId}/userinformation").PostAsync(user);
-            return response.Object;
+            var fullUserDataResponse = await _firebaseClient.Child($"user/{user.HashId}/userinformation").PostAsync(user);
+            var fullUserData = fullUserDataResponse.Object;
+
+            if(fullUserData != null)
+            {
+                // unable to delete these ... 
+                await _firebaseClient.Child($"users").PostAsync(new VisibileUserData()
+                {
+                    Name = fullUserData.Name, 
+                    ProfilePicture = fullUserData.ProfilePicture ?? string.Empty
+                });
+            }
+            return fullUserData;
         }
 
-        public Task<User> LoginWithMacAddress(string macAddress, string password)
+        public Task<FullUserData> LoginWithMacAddress(string macAddress, string password)
         {
             Log.Debug("Attempting to login user with mail address.");
             throw new NotImplementedException();
         }
 
-        public Task<User> LoginWithMailAddress(string mailAddress, string password)
+        public Task<FullUserData> LoginWithMailAddress(string mailAddress, string password)
         {
             Log.Debug("Attempting to login user with mail address.");
             throw new NotImplementedException();

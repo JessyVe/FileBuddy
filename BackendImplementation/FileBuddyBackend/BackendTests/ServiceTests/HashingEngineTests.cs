@@ -39,17 +39,17 @@ namespace BackendTests.ServiceTests
             }
         }
 
-        private static IEnumerable<User> TestUser
+        private static IEnumerable<FullUserData> TestUser
         {
             get
             {
-                return new List<User>(){
-                    new User()
+                return new List<FullUserData>(){
+                    new FullUserData()
                     {
                         Name = "User1",
                         AccountCreationDate = DateTime.Parse("2020-04-11 09:48:05")
                     },
-                    new User()
+                    new FullUserData()
                     {
                         Name = "User2",
                         AccountCreationDate = DateTime.Parse("2019-03-01 16:02:45")
@@ -58,17 +58,17 @@ namespace BackendTests.ServiceTests
             }
         }
 
-        private static User[] IdenticalTestUser
+        private static FullUserData[] IdenticalTestUser
         {
             get
             {
-                return new User[] {
-                    new User()
+                return new FullUserData[] {
+                    new FullUserData()
                     {
                         Name = "User1",
                         AccountCreationDate = DateTime.Parse("2020-04-11 09:48:05")
                     },
-                    new User()
+                    new FullUserData()
                     {
                         Name = "User1",
                         AccountCreationDate = DateTime.Parse("2020-04-11 09:48:05")

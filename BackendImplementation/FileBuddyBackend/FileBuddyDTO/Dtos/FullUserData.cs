@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SharedRessources.Dtos
 {
-    public class User : IHashable, IComparable<User>
+    public class FullUserData : IHashable, IComparable<FullUserData>
     {       
         public int Seed { get; set; }
         public string Name { get; set; }
@@ -17,7 +17,7 @@ namespace SharedRessources.Dtos
 
         public string HashId { get; set; }
 
-        public int CompareTo(User user)
+        public int CompareTo(FullUserData user)
         {
             return HashId.CompareTo(user.HashId);
         }

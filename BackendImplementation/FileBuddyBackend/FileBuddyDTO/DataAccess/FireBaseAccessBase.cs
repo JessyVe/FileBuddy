@@ -29,7 +29,7 @@ namespace SharedRessources.DataAccess
             InitializeFirebaseClient();
             _userHashingEngine = new UserHashingEngine();
             _fileHashingEngine = new FileHashingEngine();
-        }     
+        }
 
         private void InitializeFirebaseClient()
         {
@@ -63,9 +63,50 @@ namespace SharedRessources.DataAccess
             if (data.Count > 1)
                 Log.Error("There is more than one object in the collection!");
             else if (data.Count < 1)
-                Log.Debug("Collection is empty!");
+                Log.Error("Collection is empty!");
 
             return default;
+        }
+
+        protected IList<T> ConvertToObjectList<T>(IReadOnlyCollection<FirebaseObject<T>> data)
+        {
+            var list = new List<T>();
+            if (data.Count < 1)
+            {
+                Log.Error("No data to retrieve detected.");
+                return list;
+            }
+
+            var enumeration = data.GetEnumerator();
+            while (enumeration.MoveNext())
+            {
+                var obj = enumeration.Current.Object;
+                if (obj is T)
+                {
+                    list.Add(obj);
+                }
+                else
+                {
+                    Log.ErrorFormat("Unable to cast object to given type. ");
+                }
+            }
+            return list;
+        }
+
+        protected IList<T> ConvertDictionaryToList<T>(IReadOnlyCollection<FirebaseObject<Dictionary<string, T>>> data)
+        {
+            var list = new List<T>();
+
+            var enumeration = data.GetEnumerator();
+            while (enumeration.MoveNext())
+            {
+                foreach(var key in enumeration.Current.Object.Keys)
+                {
+                    var obj = enumeration.Current.Object[key];       
+                    list.Add(obj);                   
+                }
+            }
+            return list;
         }
     }
 }

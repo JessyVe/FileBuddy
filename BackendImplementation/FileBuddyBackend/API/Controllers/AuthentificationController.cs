@@ -31,7 +31,7 @@ namespace API.Controllers
         [HttpPost]
         [Route("register")]
         [AllowAnonymous]
-        public ActionResult<User> RegisterUser(User user)
+        public ActionResult<FullUserData> RegisterUser(FullUserData user)
         {
             Log.Debug("RegisterUser()-Method was called.");
             var registeredUser = _authentificationService.RegisterUser(user).Result;
@@ -54,7 +54,7 @@ namespace API.Controllers
         [HttpPost]
         [Route("login/macaddress/{macAddress}")]
         [AllowAnonymous]
-        public ActionResult<User> LoginWithMacAddress([FromBody] User user, string macAddress)
+        public ActionResult<FullUserData> LoginWithMacAddress([FromBody] FullUserData user, string macAddress)
         {
             Log.Debug("LoginWithMacAddress()-Method was called.");
             var loggedInUser = _authentificationService.LoginWithMacAddress(macAddress, user.Password).Result;
@@ -78,7 +78,7 @@ namespace API.Controllers
         [HttpPost]
         [Route("login/mailaddress")]
         [AllowAnonymous]
-        public ActionResult<User> LoginWithMailAddress([FromBody] User user)
+        public ActionResult<FullUserData> LoginWithMailAddress([FromBody] FullUserData user)
         {
             Log.Debug("LoginWithMailAddress()-Method was called.");
             var loggedInUser = _authentificationService.LoginWithMailAddress(user.MailAddress, user.Password).Result;

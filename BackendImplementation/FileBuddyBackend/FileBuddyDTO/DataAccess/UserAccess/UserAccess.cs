@@ -1,5 +1,6 @@
 ﻿using Firebase.Database.Query;
 using SharedRessources.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,19 +20,19 @@ namespace SharedRessources.DataAccess.UserAccess
             {
                 return response.GetEnumerator().Current.Object;
             }
-            return new List<SharedFile>();
+            return default;
         }
 
-        public async Task<bool> UpdateUserInformation(User user)
+        public async Task<bool> UpdateUserInformation(FullUserData user)
         {
             // TODO: Check if MAC-Address is already assigned to other account
             var response = await _firebaseClient.Child($"user/{user.HashId}/userinformation").PostAsync(user);
             return response != null;
         }
 
-        public async Task<User> GetUserInformation(string userHashId)
+        public async Task<FullUserData> GetUserInformation(string userHashId)
         {
-            var response = await _firebaseClient.Child($"user/{userHashId}/userinformation").OnceAsync<User>();
+            var response = await _firebaseClient.Child($"user/{userHashId}/userinformation").OnceAsync<FullUserData>();
             if (response.Count == 1)
                 foreach (var firebaseObject in response)
                 {
@@ -50,6 +51,20 @@ namespace SharedRessources.DataAccess.UserAccess
         {
             var response = await _firebaseClient.Child($"user/{userHashId}/groups").OnceSingleAsync<List<UserGroup>>();
             return response;
+        }
+
+        public async Task<IList<VisibileUserData>> LoadAllUsersFromDatabase()
+        {
+            var response = await _firebaseClient.Child($"users")
+                .OnceAsync<VisibileUserData>();
+
+            return ConvertToObjectList(response);
+        }
+
+        public async Task DeleteUser(string userHashId)
+        {
+            Log.Debug("User delete request was received. ");
+            await _firebaseClient.Child($"user/{userHashId}").DeleteAsync();
         }
     }
 }

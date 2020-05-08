@@ -6,7 +6,7 @@ namespace SharedRessources.Services
     {
         protected override string GenerateSourceString(IHashable hashable)
         {
-            var user = hashable as User;
+            var user = hashable as FullUserData;
 
             if(user.Seed == default)
                   user.Seed = _random.Next();

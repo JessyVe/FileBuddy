@@ -6,12 +6,16 @@ namespace SharedRessources.DataAccess.UserAccess
 {
     public interface IUserAccess
     {
-        public Task<List<SharedFile>> FetchAvailableFiles(string userHashId);
+        Task<List<SharedFile>> FetchAvailableFiles(string userHashId);
 
-        public Task<bool> UpdateUserInformation(User user);
-        public Task<User> GetUserInformation(string userHashId);
+        Task<bool> UpdateUserInformation(FullUserData user);
+        Task<FullUserData> GetUserInformation(string userHashId);
 
-        public Task<bool> UpdateGroupInformationOfUser(string userHashId, IList<UserGroup> userGroups);
-        public Task<List<UserGroup>> GetGroupInformationOfUser(string userHashId);
+        Task<bool> UpdateGroupInformationOfUser(string userHashId, IList<UserGroup> userGroups);
+        Task<List<UserGroup>> GetGroupInformationOfUser(string userHashId);
+
+        Task<IList<VisibileUserData>> LoadAllUsersFromDatabase();
+
+        Task DeleteUser(string userHashId);
     }
 }

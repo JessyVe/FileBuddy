@@ -10,11 +10,11 @@ namespace SharedRessources.DataAccess.ApiAccess
         Task<IActionResult> Download(string userId, IList<string> filehashes);
         Task<IList<SharedFile>> FetchAvailableFiles(string userId);
         Task<IList<UserGroup>> GetGroupInformation(string userId);
-        Task<User> LoginWithMacAddress(string macAddress, string password);
-        Task<User> LoginWithMailAddress(string mailAddress, string password);
-        Task<User> RegisterUser(User user);
+        Task<FullUserData> LoginWithMacAddress(string macAddress, string password);
+        Task<FullUserData> LoginWithMailAddress(string mailAddress, string password);
+        Task<FullUserData> RegisterUser(FullUserData user);
         Task<IActionResult> UpdateGroupInformationOfUser(string userId, IList<UserGroup> userGroups);
-        Task<IActionResult> UpdateUserInformation(User user);
+        Task<IActionResult> UpdateUserInformation(FullUserData user);
         Task<IActionResult> Upload(string userId, string filename, IList<UserGroup> userGroups);
     }
 }

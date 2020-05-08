@@ -10,20 +10,20 @@ namespace BackendTests
     public class ApiClientTests
     {
         private readonly ApiClient _client;
-        private readonly User _newTestUser1;
-        private readonly User _testUser2;
+        private readonly FullUserData _newTestUser1;
+        private readonly FullUserData _testUser2;
 
         public ApiClientTests()
         {
             _client = new ApiClient();
 
-            _newTestUser1 = new User()
+            _newTestUser1 = new FullUserData()
             {
                 AccountCreationDate = DateTime.Now,
                 MailAddress = "test@user.com",
                 Name = "TestUser1"
             };
-            _testUser2 = new User()
+            _testUser2 = new FullUserData()
             {
                 HashId = "User2"
             };

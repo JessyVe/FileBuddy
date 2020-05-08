@@ -5,10 +5,10 @@ namespace SharedRessources.DataAccess.Authentification
 {
     public interface IAuthentificationService
     {
-        public Task<User> RegisterUser(User user);
+        public Task<FullUserData> RegisterUser(FullUserData user);
 
-        public Task<User> LoginWithMacAddress(string macAddress, string password);
-        public Task<User> LoginWithMailAddress(string mailAddress, string password);
+        public Task<FullUserData> LoginWithMacAddress(string macAddress, string password);
+        public Task<FullUserData> LoginWithMailAddress(string mailAddress, string password);
 
         public AuthentificationToken RefreshToken(AuthentificationToken authentificationToken);
         public void RevokeToken(string userId);
