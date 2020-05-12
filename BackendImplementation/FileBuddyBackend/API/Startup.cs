@@ -50,7 +50,7 @@ namespace API
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("v1/swagger.json", "MyAPI V1");
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyAPI V1");
                     // serve the Swagger UI at the app's root (http://localhost:<port>/)
                     c.RoutePrefix = string.Empty;
                 });

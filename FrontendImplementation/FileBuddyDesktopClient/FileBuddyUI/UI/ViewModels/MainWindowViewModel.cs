@@ -1,7 +1,7 @@
 ﻿using FileBuddyUI.UI.Helper;
 using FileBuddyUI.UI.Views;
 using MaterialDesignThemes.Wpf;
-using SharedRessources.DataAccess;
+using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.Dtos;
 using System;
 using System.Security;
@@ -11,6 +11,9 @@ namespace FileBuddyUI.UI.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private static readonly log4net.ILog Log =
+             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly ApiClient _apiClient;
 
         // TODO: Extract into Model
@@ -55,7 +58,7 @@ namespace FileBuddyUI.UI.ViewModels
             }
             catch (Exception ex)
             {
-
+                Log.ErrorFormat("Error occured while registeration. ", ex);
             }
         }
     }
