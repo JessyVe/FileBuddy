@@ -10,22 +10,22 @@ namespace BackendTests
     public class ApiClientTests
     {
         private readonly ApiClient _client;
-        private readonly FullUserData _newTestUser1;
-        private readonly FullUserData _testUser2;
+        private readonly AppUser _newTestUser1;
+        private readonly AppUser _testUser2;
 
         public ApiClientTests()
         {
             _client = new ApiClient();
 
-            _newTestUser1 = new FullUserData()
+            _newTestUser1 = new AppUser()
             {
                 AccountCreationDate = DateTime.Now,
                 MailAddress = "test@user.com",
                 Name = "TestUser1"
             };
-            _testUser2 = new FullUserData()
+            _testUser2 = new AppUser()
             {
-                HashId = "User2"
+                Name = "User2"
             };
         }
 
@@ -45,7 +45,7 @@ namespace BackendTests
         public async Task RegisterUser()
         {
             var registeredUserObject = await _client.RegisterUser(_newTestUser1);
-            Assert.IsTrue(!string.IsNullOrEmpty(registeredUserObject.HashId) && registeredUserObject.Seed != default);
+            Assert.IsNotNull(_newTestUser1.Id);
         }
     }
 }

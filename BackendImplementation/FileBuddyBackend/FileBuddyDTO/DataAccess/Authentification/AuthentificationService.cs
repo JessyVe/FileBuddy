@@ -9,20 +9,20 @@ namespace SharedRessources.DataAccess.Authentification
         private static readonly log4net.ILog Log =
          log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public async Task<FullUserData> RegisterUser(FullUserData user)
+        public async Task<AppUser> RegisterUser(AppUser user)
         {
             Log.Debug("Attempting to register user.");
 
             return default;
         }
 
-        public Task<FullUserData> LoginWithMacAddress(string macAddress, string password)
+        public Task<AppUser> LoginWithMacAddress(string macAddress, string password)
         {
             Log.Debug("Attempting to login user with mail address.");
             throw new NotImplementedException();
         }
 
-        public Task<FullUserData> LoginWithMailAddress(string mailAddress, string password)
+        public Task<AppUser> LoginWithMailAddress(string mailAddress, string password)
         {
             Log.Debug("Attempting to login user with mail address.");
             throw new NotImplementedException();

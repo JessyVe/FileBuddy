@@ -1,10 +1,8 @@
-﻿using System.Security;
-
-namespace SharedRessources.Dtos
+﻿namespace SharedRessources.Dtos
 {
     public class UserDevice
     {
         public string Name { get; set; }
-        public SecureString MacAddress { get; set; }
+        public string MacAddress { get; set; }
     }
 }

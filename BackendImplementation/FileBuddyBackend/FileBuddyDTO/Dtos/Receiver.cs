@@ -1,10 +1,9 @@
 ﻿namespace SharedRessources.Dtos
 {
-    public class SharedFile
+    public class Receiver
     {
         public int Id { get; set; }
-        public string SharedFileName { get; set; }
-        public string ApiPath { get; set; }
+        public int ReceiverUserId { get; set; }
         public int FileTransactionId { get; set; }
     }
 }

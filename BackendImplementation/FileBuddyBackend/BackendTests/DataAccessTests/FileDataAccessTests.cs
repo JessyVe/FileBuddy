@@ -22,11 +22,8 @@ namespace BackendTests.DataAccessTests
             _fileDataAccess = new FileDataAccess();
             _sharedFile = new SharedFile()
             {
-                HashId = FileHash,
-                APIPath = APIPath, 
-                FileName = "test.txt", 
-                OwnerUserId = "TestOwner", 
-                UploadDate = DateTime.Now
+                ApiPath = APIPath, 
+                SharedFileName = "test.txt"
             };
 
             _authorizedAccessGrantedTo = new List<string>()

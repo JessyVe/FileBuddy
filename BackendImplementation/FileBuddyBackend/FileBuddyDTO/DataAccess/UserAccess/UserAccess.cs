@@ -19,12 +19,12 @@ namespace SharedRessources.DataAccess.UserAccess
             return default;
         }
 
-        public async Task<bool> UpdateUserInformation(FullUserData user)
+        public async Task<bool> UpdateUserInformation(AppUser user)
         {
             return default;
         }
 
-        public async Task<FullUserData> GetUserInformation(string userHashId)
+        public async Task<AppUser> GetUserInformation(string userHashId)
         {
             return default;
         }
@@ -39,7 +39,7 @@ namespace SharedRessources.DataAccess.UserAccess
             return default;
         }
 
-        public async Task<IList<FullUserData>> LoadAllUsersFromDatabase()
+        public async Task<IList<AppUser>> LoadAllUsersFromDatabase()
         {
             return default;
         }

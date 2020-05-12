@@ -8,13 +8,13 @@ namespace SharedRessources.DataAccess.UserAccess
     {
         Task<List<SharedFile>> FetchAvailableFiles(string userHashId);
 
-        Task<bool> UpdateUserInformation(FullUserData user);
-        Task<FullUserData> GetUserInformation(string userHashId);
+        Task<bool> UpdateUserInformation(AppUser user);
+        Task<AppUser> GetUserInformation(string userHashId);
 
         Task<bool> UpdateGroupInformationOfUser(string userHashId, IList<UserGroup> userGroups);
         Task<List<UserGroup>> GetGroupInformationOfUser(string userHashId);
 
-        Task<IList<FullUserData>> LoadAllUsersFromDatabase();
+        Task<IList<AppUser>> LoadAllUsersFromDatabase();
 
         Task DeleteUser(string userHashId);
     }

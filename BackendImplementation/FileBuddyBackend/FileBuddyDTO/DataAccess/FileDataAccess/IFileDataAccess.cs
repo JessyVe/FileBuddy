@@ -8,7 +8,7 @@ namespace SharedRessources.DataAccess.FileDataAccess
     {
         Task<string> GetApiPathOfFile(string fileHash);
         Task UploadFile(SharedFile sharedFile, IList<string> AuthorizedAccessGrantedTo);
-        Task FileDownloaded(DownloadTransaction downloadTransaction);
+        Task FileDownloaded(FileTransaction downloadTransaction);
         Task FileDelete(string fileHash);
     }
 }

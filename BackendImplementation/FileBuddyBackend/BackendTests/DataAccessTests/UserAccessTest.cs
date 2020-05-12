@@ -15,22 +15,20 @@ namespace BackendTests.DataAccessTests
         private const string UserHashId1 = "userHash1";
         private const string UserHashId2 = "userHash2";
 
-        private readonly FullUserData _testUser1;
-        private readonly FullUserData _testUser2;
+        private readonly AppUser _testUser1;
+        private readonly AppUser _testUser2;
 
         public UserAccessTest()
         {
             _userAccess = new UserAccess();
             _authentificationService = new AuthentificationService();
 
-            _testUser1 = new FullUserData()
+            _testUser1 = new AppUser()
             {
-                HashId = UserHashId1, 
                 Name = "User1"
             };
-            _testUser2 = new FullUserData()
+            _testUser2 = new AppUser()
             {
-                HashId = UserHashId2,
                 Name = "User2"
             };
         }

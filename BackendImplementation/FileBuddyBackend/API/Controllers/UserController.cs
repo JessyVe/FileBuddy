@@ -28,7 +28,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("update/user/{user}")]
-        public IActionResult UpdateUserInformation(FullUserData user)
+        public IActionResult UpdateUserInformation(AppUser user)
         {
             try
             {

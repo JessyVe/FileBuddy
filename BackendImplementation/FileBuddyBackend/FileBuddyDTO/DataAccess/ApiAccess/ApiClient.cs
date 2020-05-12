@@ -40,10 +40,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// </summary>
         /// <param name="macAddress"></param>
         /// <param name="password"></param>
-        public async Task<FullUserData> LoginWithMacAddress(string macAddress, string password)
+        public async Task<AppUser> LoginWithMacAddress(string macAddress, string password)
         {
             var requestUrl = $"{AuthentificationControllerPath}login/macaddress/{macAddress}/{password}";
-            var result = await ExecuteCall<FullUserData>(requestUrl);
+            var result = await ExecuteCall<AppUser>(requestUrl);
             return result;
         }
 
@@ -54,10 +54,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="mailAddress"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<FullUserData> LoginWithMailAddress(string mailAddress, string password)
+        public async Task<AppUser> LoginWithMailAddress(string mailAddress, string password)
         {
             var requestUrl = $"{AuthentificationControllerPath}login/macaddress/{mailAddress}/{password}";
-            var result = await ExecuteCall<FullUserData>(requestUrl);
+            var result = await ExecuteCall<AppUser>(requestUrl);
             return result;
         }
 
@@ -67,10 +67,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<FullUserData> RegisterUser(FullUserData user)
+        public async Task<AppUser> RegisterUser(AppUser user)
         {
             var requestUrl = $"{AuthentificationControllerPath}/register";
-            var result = await ExecutePostCall<FullUserData, FullUserData>(requestUrl, user);
+            var result = await ExecutePostCall<AppUser, AppUser>(requestUrl, user);
             return result;
         }
 
@@ -120,7 +120,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<IActionResult> UpdateUserInformation(FullUserData user)
+        public async Task<IActionResult> UpdateUserInformation(AppUser user)
         {
             var requestUrl = $"{UserControllerPath}update/user/{user}";
             var result = await ExecuteCall<IActionResult>(requestUrl);

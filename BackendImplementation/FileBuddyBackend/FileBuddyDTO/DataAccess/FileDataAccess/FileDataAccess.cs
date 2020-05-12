@@ -50,7 +50,7 @@ namespace SharedRessources.DataAccess.FileDataAccess
             
         }
 
-        public async Task FileDownloaded(DownloadTransaction downloadTransaction)
+        public async Task FileDownloaded(FileTransaction downloadTransaction)
         {
             // TODO: Keep a record of all download transactions.
             Log.Debug("File was downloaded. ");
