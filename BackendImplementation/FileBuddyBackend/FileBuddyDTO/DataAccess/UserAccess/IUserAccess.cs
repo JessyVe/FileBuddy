@@ -14,7 +14,7 @@ namespace SharedRessources.DataAccess.UserAccess
         Task<bool> UpdateGroupInformationOfUser(string userHashId, IList<UserGroup> userGroups);
         Task<List<UserGroup>> GetGroupInformationOfUser(string userHashId);
 
-        Task<IList<VisibileUserData>> LoadAllUsersFromDatabase();
+        Task<IList<FullUserData>> LoadAllUsersFromDatabase();
 
         Task DeleteUser(string userHashId);
     }

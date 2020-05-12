@@ -1,6 +1,4 @@
-﻿using Firebase.Database.Query;
-using SharedRessources.Dtos;
-using System;
+﻿using SharedRessources.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,8 +8,11 @@ namespace SharedRessources.DataAccess.FileDataAccess
     /// Records file specific transactions (up- and downloads)
     /// and retrieves file paths according to given file hashes. 
     /// </summary>
-    public class FileDataAccess : FireBaseAccessBase, IFileDataAccess
+    public class FileDataAccess : IFileDataAccess
     {
+        private static readonly log4net.ILog Log =
+         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Returns the file path within the API based in the given unique file hash.
         /// </summary>
@@ -19,11 +20,7 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// <returns></returns>
         public async Task<string> GetApiPathOfFile(string fileHash)
         {
-            Log.Debug("File path was requested. ");                   
-            var response = await _firebaseClient.Child($"files/{fileHash}").OnceAsync<SharedFile>(); 
-            var sharedFile = RetrieveFirstOrDefault(response);
-
-            return sharedFile?.APIPath ?? string.Empty;
+            return default;
         }
 
         /// <summary>
@@ -34,18 +31,12 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// <returns></returns>
         public async Task UploadFile(SharedFile sharedFile, IList<string> AuthorizedAccessGrantedTo)
         {
-            Log.Debug("File was uploaded to API. ");
-            await SaveFileInformation(sharedFile);
-            await SaveAuthorizedAccessGranted(AuthorizedAccessGrantedTo, sharedFile.HashId);
+        
         }       
 
         private async Task SaveFileInformation(SharedFile sharedFile)
         {
-            var response = await _firebaseClient.Child($"files/{sharedFile.HashId}").PostAsync(sharedFile);
-            if (response != null)
-                Log.Debug("Information was saved successfully!");
-            else
-                Log.Debug("Response of save action was null. ");
+           
         }
 
         /// <summary>
@@ -56,10 +47,7 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// <returns></returns>
         private async Task SaveAuthorizedAccessGranted(IList<string> authorizedAccessGrantedTo, string fileHashId)
         {
-            foreach(var userHashId in authorizedAccessGrantedTo)
-            {
-                await _firebaseClient.Child($"user/{userHashId}/fetchablefiles").PostAsync<string>(fileHashId);
-            }
+            
         }
 
         public async Task FileDownloaded(DownloadTransaction downloadTransaction)
@@ -76,7 +64,6 @@ namespace SharedRessources.DataAccess.FileDataAccess
         public async Task FileDelete(string fileHash)
         {
             Log.Debug("File delete request was received. ");
-            await _firebaseClient.Child($"files/{fileHash}").DeleteAsync();
         }
     }
 }

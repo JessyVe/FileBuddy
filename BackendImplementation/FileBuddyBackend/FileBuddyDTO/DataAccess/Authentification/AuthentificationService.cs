@@ -1,29 +1,19 @@
-﻿using Firebase.Database.Query;
-using SharedRessources.Dtos;
+﻿using SharedRessources.Dtos;
 using System;
 using System.Threading.Tasks;
 
 namespace SharedRessources.DataAccess.Authentification
 {
-    public class AuthentificationService : FireBaseAccessBase, IAuthentificationService
+    public class AuthentificationService : IAuthentificationService
     {
+        private static readonly log4net.ILog Log =
+         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public async Task<FullUserData> RegisterUser(FullUserData user)
         {
             Log.Debug("Attempting to register user.");
-            _userHashingEngine.SetHash(user);
-            var fullUserDataResponse = await _firebaseClient.Child($"user/{user.HashId}/userinformation").PostAsync(user);
-            var fullUserData = fullUserDataResponse.Object;
 
-            if(fullUserData != null)
-            {
-                // unable to delete these ... 
-                await _firebaseClient.Child($"users").PostAsync(new VisibileUserData()
-                {
-                    Name = fullUserData.Name, 
-                    ProfilePicture = fullUserData.ProfilePicture ?? string.Empty
-                });
-            }
-            return fullUserData;
+            return default;
         }
 
         public Task<FullUserData> LoginWithMacAddress(string macAddress, string password)

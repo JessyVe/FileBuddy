@@ -11,9 +11,10 @@ namespace SharedRessources.Dtos
         public string MailAddress { get; set; } // TODO: Change to SecureString
         public string ProfilePicture { get; set; } // TODO: How do you do this right?; Download image and save local path
 
-        public IList<string> UserDevices { get; set; }
+        public IList<UserDevice> UserDevices { get; set; }
         public DateTime AccountCreationDate { get; set; }
 
+        public IList<UserGroup> UserGroups { get; set; }
 
         public string HashId { get; set; }
 
