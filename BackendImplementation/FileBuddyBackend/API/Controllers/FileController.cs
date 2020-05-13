@@ -51,7 +51,7 @@ namespace API.Controllers
                         file.CopyTo(stream);
                     }
                     // TODO: Initialize new SharedFile object
-                    // _fileDataAccess.UploadFile(apiPath, userId, userGroups);
+                   // _fileDataAccess.UploadFile(apiPath, userId, userGroups);
 
                     return Ok(new { dbPath });
                 }
@@ -70,13 +70,13 @@ namespace API.Controllers
         /// Returns the file assigned to given file hash. 
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="fileHash"></param>
+        /// <param name="fileId"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("download/{userId}/{fileHash}")]
-        public IActionResult Download(string userId, string fileHash)
+        public IActionResult Download(string userId, int fileId)
         {
-            var apiPath = _fileDataAccess.GetApiPathOfFile(fileHash).Result;
+            var apiPath = _fileDataAccess.GetApiPathOfFile(fileId);
             var fileProvider = new FileExtensionContentTypeProvider();
 
             if (!fileProvider.TryGetContentType(apiPath, out string contentType))
@@ -87,7 +87,7 @@ namespace API.Controllers
                 return BadRequest(errorText);
             }
 
-            _fileDataAccess.FileDownloaded(new FileTransaction()); // TODO: Create actual object
+            _fileDataAccess.FileDownloaded(new DownloadTransaction()); // TODO: Create actual object
 
             return PhysicalFile(apiPath, contentType, Path.GetFileName(apiPath));
         }

@@ -1,6 +1,7 @@
-﻿using SharedRessources.Dtos;
+﻿using SharedRessources.Database;
+using SharedRessources.Dtos;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace SharedRessources.DataAccess.FileDataAccess
 {
@@ -16,11 +17,15 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// <summary>
         /// Returns the file path within the API based in the given unique file hash.
         /// </summary>
-        /// <param name="fileHash"></param>
+        /// <param name="fileId"></param>
         /// <returns></returns>
-        public async Task<string> GetApiPathOfFile(string fileHash)
+        public string GetApiPathOfFile(int fileId)
         {
-            return default;
+            Log.Debug("Api path was requested. ");
+            using (var context = new SQLiteDBContext())
+            {
+                return context.SharedFile.First(file => file.Id == fileId)?.ApiPath ?? default;
+            }
         }
 
         /// <summary>
@@ -29,12 +34,17 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// <param name="sharedFile"></param>
         /// <param name="AuthorizedAccessGrantedTo"></param>
         /// <returns></returns>
-        public async Task UploadFile(SharedFile sharedFile, IList<string> AuthorizedAccessGrantedTo)
+        public void UploadFile(SharedFile sharedFile, IList<int> AuthorizedAccessGrantedTo)
         {
-        
+            Log.Debug("File upload was completed. ");
+            using (var context = new SQLiteDBContext())
+            {
+               var sharedFileId = context.SharedFile.Add(sharedFile).Entity.Id;
+                context.SaveChanges();
+            }
         }       
 
-        private async Task SaveFileInformation(SharedFile sharedFile)
+        private void SaveFileInformation(SharedFile sharedFile)
         {
            
         }
@@ -45,12 +55,12 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// <param name="authorizedAccessGrantedTo"></param>
         /// <param name="fileHashId"></param>
         /// <returns></returns>
-        private async Task SaveAuthorizedAccessGranted(IList<string> authorizedAccessGrantedTo, string fileHashId)
+        private void SaveAuthorizedAccessGranted(IList<string> authorizedAccessGrantedTo, string fileHashId)
         {
             
         }
 
-        public async Task FileDownloaded(FileTransaction downloadTransaction)
+        public void FileDownloaded(DownloadTransaction downloadTransaction)
         {
             // TODO: Keep a record of all download transactions.
             Log.Debug("File was downloaded. ");
@@ -61,7 +71,7 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// </summary>
         /// <param name="fileHash"></param>
         /// <returns></returns>
-        public async Task FileDelete(string fileHash)
+        public void FileDelete(int fileId)
         {
             Log.Debug("File delete request was received. ");
         }

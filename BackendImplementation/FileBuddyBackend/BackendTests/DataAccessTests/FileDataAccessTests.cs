@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SharedRessources.DataAccess.FileDataAccess;
+using SharedRessources.Database;
 using SharedRessources.Dtos;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace BackendTests.DataAccessTests
     {
         private readonly IFileDataAccess _fileDataAccess;
         private SharedFile _sharedFile;
-        private IList<string> _authorizedAccessGrantedTo;
+        private IList<int> _authorizedAccessGrantedTo;
 
         private const string FileHash = "HashId1";
         private const string APIPath = "demo/path/text.txt";
@@ -22,33 +23,43 @@ namespace BackendTests.DataAccessTests
             _fileDataAccess = new FileDataAccess();
             _sharedFile = new SharedFile()
             {
+                SharedFileName = "test.txt",
                 ApiPath = APIPath, 
-                SharedFileName = "test.txt"
+                OwnerUserId = 1,
+                UploadDate = "asdfasdf"
             };
 
-            _authorizedAccessGrantedTo = new List<string>()
+            _authorizedAccessGrantedTo = new List<int>()
             {
-                "User1", "User2", "User3"
+                100, 101, 102
             };
         }
 
         [TestCleanup]
-        public async Task TestCleanup()
+        public void TestCleanup()
         {
-            await _fileDataAccess.FileDelete(FileHash);
+
         }
 
         [TestMethod]
-        public async Task GetApiPathOfFileTest()
+        public void UploadFileTest()
         {
-            // arrange
-            await _fileDataAccess.UploadFile(_sharedFile, _authorizedAccessGrantedTo);
+            // act
+           _fileDataAccess.UploadFile(_sharedFile, _authorizedAccessGrantedTo);
+            var newFileId = _sharedFile.Id;
+
+            // assert   
+            Assert.AreNotEqual(newFileId, -1);
+        }
+
+        [TestMethod]
+        public void GetApiPathOfFileTest()
+        {
+            // arrange          
 
             // act
-            var retrievedApiPath = await _fileDataAccess.GetApiPathOfFile(FileHash);
 
-            // assert
-            Assert.AreEqual(retrievedApiPath, APIPath);            
+            // assert          
         }
     }
 }

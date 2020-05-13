@@ -11,7 +11,8 @@ namespace DatabaseConnection.Database.Mappings
             builder.HasKey(x => x.Id);
             builder.Property(x => x.SharedFileName).HasColumnName("shared_file_name").IsRequired();
             builder.Property(x => x.ApiPath).HasColumnName("api_path").IsRequired();
-            builder.Property(x => x.FileTransactionId).HasColumnName("file_transaction_id").IsRequired();
+            builder.Property(x => x.OwnerUserId).HasColumnName("owner_user_id").IsRequired();
+            builder.Property(x => x.UploadDate).HasColumnName("upload_date").IsRequired();
         }
     }
 }

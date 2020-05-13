@@ -1,14 +1,13 @@
 ﻿using SharedRessources.Dtos;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace SharedRessources.DataAccess.FileDataAccess
 {
     public interface IFileDataAccess
     {
-        Task<string> GetApiPathOfFile(string fileHash);
-        Task UploadFile(SharedFile sharedFile, IList<string> AuthorizedAccessGrantedTo);
-        Task FileDownloaded(FileTransaction downloadTransaction);
-        Task FileDelete(string fileHash);
+        string GetApiPathOfFile(int fileId);
+        void UploadFile(SharedFile sharedFile, IList<int> AuthorizedAccessGrantedTo);
+        void FileDownloaded(DownloadTransaction downloadTransaction);
+        void FileDelete(int fileId);
     }
 }

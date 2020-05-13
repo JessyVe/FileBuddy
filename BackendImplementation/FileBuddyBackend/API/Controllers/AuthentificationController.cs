@@ -34,7 +34,7 @@ namespace API.Controllers
         public ActionResult<AppUser> RegisterUser(AppUser user)
         {
             Log.Debug("RegisterUser()-Method was called.");
-            var registeredUser = _authentificationService.RegisterUser(user).Result;
+            var registeredUser = _authentificationService.RegisterUser(user);
 
             if (registeredUser == null)
             {
@@ -57,7 +57,7 @@ namespace API.Controllers
         public ActionResult<AppUser> LoginWithMacAddress([FromBody] AppUser user, string macAddress)
         {
             Log.Debug("LoginWithMacAddress()-Method was called.");
-            var loggedInUser = _authentificationService.LoginWithMacAddress(macAddress, user.Password).Result;
+            var loggedInUser = _authentificationService.LoginWithMacAddress(macAddress, user.Password);
 
             if (loggedInUser == null)
             {
@@ -81,7 +81,7 @@ namespace API.Controllers
         public ActionResult<AppUser> LoginWithMailAddress([FromBody] AppUser user)
         {
             Log.Debug("LoginWithMailAddress()-Method was called.");
-            var loggedInUser = _authentificationService.LoginWithMailAddress(user.MailAddress, user.Password).Result;
+            var loggedInUser = _authentificationService.LoginWithMailAddress(user.MailAddress, user.Password);
 
             if (loggedInUser == null)
             {

@@ -7,12 +7,16 @@ namespace SharedRessources.Database
     public class SQLiteDBContext : DbContext
     {
         public DbSet<AppUser> AppUser { get; set; }
-        public DbSet<SharedFile> SharedFiles { get; set; }
+        public DbSet<SharedFile> SharedFile { get; set; }
+        public DbSet<DownloadTransaction> DownloadTransaction { get; set; }
 
-        public DbSet<FileTransaction> FileTransactions { get; set; }
-        public DbSet<Receiver> Receivers { get; set; }
 
-        private const string DatabaseSource = "resources/file-buddy-02.db";
+        private const string DatabaseSource = "resources/file-buddy-01.db";
+
+        public SQLiteDBContext()
+        {
+            Database.EnsureCreated();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite($"Data Source={DatabaseSource}");
@@ -22,8 +26,7 @@ namespace SharedRessources.Database
             base.OnModelCreating(builder);
             new AppUserMap(builder.Entity<AppUser>());
             new SharedFileMap(builder.Entity<SharedFile>());
-            new FileTransactionMap(builder.Entity<FileTransaction>());
-            new ReceiverMap(builder.Entity<Receiver>());
+            new DownloadTransactionMap(builder.Entity<DownloadTransaction>());
         }
     }
 }

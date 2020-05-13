@@ -1,6 +1,9 @@
-﻿using SharedRessources.Dtos;
+﻿using SharedRessources.Database;
+using SharedRessources.Dtos;
+using SharedRessources.Services;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SharedRessources.DataAccess.Authentification
 {
@@ -9,23 +12,50 @@ namespace SharedRessources.DataAccess.Authentification
         private static readonly log4net.ILog Log =
          log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public async Task<AppUser> RegisterUser(AppUser user)
+        public AppUser RegisterUser(AppUser user)
         {
             Log.Debug("Attempting to register user.");
 
+            using (var context = new SQLiteDBContext())
+            {
+                context.AppUser.Add(user);
+                context.SaveChanges();
+            }
             return default;
         }
 
-        public Task<AppUser> LoginWithMacAddress(string macAddress, string password)
+        public AppUser LoginWithMacAddress(string macAddress, string password)
         {
             Log.Debug("Attempting to login user with mail address.");
-            throw new NotImplementedException();
+            using (var context = new SQLiteDBContext())
+            {
+                foreach(var user in context.AppUser)
+                {
+                    if (!user.Password.Equals(password))
+                        continue;
+
+                    if (JsonConverter.GetObjectFromJson<List<UserDevice>>(user.UserDevices)
+                        .Any(device => device.MacAddress.Equals(macAddress)))
+                        return user;
+                }
+            }
+            throw new Exception("User with specified MAC address was not found or password is invalid!");
         }
 
-        public Task<AppUser> LoginWithMailAddress(string mailAddress, string password)
+        public AppUser LoginWithMailAddress(string mailAddress, string password)
         {
             Log.Debug("Attempting to login user with mail address.");
-            throw new NotImplementedException();
+            using (var context = new SQLiteDBContext())
+            {
+                foreach (var user in context.AppUser)
+                {
+                    if (!user.Password.Equals(password) || !user.MailAddress.Equals(mailAddress))
+                        continue;
+
+                    return user;
+                }
+            }
+            throw new Exception("User with specified mailAddress was not found or password is invalid!");
         }
 
         private AuthentificationToken CreateAuthentificationToken(string userId)

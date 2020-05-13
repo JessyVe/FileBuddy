@@ -4,13 +4,14 @@ using SharedRessources.Dtos;
 
 namespace DatabaseConnection.Database.Mappings
 {
-    public class ReceiverMap
+    public class DownloadTransactionMap
     {
-        public ReceiverMap(EntityTypeBuilder<Receiver> builder)
+        public DownloadTransactionMap(EntityTypeBuilder<DownloadTransaction> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.ReceiverUserId).HasColumnName("receiver_user_id").IsRequired();
-            builder.Property(x => x.FileTransactionId).HasColumnName("file_transaction_id").IsRequired();
+            builder.Property(x => x.SharedFileId).HasColumnName("shared_file_id").IsRequired();
+            builder.Property(x => x.DownloadDate).HasColumnName("download_date").IsRequired();
         }
     }
 }
