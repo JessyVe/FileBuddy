@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="FileBuddyUI.UI.Views.Dashboard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FileBuddyUI.UI.ViewModels"
+             
+             xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
+             
+             mc:Ignorable="d" 
+              Height="550" Width="800">
+    <Grid Grid.Row="2"
+          AllowDrop="true" >
+
+        <Label Background="{StaticResource BuddyDarkOrange_opac}"                   
+                        Foreground="DarkGray" 
+                        FontSize="13"
+                        Name="lbDragNDrop"
+                        FontWeight="Bold" 
+                        HorizontalAlignment="Stretch"
+                        VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        Visibility="Hidden">
+            <TextBlock Name="txDeleteFile" TextDecorations="Underline">Drop files!</TextBlock>
+        </Label>
+
+        <dragablz:TabablzControl x:Name="tabControl" 
+                                     BorderThickness="0"
+                                     Visibility="Visible">
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController />
+            </dragablz:TabablzControl.InterTabController>
+            <TabItem Header="Dowloads">
+                <StackPanel Height="500" Orientation="Vertical">
+
+                    <ListView Grid.Column="0" 
+                                  Grid.Row="2"
+                                  x:Name="lvAvailableFiles">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <materialDesign:Card>
+                                    <Label FontWeight="Bold" />
+                                </materialDesign:Card>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Share">
+                <StackPanel Height="500" Orientation="Vertical">
+                    <TextBlock Foreground="{StaticResource BuddyGrey}">Hello World!</TextBlock>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Buddys">
+                <StackPanel Height="500" Orientation="Vertical">
+                    <TextBlock Foreground="{StaticResource BuddyGrey}">Hello World!</TextBlock>
+                </StackPanel>
+            </TabItem>
+        </dragablz:TabablzControl>
+    </Grid>
+</UserControl>

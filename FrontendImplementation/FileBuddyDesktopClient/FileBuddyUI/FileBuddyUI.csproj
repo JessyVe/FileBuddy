@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helper\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\BackendImplementation\FileBuddyBackend\FileBuddyDTO\SharedRessources.csproj" />
   </ItemGroup>
 

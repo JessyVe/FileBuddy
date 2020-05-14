@@ -11,6 +11,7 @@ namespace FileBuddyUI
     {
         private readonly LoginScreenViewModel _loginScreenViewModel;
         private readonly RegisterScreenViewModel _registerScreenViewModel;
+        private readonly DashboardViewModel _dashboardViewModel;
 
         public MainWindow()
         {
@@ -19,8 +20,17 @@ namespace FileBuddyUI
 
             _loginScreenViewModel = new LoginScreenViewModel();
             _registerScreenViewModel = new RegisterScreenViewModel();
+            _dashboardViewModel = new DashboardViewModel();
+
+            _loginScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;
+            _registerScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;
 
             DataContext = _loginScreenViewModel;
+        }
+
+        private void OnAuthentificationenSuccess(object sender, System.EventArgs e)
+        {
+            DataContext = _dashboardViewModel;
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -34,6 +44,10 @@ namespace FileBuddyUI
             {
                 btBackToLogin.Visibility = Visibility.Visible;
                 lbRegister.Visibility = Visibility.Hidden;
+            } else if (DataContext is DashboardViewModel)
+            {
+                btBackToLogin.Visibility = Visibility.Hidden;
+                lbRegister.Visibility = Visibility.Collapsed;
             }
         }
 

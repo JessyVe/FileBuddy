@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FileBuddyUI.UI.Views"
              mc:Ignorable="d" 
-               d:DesignHeight="550" d:DesignWidth="350"
+             Height="450" Width="350"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <StackPanel VerticalAlignment="Stretch">
         <Label Content="File Buddy" 
