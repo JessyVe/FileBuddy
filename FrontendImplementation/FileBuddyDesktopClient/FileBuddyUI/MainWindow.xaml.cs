@@ -1,19 +1,7 @@
 ﻿using FileBuddyUI.UI.ViewModels;
-using FileBuddyUI.UI.Views;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FileBuddyUI
 {
@@ -22,23 +10,62 @@ namespace FileBuddyUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly MainWindowViewModel _mainViewModel;
+        private readonly LoginScreenViewModel _loginScreenViewModel;
+        private readonly RegisterScreenViewModel _registerScreenViewModel;
 
         public MainWindow()
         {
             InitializeComponent();
-            _mainViewModel = new MainWindowViewModel();
-            DataContext = _mainViewModel;
+            DataContextChanged += OnDataContextChanged;
+
+            _loginScreenViewModel = new LoginScreenViewModel();
+            _registerScreenViewModel = new RegisterScreenViewModel();
+
+            DataContext = _loginScreenViewModel;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (DataContext is LoginScreenViewModel)
+            {
+                btBackToLogin.Visibility = Visibility.Hidden;
+                lbRegister.Visibility = Visibility.Visible;
+            }
+            else if (DataContext is RegisterScreenViewModel)
+            {
+                btBackToLogin.Visibility = Visibility.Visible;
+                lbRegister.Visibility = Visibility.Hidden;
+            }
         }
 
         private void OnClose(object sender, RoutedEventArgs e)
         {
-            Application.Current.MainWindow.Close();
+            Application.Current.Shutdown();
         }
 
         private void OnWindowMinimize(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void OnSwitchToLoginScreen(object sender, RoutedEventArgs e)
+        {
+            DataContext = _loginScreenViewModel;
+        }
+
+        private void OnLoginLableMouseEnter(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Hand;
+        }
+
+        private void OnLoginLableMouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor = Cursors.Arrow;
+        }
+
+        private void OnSwitchToRegisterScreen(object sender, MouseButtonEventArgs e)
+        {
+            DataContext = _registerScreenViewModel;
         }
     }
 }

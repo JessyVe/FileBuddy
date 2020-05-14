@@ -8,13 +8,17 @@
 
   <ItemGroup>
     <PackageReference Include="Dragablz.NetCore" Version="0.3.3" />
+    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="MaterialDesignThemes" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="SharedRessources">
-      <HintPath>..\..\..\BackendImplementation\FileBuddyBackend\FileBuddyDTO\bin\Debug\netcoreapp3.1\SharedRessources.dll</HintPath>
-    </Reference>
+    <Folder Include="Helper\" />
+    <Folder Include="UI\Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BackendImplementation\FileBuddyBackend\FileBuddyDTO\SharedRessources.csproj" />
   </ItemGroup>
 
 </Project>

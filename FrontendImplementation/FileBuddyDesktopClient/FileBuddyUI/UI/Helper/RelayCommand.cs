@@ -35,6 +35,5 @@ namespace FileBuddyUI.UI.Helper
         {
             _execute(parameter ?? "<N/A>");
         }
-
     }
 }

@@ -4,13 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         
+        xmlns:uc="clr-namespace:FileBuddyUI.UI.Views"
+        xmlns:vm="clr-namespace:FileBuddyUI.UI.ViewModels"
+        
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStyle="None"
        
         Title="Login" Height="550" Width="350"
-        WindowStartupLocation="CenterScreen"
-        
+        WindowStartupLocation="CenterScreen"      
         MouseLeftButtonDown="WindowMouseLeftButtonDown">
     <x:Code>
         <![CDATA[            
@@ -20,14 +22,43 @@
             }
         ]]>
     </x:Code>
-    <StackPanel Background="Black"
-                VerticalAlignment="Stretch">
-        <Grid>
+
+    <Window.Resources>
+        <DataTemplate x:Name="loginViewTemplate" 
+                      DataType="{x:Type vm:LoginScreenViewModel}">
+            <uc:LoginScreen DataContext="{Binding}"/>
+        </DataTemplate>
+        <DataTemplate x:Name="registerViewTemplate" 
+                      DataType="{x:Type vm:RegisterScreenViewModel}">
+            <uc:RegisterScreen DataContext="{Binding}"/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
+            <Button x:Name="btBackToLogin"
+                    Background="{x:Null}" 
+                    BorderThickness="0" 
+                    HorizontalAlignment="Left"
+                    Click="OnSwitchToLoginScreen">
+                <materialDesign:PackIcon Kind="ArrowLeft"                                      
+                                         Foreground="{StaticResource BuddyGrey}"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch">
+                </materialDesign:PackIcon>
+            </Button>
+
             <Button Background="{x:Null}" 
                     BorderThickness="0" 
                     Grid.Column="1"
@@ -49,51 +80,18 @@
                 </materialDesign:PackIcon>
             </Button>
         </Grid>
- 
-            
-            <Label Content="File Buddy" 
-               FontWeight="Bold"
-               FontSize="21"
-               Foreground="{StaticResource BuddyOrange}"
-               HorizontalAlignment="Center"
-               Margin="0 90 0 0"/>
 
-            <TextBox Name="txMail"
-                     Foreground="{StaticResource BuddyGrey}"
-                     materialDesign:HintAssist.Hint="Email"                 
-                     materialDesign:HintAssist.IsFloating="true"
-                     Margin="70 10"
-                     Text="{Binding MailAddress}">
-            </TextBox>
+        <ContentControl Grid.Row="1" Content="{Binding}"></ContentControl>
 
-        <!--<PasswordBox Name="txPassword"
-                     Foreground="{StaticResource BuddyGrey}"
-                     materialDesign:HintAssist.Hint="Password"                 
-                     materialDesign:HintAssist.IsFloating="true"
-                     Margin="70 5"
-                     Password="{Binding Password}">
-        </PasswordBox>-->
-
-        <Button Content="Login"
-                Background="{StaticResource BuddyOrange}"
-                Foreground="WhiteSmoke"
-                Margin="90 20 90 0"
-                Command="{Binding OnLoginCommand}"/>
-
-        <Button Content="Register"
-                Background="{StaticResource BuddyDarkOrange}"
-                Foreground="#CFB8A4"
-                Margin="90 8"
-                BorderThickness="0"
-                Command="{Binding OnRegisterCommand}"/>
-
-        <Label Foreground="{StaticResource BuddyGrey}" 
-               HorizontalAlignment="Center"
-               Margin="0 90">
-            <TextBlock TextDecorations="Underline">Login with MAC</TextBlock>
+        <Label Name="lbRegister" 
+               Grid.Row="2" 
+               Foreground="{StaticResource BuddyGrey}" 
+               HorizontalAlignment="Center">
+            <TextBlock TextDecorations="Underline"
+                       Text="create new account"
+                       MouseEnter="OnLoginLableMouseEnter"
+                       MouseLeave="OnLoginLableMouseLeave"
+                       MouseDown="OnSwitchToRegisterScreen"/>
         </Label>
-
-        <materialDesign:Snackbar MessageQueue="{Binding SnackbarMessageQueue}" />
-
-    </StackPanel>
+    </Grid>
 </Window>

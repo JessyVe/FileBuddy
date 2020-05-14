@@ -14,8 +14,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="FileBuddy" 
-        Height="450" Width="400"
-        
+        Height="450" Width="400"        
         MouseLeftButtonDown="WindowMouseLeftButtonDown">
     <x:Code>
         <![CDATA[            
