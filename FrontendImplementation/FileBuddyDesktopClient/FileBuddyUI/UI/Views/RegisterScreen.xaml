@@ -50,6 +50,7 @@
                 Background="{StaticResource BuddyOrange}"
                 Foreground="WhiteSmoke"
                 Margin="90 8"
+                Command="{Binding OnRegister}"
                 BorderThickness="0"/>
     </StackPanel>
 </UserControl>

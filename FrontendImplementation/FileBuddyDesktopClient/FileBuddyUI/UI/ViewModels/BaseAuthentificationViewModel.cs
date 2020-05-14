@@ -23,7 +23,7 @@ namespace FileBuddyUI.UI.ViewModels
 
         public event EventHandler AuthentificationSuccess;
 
-        protected virtual void OnAuthentificationSuccess(EventArgs e)
+        protected virtual void OnAuthentificationSuccess(AuthentificationEventArgs e)
         {
             EventHandler handler = AuthentificationSuccess;
             handler?.Invoke(this, e);
