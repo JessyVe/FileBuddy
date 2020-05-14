@@ -1,4 +1,5 @@
-﻿using SharedRessources.DataAccess.ApiAccess;
+﻿using FileBuddyUI.UI.ViewModels;
+using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.Dtos;
 using SharedRessources.Services;
 using System;
@@ -26,6 +27,12 @@ namespace FileBuddyUI.UI.Views
         private void OnWindowMinimize(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
-        }           
+        }
+
+        private void txPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var loginScreenViewModel = DataContext as LoginScreenViewModel;
+            loginScreenViewModel.Password = txPassword.Password;
+        }
     }
 }

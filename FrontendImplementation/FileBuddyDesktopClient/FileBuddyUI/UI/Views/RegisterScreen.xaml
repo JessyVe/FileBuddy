@@ -25,19 +25,23 @@
             <TextBox Name="txUsername" Grid.Row="0"
                      Foreground="{StaticResource BuddyGrey}"
                      materialDesign:HintAssist.Hint="Username"                 
-                     materialDesign:HintAssist.IsFloating="true">
+                     materialDesign:HintAssist.IsFloating="true"
+                     Text="{Binding Username}">
             </TextBox>
 
             <TextBox Name="txMail" Grid.Row="1"
                      Foreground="{StaticResource BuddyGrey}"
                      materialDesign:HintAssist.Hint="Email"                 
-                     materialDesign:HintAssist.IsFloating="true">
+                     materialDesign:HintAssist.IsFloating="true"
+                     Text="{Binding MailAddress}">
             </TextBox>
 
             <PasswordBox Name="txPassword" Grid.Row="2"
                      Foreground="{StaticResource BuddyGrey}"
                      materialDesign:HintAssist.Hint="Password"                 
-                     materialDesign:HintAssist.IsFloating="true">
+                     materialDesign:HintAssist.IsFloating="true"
+                     PasswordChanged="txPassword_PasswordChanged"
+                     Margin="0 10">
             </PasswordBox>
         </Grid>
 

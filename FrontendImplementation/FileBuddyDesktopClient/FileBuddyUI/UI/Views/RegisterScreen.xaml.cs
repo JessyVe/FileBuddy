@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using FileBuddyUI.UI.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace FileBuddyUI.UI.Views
@@ -13,11 +14,6 @@ namespace FileBuddyUI.UI.Views
             InitializeComponent();
         }
 
-        private void OnBackToLoginScreen(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void OnClose(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.Close();
@@ -26,6 +22,12 @@ namespace FileBuddyUI.UI.Views
         private void OnWindowMinimize(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void txPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            var registerScreenViewModel = DataContext as RegisterScreenViewModel;
+            registerScreenViewModel.Password = txPassword.Password;
         }
     }
 }
