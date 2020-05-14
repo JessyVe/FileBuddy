@@ -6,50 +6,53 @@
              xmlns:local="clr-namespace:FileBuddyUI.UI.Views"
              mc:Ignorable="d" 
              Height="450" Width="350"
+             
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-    <StackPanel VerticalAlignment="Stretch">
-        <Label Content="File Buddy" 
+    <Grid>
+        <StackPanel VerticalAlignment="Stretch">
+            <Label Content="File Buddy" 
                FontWeight="Bold"
                FontSize="21"
                Foreground="{StaticResource BuddyOrange}"
                HorizontalAlignment="Center"
                Margin="0 90 0 0"/>
 
-        <Grid Margin="70 30">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.3*"/>
-                <RowDefinition Height="0.3*"/>
-                <RowDefinition Height="0.3*"/>
-            </Grid.RowDefinitions>
+            <Grid Margin="70 30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="0.3*"/>
+                </Grid.RowDefinitions>
 
-            <TextBox Name="txMail" Grid.Row="0"
+                <TextBox Name="txMail" Grid.Row="0"
                      Text="{Binding MailAddress}"
                      Foreground="{StaticResource BuddyGrey}"
                      materialDesign:HintAssist.Hint="Email"                 
                      materialDesign:HintAssist.IsFloating="true">
-            </TextBox>
+                </TextBox>
 
-            <PasswordBox Name="txPassword" Grid.Row="1"
+                <PasswordBox Name="txPassword" Grid.Row="1"
                      Foreground="{StaticResource BuddyGrey}"
                      materialDesign:HintAssist.Hint="Password"                 
                      materialDesign:HintAssist.IsFloating="true"
                      PasswordChanged="txPassword_PasswordChanged"
                      Margin="0 10">
-            </PasswordBox>
-        </Grid>
+                </PasswordBox>
+            </Grid>
 
-        <Button Name="btLogin"
+            <Button Name="btLogin"
                 Content="Login"
                 Background="{StaticResource BuddyOrange}"
                 Foreground="WhiteSmoke"
                 Margin="90 20 90 0"
                 Command="{Binding OnLogin}"/>
 
-        <Button Content="Login with MAC"
+            <Button Content="Login with MAC"
                 Background="{StaticResource BuddyDarkOrange}"
                 Foreground="#CFB8A4"
                 Margin="90 15"
                 BorderThickness="0"
                 Command="{Binding OnLoginWithMac}"/>
-    </StackPanel>
+        </StackPanel>
+    </Grid>
 </UserControl>

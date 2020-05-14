@@ -33,6 +33,7 @@ namespace FileBuddyUI.UI.ViewModels
                     AccountCreationDate = DateTime.Now
                 };
 
+                UIService.SetBusyState();
                 var loggedInUser = await ApiClient.Instance.RegisterUser(user);
                 // TODO: Check data
                 OnAuthentificationSuccess(new AuthentificationEventArgs()

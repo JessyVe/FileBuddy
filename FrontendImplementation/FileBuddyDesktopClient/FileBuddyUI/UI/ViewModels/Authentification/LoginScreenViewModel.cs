@@ -33,6 +33,7 @@ namespace FileBuddyUI.UI.ViewModels
                     Password = Password
                 };
 
+                UIService.SetBusyState();
                 var loggedInUser = await ApiClient.Instance.LoginWithMailAddress(user);
                 // TODO: Check data
                 OnAuthentificationSuccess(new AuthentificationEventArgs()
@@ -48,7 +49,8 @@ namespace FileBuddyUI.UI.ViewModels
         private async void LoginUserWithMac()
         {
             try
-            {                
+            {
+                UIService.SetBusyState();
                 var loggedInUser = await ApiClient.Instance.LoginWithMacAddress(MacAddressRetriever.GetMacAddress());
                 // TODO: Check data
                 OnAuthentificationSuccess(new AuthentificationEventArgs()
