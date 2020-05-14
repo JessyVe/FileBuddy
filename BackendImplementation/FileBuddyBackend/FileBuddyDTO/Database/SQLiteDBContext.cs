@@ -1,5 +1,6 @@
 ﻿using DatabaseConnection.Database.Mappings;
 using Microsoft.EntityFrameworkCore;
+using SharedRessources.Database.Mappings;
 using SharedRessources.Dtos;
 
 namespace SharedRessources.Database
@@ -10,6 +11,7 @@ namespace SharedRessources.Database
         public DbSet<SharedFile> SharedFile { get; set; }
         public DbSet<DownloadTransaction> DownloadTransaction { get; set; }
 
+        public DbSet<AuthorizedAccess> AuthorizedAccess { get; set; }
 
         private const string DatabaseSource = "resources/file-buddy-01.db";
 
@@ -27,6 +29,7 @@ namespace SharedRessources.Database
             new AppUserMap(builder.Entity<AppUser>());
             new SharedFileMap(builder.Entity<SharedFile>());
             new DownloadTransactionMap(builder.Entity<DownloadTransaction>());
+            new AuthorizedAccessMap(builder.Entity<AuthorizedAccess>());
         }
     }
 }

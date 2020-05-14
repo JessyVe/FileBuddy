@@ -1,10 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SharedRessources.DataAccess.FileDataAccess;
-using SharedRessources.Database;
 using SharedRessources.Dtos;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BackendTests.DataAccessTests
 {
@@ -15,7 +13,6 @@ namespace BackendTests.DataAccessTests
         private SharedFile _sharedFile;
         private IList<int> _authorizedAccessGrantedTo;
 
-        private const string FileHash = "HashId1";
         private const string APIPath = "demo/path/text.txt";
 
         public FileDataAccessTests()
@@ -26,13 +23,19 @@ namespace BackendTests.DataAccessTests
                 SharedFileName = "test.txt",
                 ApiPath = APIPath, 
                 OwnerUserId = 1,
-                UploadDate = "asdfasdf"
+                UploadDate = DateTime.Now
             };
 
             _authorizedAccessGrantedTo = new List<int>()
             {
                 100, 101, 102
             };
+        }
+
+        [ClassInitialize]
+        public void ClassInitialize()
+        {
+            
         }
 
         [TestCleanup]
@@ -49,7 +52,7 @@ namespace BackendTests.DataAccessTests
             var newFileId = _sharedFile.Id;
 
             // assert   
-            Assert.AreNotEqual(newFileId, -1);
+            Assert.AreNotEqual(newFileId, 0);
         }
 
         [TestMethod]

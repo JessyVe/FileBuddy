@@ -4,7 +4,7 @@ Description:	This script contains the main structure for the first prototype of 
 				
 Author:			Jessica Veit 
 Creation Date:	2020-05-09
-Last updated:	2020-05-11
+Last updated:	2020-05-14
 *********************************** */
 
 CREATE TABLE IF NOT EXISTS AppUser (
@@ -40,4 +40,11 @@ CREATE TABLE IF NOT EXISTS DownloadTransaction (
 	FOREIGN KEY(shared_file_id) REFERENCES SharedFile(id)
 );
 
--- AUTOINCREMENT: INSERT INTO test1(rowid, a, b) VALUES(123, 5, 'hello');
+CREATE TABLE IF NOT EXISTS AuthorizedAccess (
+	id						INTEGER		PRIMARY KEY,
+	user_id					INTEGER		NOT NULL, 
+	shared_file_id			TEXT		NOT NULL, 
+	
+	FOREIGN KEY(user_id) REFERENCES AppUser(id), 
+	FOREIGN KEY(shared_file_id) REFERENCES SharedFile(id)
+);

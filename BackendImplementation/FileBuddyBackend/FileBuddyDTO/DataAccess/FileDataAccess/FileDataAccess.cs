@@ -34,46 +34,72 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// <param name="sharedFile"></param>
         /// <param name="AuthorizedAccessGrantedTo"></param>
         /// <returns></returns>
-        public void UploadFile(SharedFile sharedFile, IList<int> AuthorizedAccessGrantedTo)
+        public void UploadFile(SharedFile sharedFile, IList<int> authorizedAccessGrantedTo)
         {
             Log.Debug("File upload was completed. ");
+            var sharedFileId = -1;
             using (var context = new SQLiteDBContext())
             {
-               var sharedFileId = context.SharedFile.Add(sharedFile).Entity.Id;
+                sharedFileId = context.SharedFile.Add(sharedFile).Entity.Id;
                 context.SaveChanges();
             }
-        }       
-
-        private void SaveFileInformation(SharedFile sharedFile)
-        {
-           
+            SaveAuthorizedAccessGranted(authorizedAccessGrantedTo, sharedFileId);
         }
 
         /// <summary>
         /// Makes to shared file visible for the user.
         /// </summary>
         /// <param name="authorizedAccessGrantedTo"></param>
-        /// <param name="fileHashId"></param>
+        /// <param name="sharedFileId"></param>
         /// <returns></returns>
-        private void SaveAuthorizedAccessGranted(IList<string> authorizedAccessGrantedTo, string fileHashId)
+        private void SaveAuthorizedAccessGranted(IList<int> authorizedAccessGrantedTo, int sharedFileId)
         {
-            
+            using (var context = new SQLiteDBContext())
+            {
+                foreach (var userId in authorizedAccessGrantedTo)
+                {
+                    context.AuthorizedAccess.Add(new AuthorizedAccess()
+                    {
+                        SharedFileId = sharedFileId,
+                        UserId = userId
+                    });
+                }
+                context.SaveChanges();
+            }
         }
 
+        /// <summary>
+        /// Saves a download transaction to the database to 
+        /// enable sufficient tracking of file movements. 
+        /// </summary>
+        /// <param name="downloadTransaction"></param>
         public void FileDownloaded(DownloadTransaction downloadTransaction)
         {
-            // TODO: Keep a record of all download transactions.
             Log.Debug("File was downloaded. ");
+            using (var context = new SQLiteDBContext())
+            {
+                context.DownloadTransaction.Add(downloadTransaction);
+                context.SaveChanges();
+            }
         }
 
         /// <summary>
         /// Deletes the file identified by the given hash. 
         /// </summary>
-        /// <param name="fileHash"></param>
+        /// <param name="fileId"></param>
         /// <returns></returns>
         public void FileDelete(int fileId)
         {
             Log.Debug("File delete request was received. ");
+            using (var context = new SQLiteDBContext())
+            {
+                context.AuthorizedAccess
+                    .RemoveRange(context.AuthorizedAccess.Where(access => access.SharedFileId == fileId));
+                context.SharedFile
+                    .RemoveRange(context.SharedFile.Where(sharedFile => sharedFile.Id == fileId));
+
+                context.SaveChanges();
+            }
         }
     }
 }

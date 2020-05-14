@@ -50,7 +50,6 @@ namespace API.Controllers
         /// ensure that it is synchronised over all devices. 
         /// </summary>
         /// <param name="macAddress"></param>
-        /// <param name="password"></param>
         [HttpPost]
         [Route("login/macaddress/{macAddress}")]
         [AllowAnonymous]

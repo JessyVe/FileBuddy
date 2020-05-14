@@ -19,9 +19,9 @@ namespace SharedRessources.DataAccess.ApiAccess
         private int _port = 5001;
 
         // TODO: Extract into resource files?
-        private const string AuthentificationControllerPath = "api/AuthentificationController";
-        private const string FileControllerPath = "api/FileController";
-        private const string UserControllerPath = "api/UserController";
+        private const string AuthentificationControllerPath = "api/AuthentificationController/";
+        private const string FileControllerPath = "api/FileController/";
+        private const string UserControllerPath = "api/UserController/";
 
         public ApiClient()
         {
@@ -40,10 +40,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// </summary>
         /// <param name="macAddress"></param>
         /// <param name="password"></param>
-        public async Task<AppUser> LoginWithMacAddress(string macAddress, string password)
+        public async Task<AppUser> LoginWithMacAddress(AppUser user, string macAddress)
         {
-            var requestUrl = $"{AuthentificationControllerPath}login/macaddress/{macAddress}/{password}";
-            var result = await ExecuteCall<AppUser>(requestUrl);
+            var requestUrl = $"{AuthentificationControllerPath}login/macaddress/{macAddress}";
+            var result = await ExecutePostCall<AppUser, AppUser>(requestUrl, user);
             return result;
         }
 
@@ -54,10 +54,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="mailAddress"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<AppUser> LoginWithMailAddress(string mailAddress, string password)
+        public async Task<AppUser> LoginWithMailAddress(AppUser user)
         {
-            var requestUrl = $"{AuthentificationControllerPath}login/macaddress/{mailAddress}/{password}";
-            var result = await ExecuteCall<AppUser>(requestUrl);
+            var requestUrl = $"{AuthentificationControllerPath}login/mailaddress";
+            var result = await ExecutePostCall<AppUser, AppUser>(requestUrl, user);
             return result;
         }
 
@@ -81,9 +81,9 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="files"></param>
         /// <param name="userGroups"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Upload(string userId, string filename, IList<UserGroup> userGroups)
+        public async Task<IActionResult> Upload(int userId, IList<UserGroup> userGroups)
         {
-            var requestUrl = $"{FileControllerPath}upload/{filename}/{userId}/{userGroups}";
+            var requestUrl = $"{FileControllerPath}upload/{userId}/{userGroups}";
             var result = await ExecuteCall<IActionResult>(requestUrl);
             return result;
         }
@@ -95,9 +95,9 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="files"></param>
         /// <param name="userGroups"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Download(string userId, IList<string> filehashes)
+        public async Task<IActionResult> Download(string apiPath)
         {
-            var requestUrl = $"{FileControllerPath}download/{userId}/{filehashes}";
+            var requestUrl = $"{FileControllerPath}download/{apiPath}";
             var result = await ExecuteCall<IActionResult>(requestUrl);
             return result;
         }
@@ -110,7 +110,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <returns></returns>
         public async Task<IList<SharedFile>> FetchAvailableFiles(string userId)
         {
-            var requestUrl = $"{UserControllerPath}fetch/files/{userId}";
+            var requestUrl = $"{UserControllerPath}fetchfiles/{userId}";
             var result = await ExecuteCall<IList<SharedFile>>(requestUrl);
             return result;
         }
@@ -122,36 +122,8 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <returns></returns>
         public async Task<IActionResult> UpdateUserInformation(AppUser user)
         {
-            var requestUrl = $"{UserControllerPath}update/user/{user}";
+            var requestUrl = $"{UserControllerPath}update/{user}";
             var result = await ExecuteCall<IActionResult>(requestUrl);
-            return result;
-        }
-
-        /// <summary>
-        /// Updates the group informations for an user.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="jsonGroupInformation"></param>
-        /// <returns></returns>
-        public async Task<IActionResult> UpdateGroupInformationOfUser(string userId, IList<UserGroup> userGroups)
-        {
-            var requestUrl = $"{UserControllerPath}update/groups/{userId}/{userGroups}";
-            var result = await ExecuteCall<IActionResult>(requestUrl);
-            return result;
-        }
-
-        /// <summary>
-        /// Returns a a collection containing user groups 
-        /// created by the user. With this method user groups
-        /// can be synchronized over all devices.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="jsonGroupInformation"></param>
-        /// <returns></returns>
-        public async Task<IList<UserGroup>> GetGroupInformation(string userId)
-        {
-            var requestUrl = $"{UserControllerPath}fetch/groups/{userId}";
-            var result = await ExecuteCall<IList<UserGroup>>(requestUrl);
             return result;
         }
     }

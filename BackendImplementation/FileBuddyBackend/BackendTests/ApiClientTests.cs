@@ -2,7 +2,6 @@
 using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.Dtos;
 using System;
-using System.Threading.Tasks;
 
 namespace BackendTests
 {
@@ -11,7 +10,6 @@ namespace BackendTests
     {
         private readonly ApiClient _client;
         private readonly AppUser _newTestUser1;
-        private readonly AppUser _testUser2;
 
         public ApiClientTests()
         {
@@ -23,28 +21,24 @@ namespace BackendTests
                 MailAddress = "test@user.com",
                 Name = "TestUser1"
             };
-            _testUser2 = new AppUser()
-            {
-                Name = "User2"
-            };
         }
 
         [TestMethod]
-        public async Task LoginWithMacAddress()
+        public void LoginWithMacAddress()
         {
 
         }
 
         [TestMethod]
-        public async Task LoginWithMailAddress()
+        public void LoginWithMailAddress()
         {
 
         }
 
         [TestMethod]
-        public async Task RegisterUser()
+        public void RegisterUser()
         {
-            var registeredUserObject = await _client.RegisterUser(_newTestUser1);
+            var registeredUserObject = _client.RegisterUser(_newTestUser1);
             Assert.IsNotNull(_newTestUser1.Id);
         }
     }

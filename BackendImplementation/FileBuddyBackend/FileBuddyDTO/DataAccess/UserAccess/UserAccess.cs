@@ -1,6 +1,7 @@
-﻿using SharedRessources.Dtos;
+﻿using SharedRessources.Database;
+using SharedRessources.Dtos;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace SharedRessources.DataAccess.UserAccess
 {
@@ -14,39 +15,81 @@ namespace SharedRessources.DataAccess.UserAccess
         /// </summary>
         /// <param name="userHashId"></param>
         /// <returns></returns>
-        public async Task<List<SharedFile>> FetchAvailableFiles(string userHashId)
+        public IList<SharedFile> FetchAvailableFiles(int userId)
         {
-            return default;
+            Log.Debug("Fetching available files. ");
+            using (var context = new SQLiteDBContext())
+            {
+                var fileIds = context.AuthorizedAccess
+                    .Where(access => access.UserId == userId)
+                    .Select(access => access.SharedFileId).ToList();
+
+                return context.SharedFile.Where(file => fileIds.Contains(file.Id)).ToList();
+            }
         }
 
-        public async Task<bool> UpdateUserInformation(AppUser user)
+        /// <summary>
+        /// Overrides the existing user object. 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool UpdateUserInformation(AppUser user)
         {
-            return default;
+            Log.Debug("Updating user information. ");
+            using (var context = new SQLiteDBContext())
+            {
+                context.AppUser.Update(user);
+                context.SaveChanges();
+            }
+            return true;
         }
 
-        public async Task<AppUser> GetUserInformation(string userHashId)
+        /// <summary>
+        /// Returns the user object identified by the given id. 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public AppUser GetUserInformation(int userId)
         {
-            return default;
+            Log.Debug("Fetching user information. ");
+            using (var context = new SQLiteDBContext())
+            {
+                return context.AppUser.FirstOrDefault(user => user.Id == userId);
+            }
         }
 
-        public async Task<bool> UpdateGroupInformationOfUser(string userHashId, IList<UserGroup> groups)
+        /// <summary>
+        /// Returns all registered user.
+        /// </summary>
+        /// <returns></returns>
+        public IList<AppUser> LoadAllUsersFromDatabase()
         {
-            return default;
+            Log.Debug("Fetching all users. ");
+            using (var context = new SQLiteDBContext())
+            {
+                return context.AppUser.ToList();
+            }
         }
 
-        public async Task<List<UserGroup>> GetGroupInformationOfUser(string userHashId)
+        /// <summary>
+        /// Returns true if deletion of user was successfull.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool DeleteUser(int userId)
         {
-            return default;
-        }
+            Log.Debug("Delete user request was received. ");
+            using (var context = new SQLiteDBContext())
+            {
+                var toDelete = context.AppUser.Where(user => user.Id == userId).ToList();
 
-        public async Task<IList<AppUser>> LoadAllUsersFromDatabase()
-        {
-            return default;
-        }
+                if (toDelete.Count == 0)
+                    return false;
 
-        public async Task DeleteUser(string userHashId)
-        {
-
+                context.AppUser.RemoveRange(toDelete);
+                context.SaveChanges();
+            }
+            return true;
         }
     }
 }

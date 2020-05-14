@@ -8,6 +8,6 @@ namespace SharedRessources.Dtos
         public string SharedFileName { get; set; }
         public string ApiPath { get; set; }
         public int OwnerUserId { get; set; }
-        public string UploadDate { get; set; }
+        public DateTime UploadDate { get; set; }
     }
 }

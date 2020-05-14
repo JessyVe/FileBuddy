@@ -33,7 +33,7 @@ namespace API.Controllers
         /// <returns></returns>
         [Route("upload/{userId}/{userGroups}")]
         [HttpPost, DisableRequestSizeLimit]
-        public IActionResult Upload(string userId, IList<UserGroup> userGroups)
+        public IActionResult Upload(int userId, IList<UserGroup> userGroups)
         {
             try
             {
@@ -67,16 +67,14 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Returns the file assigned to given file hash. 
+        /// Returns the file save under the given path. 
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="fileId"></param>
+        /// <param name="apiPath"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("download/{userId}/{fileHash}")]
-        public IActionResult Download(string userId, int fileId)
+        [Route("download/{apiPath}")]
+        public IActionResult Download(string apiPath)
         {
-            var apiPath = _fileDataAccess.GetApiPathOfFile(fileId);
             var fileProvider = new FileExtensionContentTypeProvider();
 
             if (!fileProvider.TryGetContentType(apiPath, out string contentType))

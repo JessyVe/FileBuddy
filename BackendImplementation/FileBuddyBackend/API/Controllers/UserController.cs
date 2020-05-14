@@ -27,12 +27,12 @@ namespace API.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("update/user/{user}")]
+        [Route("update/{user}")]
         public IActionResult UpdateUserInformation(AppUser user)
         {
             try
             {
-                var success = _userAccess.UpdateUserInformation(user).Result;
+                var success = _userAccess.UpdateUserInformation(user);
                 if (success)
                 {
                     return Accepted();
@@ -49,75 +49,16 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Updates the group informations for an user.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="jsonGroupInformation"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("update/groups/{userId}/{userGroups}")]
-        public IActionResult UpdateGroupInformationOfUser(string userId, IList<UserGroup> userGroups)
-        {
-            try
-            {
-                var success = _userAccess.UpdateGroupInformationOfUser(userId, userGroups).Result;
-                if (success)
-                {
-                    return Accepted();
-                }
-            }
-            catch (Exception ex)
-            {
-                var errorText = "Update of group information failed!";
-
-                Log.ErrorFormat(errorText, ex);
-                return BadRequest(string.Format(ERROR_FORMAT, errorText, ex));
-            }
-            return NotFound();
-        }
-
-        /// <summary>
-        /// Returns a a collection containing user groups 
-        /// created by the user. With this method user groups
-        /// can be synchronized over all devices.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="jsonGroupInformation"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("fetch/groups/{userId}")]
-        public ActionResult<IList<UserGroup>> GetGroupInformation(string userId)
-        {
-            var userGroups = _userAccess.GetGroupInformationOfUser(userId).Result;
-            if (userGroups == null)
-            {
-                var errorText = "Unable to retrieve group information of user.";
-
-                Log.Error(errorText);
-                return BadRequest(errorText);
-            }
-            return userGroups;
-        }
-
-        /// <summary>
         /// Returns a dictionary containing all available files for the user. 
         /// (Key=userId of sender; Value=list of file names)
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("fetch/files/{userId}")]
-        public ActionResult<List<SharedFile>> FetchAvailableFiles(string userId)
+        [Route("fetchfiles/{userId}")]
+        public IList<SharedFile> FetchAvailableFiles(int userId)
         {
-            var availableFiles = _userAccess.FetchAvailableFiles(userId).Result;
-            if (availableFiles == null)
-            {
-                var errorText = "Unable to retrieve group information of user.";
-
-                Log.Error(errorText);
-                return BadRequest(errorText);
-            }
-            return availableFiles;
+            return _userAccess.FetchAvailableFiles(userId);
         }
     }
 }
