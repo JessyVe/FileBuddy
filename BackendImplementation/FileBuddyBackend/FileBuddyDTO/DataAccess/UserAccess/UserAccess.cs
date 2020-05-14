@@ -1,4 +1,5 @@
-﻿using SharedRessources.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using SharedRessources.Database;
 using SharedRessources.Dtos;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,8 @@ namespace SharedRessources.DataAccess.UserAccess
             using (var context = new SQLiteDBContext())
             {
                 context.AppUser.Update(user);
+                context.Entry(user).State = EntityState.Modified;
+
                 context.SaveChanges();
             }
             return true;
@@ -86,8 +89,13 @@ namespace SharedRessources.DataAccess.UserAccess
                 if (toDelete.Count == 0)
                     return false;
 
-                context.AppUser.RemoveRange(toDelete);
-                context.SaveChanges();
+                foreach(var user in toDelete)
+                {
+                    context.AppUser.Remove(user);
+                    context.Entry(user).State = EntityState.Deleted;
+
+                    context.SaveChanges();
+                }
             }
             return true;
         }

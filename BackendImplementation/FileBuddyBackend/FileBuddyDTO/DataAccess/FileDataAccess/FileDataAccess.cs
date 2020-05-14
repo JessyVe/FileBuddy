@@ -1,4 +1,5 @@
-﻿using SharedRessources.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using SharedRessources.Database;
 using SharedRessources.Dtos;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,8 @@ namespace SharedRessources.DataAccess.FileDataAccess
             using (var context = new SQLiteDBContext())
             {
                 sharedFileId = context.SharedFile.Add(sharedFile).Entity.Id;
+                context.Entry(sharedFile).State = EntityState.Added;
+
                 context.SaveChanges();
             }
             SaveAuthorizedAccessGranted(authorizedAccessGrantedTo, sharedFileId);
@@ -58,11 +61,13 @@ namespace SharedRessources.DataAccess.FileDataAccess
             {
                 foreach (var userId in authorizedAccessGrantedTo)
                 {
-                    context.AuthorizedAccess.Add(new AuthorizedAccess()
+                    var authorizedAccess = new AuthorizedAccess()
                     {
                         SharedFileId = sharedFileId,
                         UserId = userId
-                    });
+                    };
+                    context.AuthorizedAccess.Add(authorizedAccess);
+                    context.Entry(authorizedAccess).State = EntityState.Added;
                 }
                 context.SaveChanges();
             }
@@ -79,6 +84,8 @@ namespace SharedRessources.DataAccess.FileDataAccess
             using (var context = new SQLiteDBContext())
             {
                 context.DownloadTransaction.Add(downloadTransaction);
+                context.Entry(downloadTransaction).State = EntityState.Added;
+
                 context.SaveChanges();
             }
         }
@@ -91,13 +98,40 @@ namespace SharedRessources.DataAccess.FileDataAccess
         public void FileDelete(int fileId)
         {
             Log.Debug("File delete request was received. ");
+
+            var authorizedAccesses = new List<AuthorizedAccess>();
+            var sharedFiles = new List<SharedFile>();
             using (var context = new SQLiteDBContext())
             {
-                context.AuthorizedAccess
-                    .RemoveRange(context.AuthorizedAccess.Where(access => access.SharedFileId == fileId));
-                context.SharedFile
-                    .RemoveRange(context.SharedFile.Where(sharedFile => sharedFile.Id == fileId));
+                authorizedAccesses = context.AuthorizedAccess.Where(access => access.SharedFileId == fileId).ToList();
+                sharedFiles = context.SharedFile.Where(sharedFile => sharedFile.Id == fileId).ToList();
+            }
+            RemoveAuthorizations(authorizedAccesses);
+            RemoveFiles(sharedFiles);
+        }
 
+        private void RemoveAuthorizations(IList<AuthorizedAccess> authorizedAccesses)
+        {
+            using (var context = new SQLiteDBContext())
+            {
+                foreach (var access in authorizedAccesses)
+                {
+                    context.AuthorizedAccess.Remove(access);
+                    context.Entry(access).State = EntityState.Deleted;
+                }
+                context.SaveChanges();
+            }
+        }
+
+        private void RemoveFiles(IList<SharedFile> sharedFiles)
+        {
+            using (var context = new SQLiteDBContext())
+            {
+                foreach (var sharedFile in sharedFiles)
+                {
+                    context.SharedFile.Remove(sharedFile);
+                    context.Entry(sharedFile).State = EntityState.Deleted;
+                }
                 context.SaveChanges();
             }
         }

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTests", "BackendTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedRessources", "FileBuddyDTO\SharedRessources.csproj", "{CF27E2E1-70F3-4549-A749-66BEA9FFDB71}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileBuddyUI", "..\..\FrontendImplementation\FileBuddyDesktopClient\FileBuddyUI\FileBuddyUI.csproj", "{2DCA47F2-80F5-4ACE-ADED-0C947AB127E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CF27E2E1-70F3-4549-A749-66BEA9FFDB71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF27E2E1-70F3-4549-A749-66BEA9FFDB71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF27E2E1-70F3-4549-A749-66BEA9FFDB71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DCA47F2-80F5-4ACE-ADED-0C947AB127E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DCA47F2-80F5-4ACE-ADED-0C947AB127E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DCA47F2-80F5-4ACE-ADED-0C947AB127E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DCA47F2-80F5-4ACE-ADED-0C947AB127E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -34,15 +34,15 @@ namespace API.Controllers
         public ActionResult<AppUser> RegisterUser(AppUser user)
         {
             Log.Debug("RegisterUser()-Method was called.");
-            var registeredUser = _authentificationService.RegisterUser(user);
+            _authentificationService.RegisterUser(user);
 
-            if (registeredUser == null)
+            if (user.Id == 0)
             {
                 var errorText = "Unable to register user.";
                 Log.Error(errorText);
                 return BadRequest(errorText);
             }
-            return registeredUser;
+            return Ok(user);
         }
 
         /// <summary>
@@ -53,10 +53,10 @@ namespace API.Controllers
         [HttpPost]
         [Route("login/macaddress/{macAddress}")]
         [AllowAnonymous]
-        public ActionResult<AppUser> LoginWithMacAddress([FromBody] AppUser user, string macAddress)
+        public ActionResult<AppUser> LoginWithMacAddress(string macAddress)
         {
             Log.Debug("LoginWithMacAddress()-Method was called.");
-            var loggedInUser = _authentificationService.LoginWithMacAddress(macAddress, user.Password);
+            var loggedInUser = _authentificationService.LoginWithMacAddress(macAddress);
 
             if (loggedInUser == null)
             {

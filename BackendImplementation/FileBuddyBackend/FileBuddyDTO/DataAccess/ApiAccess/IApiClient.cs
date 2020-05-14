@@ -7,7 +7,7 @@ namespace SharedRessources.DataAccess.ApiAccess
 {
     public interface IApiClient
     {
-        Task<AppUser> LoginWithMacAddress(AppUser user, string macAddress);
+        Task<AppUser> LoginWithMacAddress(string macAddress);
         Task<AppUser> LoginWithMailAddress(AppUser user);
         Task<AppUser> RegisterUser(AppUser user);
         Task<IActionResult> Upload(int userId, IList<UserGroup> userGroups);

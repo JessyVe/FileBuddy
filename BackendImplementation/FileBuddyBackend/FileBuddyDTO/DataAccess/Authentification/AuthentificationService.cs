@@ -1,4 +1,5 @@
-﻿using SharedRessources.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using SharedRessources.Database;
 using SharedRessources.Dtos;
 using SharedRessources.Services;
 using System;
@@ -18,22 +19,27 @@ namespace SharedRessources.DataAccess.Authentification
 
             using (var context = new SQLiteDBContext())
             {
-                context.AppUser.Add(user);
-                context.SaveChanges();
+                try
+                {
+                    context.AppUser.Add(user);
+                    context.Entry(user).State = EntityState.Added;
+
+                    context.SaveChanges();
+                } catch(Exception ex)
+                {
+                    Log.ErrorFormat("Unable to save user object to database. ", ex);
+                }
             }
-            return default;
+            return user;
         }
 
-        public AppUser LoginWithMacAddress(string macAddress, string password)
+        public AppUser LoginWithMacAddress(string macAddress)
         {
             Log.Debug("Attempting to login user with mail address.");
             using (var context = new SQLiteDBContext())
             {
                 foreach(var user in context.AppUser)
                 {
-                    if (!user.Password.Equals(password))
-                        continue;
-
                     if (JsonConverter.GetObjectFromJson<List<UserDevice>>(user.UserDevices)
                         .Any(device => device.MacAddress.Equals(macAddress)))
                         return user;

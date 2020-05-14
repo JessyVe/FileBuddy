@@ -12,7 +12,8 @@ namespace SharedRessources.DataAccess.ApiAccess
     public abstract class ApiClientBase
     {
         protected HttpClient _client;
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog Log = 
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Executes a call to the given url and returns 
@@ -40,8 +41,6 @@ namespace SharedRessources.DataAccess.ApiAccess
         protected async Task<TResponse> ExecutePostCall<TRequest, TResponse>(string requestUrl, TRequest contentObject)
         {
             var response = await _client.PostAsJsonAsync(requestUrl, contentObject);
-            response.EnsureSuccessStatusCode();
-
             return await GetResponseOrError<TResponse>(response);
         }
 

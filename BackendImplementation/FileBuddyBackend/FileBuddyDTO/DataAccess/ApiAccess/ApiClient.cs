@@ -15,13 +15,25 @@ namespace SharedRessources.DataAccess.ApiAccess
     {
         // TODO: Inject all privates as configuration
         // TODO: Extract into configuration
-        private string _baseAddress = "https://localhost";
-        private int _port = 5001;
+        private string _baseAddress = "http://localhost";
+        private int _port = 5000;
 
-        // TODO: Extract into resource files?
-        private const string AuthentificationControllerPath = "api/AuthentificationController/";
-        private const string FileControllerPath = "api/FileController/";
-        private const string UserControllerPath = "api/UserController/";
+        // TODO: Extract into resource file
+        private const string AuthentificationControllerPath = "api/Authentification";
+        private const string FileControllerPath = "api/File";
+        private const string UserControllerPath = "api/User";
+
+        private static ApiClient _instance;
+        public static ApiClient Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new ApiClient();
+
+                return _instance;
+            }
+        }
 
         public ApiClient()
         {
@@ -40,10 +52,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// </summary>
         /// <param name="macAddress"></param>
         /// <param name="password"></param>
-        public async Task<AppUser> LoginWithMacAddress(AppUser user, string macAddress)
+        public async Task<AppUser> LoginWithMacAddress(string macAddress)
         {
             var requestUrl = $"{AuthentificationControllerPath}login/macaddress/{macAddress}";
-            var result = await ExecutePostCall<AppUser, AppUser>(requestUrl, user);
+            var result = await ExecuteCall<AppUser>(requestUrl);
             return result;
         }
 

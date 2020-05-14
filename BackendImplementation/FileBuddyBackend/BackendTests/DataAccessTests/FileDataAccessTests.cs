@@ -32,18 +32,6 @@ namespace BackendTests.DataAccessTests
             };
         }
 
-        [ClassInitialize]
-        public void ClassInitialize()
-        {
-            
-        }
-
-        [TestCleanup]
-        public void TestCleanup()
-        {
-
-        }
-
         [TestMethod]
         public void UploadFileTest()
         {

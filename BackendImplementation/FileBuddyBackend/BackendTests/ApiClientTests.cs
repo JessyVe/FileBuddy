@@ -2,44 +2,47 @@
 using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.Dtos;
 using System;
+using System.Threading.Tasks;
 
 namespace BackendTests
 {
     [TestClass]
     public class ApiClientTests
     {
-        private readonly ApiClient _client;
         private readonly AppUser _newTestUser1;
+        private readonly string _macAddress = "";
 
         public ApiClientTests()
         {
-            _client = new ApiClient();
-
             _newTestUser1 = new AppUser()
             {
+                Id = 0,
                 AccountCreationDate = DateTime.Now,
-                MailAddress = "test@user.com",
-                Name = "TestUser1"
+                MailAddress = "test@user.com" + DateTime.Now,
+                Name = "TestUser1",
+                Password = "supersecure"
             };
         }
 
         [TestMethod]
-        public void LoginWithMacAddress()
+        public async Task LoginWithMacAddress()
         {
-
-        }
-
-        [TestMethod]
-        public void LoginWithMailAddress()
-        {
-
-        }
-
-        [TestMethod]
-        public void RegisterUser()
-        {
-            var registeredUserObject = _client.RegisterUser(_newTestUser1);
+            var registeredUserObject = await ApiClient.Instance.LoginWithMailAddress(_newTestUser1);
             Assert.IsNotNull(_newTestUser1.Id);
+        }
+
+        [TestMethod]
+        public async Task LoginWithMailAddress()
+        {
+            var registeredUserObject = await ApiClient.Instance.LoginWithMacAddress(_macAddress);
+            Assert.IsNotNull(_newTestUser1.Id);
+        }
+
+        [TestMethod]
+        public async Task RegisterUser()
+        {
+            var registeredUserObject = await ApiClient.Instance.RegisterUser(_newTestUser1);
+            Assert.AreNotEqual(_newTestUser1.Id, registeredUserObject.Id);
         }
     }
 }
