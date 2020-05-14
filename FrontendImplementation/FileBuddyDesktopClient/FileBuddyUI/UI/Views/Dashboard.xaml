@@ -33,8 +33,8 @@
         </Grid>
 
         <dragablz:TabablzControl x:Name="tabControl" 
-                                     BorderThickness="0"
-                                     Visibility="Visible">
+                                 BorderThickness="0"
+                                 Visibility="Visible">
             <dragablz:TabablzControl.InterTabController>
                 <dragablz:InterTabController />
             </dragablz:TabablzControl.InterTabController>
@@ -42,12 +42,13 @@
                 <StackPanel Height="500" Orientation="Vertical">
 
                     <ListView Grid.Column="0" 
-                                  Grid.Row="2"
-                                  x:Name="lvAvailableFiles">
+                              Grid.Row="2"
+                              x:Name="lvReceivedFiles"
+                              ItemsSource="{Binding ReceivedFiles}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <materialDesign:Card>
-                                    <Label FontWeight="Bold" />
+                                    <Label Content="{Binding SharedFileName}" FontWeight="Bold" />
                                 </materialDesign:Card>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -57,7 +58,20 @@
             </TabItem>
             <TabItem Header="Sent">
                 <StackPanel Height="500" Orientation="Vertical">
-                    <TextBlock Foreground="{StaticResource BuddyGrey}">Hello World!</TextBlock>
+
+                    <ListView Grid.Column="0" 
+                              Grid.Row="2"
+                              x:Name="lvSentFiles"
+                              ItemsSource="{Binding SentFiles}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <materialDesign:Card>
+                                    <Label Content="{Binding SharedFileName}" FontWeight="Bold" />
+                                </materialDesign:Card>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
                 </StackPanel>
             </TabItem>
         </dragablz:TabablzControl>
