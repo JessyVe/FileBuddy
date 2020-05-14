@@ -23,7 +23,7 @@ namespace SharedRessources.DataAccess.Authentification
                 {
                     context.AppUser.Add(user);
                     context.Entry(user).State = EntityState.Added;
-
+                    context.ChangeTracker.DetectChanges();
                     context.SaveChanges();
                 } catch(Exception ex)
                 {

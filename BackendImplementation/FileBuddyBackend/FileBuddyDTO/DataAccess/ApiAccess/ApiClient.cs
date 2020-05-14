@@ -54,7 +54,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="password"></param>
         public async Task<AppUser> LoginWithMacAddress(string macAddress)
         {
-            var requestUrl = $"{AuthentificationControllerPath}login/macaddress/{macAddress}";
+            var requestUrl = $"{AuthentificationControllerPath}/login/macaddress/{macAddress}";
             var result = await ExecuteCall<AppUser>(requestUrl);
             return result;
         }
@@ -68,7 +68,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <returns></returns>
         public async Task<AppUser> LoginWithMailAddress(AppUser user)
         {
-            var requestUrl = $"{AuthentificationControllerPath}login/mailaddress";
+            var requestUrl = $"{AuthentificationControllerPath}/login/mailaddress";
             var result = await ExecutePostCall<AppUser, AppUser>(requestUrl, user);
             return result;
         }
@@ -95,7 +95,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <returns></returns>
         public async Task<IActionResult> Upload(int userId, IList<UserGroup> userGroups)
         {
-            var requestUrl = $"{FileControllerPath}upload/{userId}/{userGroups}";
+            var requestUrl = $"{FileControllerPath}/upload/{userId}/{userGroups}";
             var result = await ExecuteCall<IActionResult>(requestUrl);
             return result;
         }
@@ -109,7 +109,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <returns></returns>
         public async Task<IActionResult> Download(string apiPath)
         {
-            var requestUrl = $"{FileControllerPath}download/{apiPath}";
+            var requestUrl = $"{FileControllerPath}/download/{apiPath}";
             var result = await ExecuteCall<IActionResult>(requestUrl);
             return result;
         }
@@ -122,7 +122,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <returns></returns>
         public async Task<IList<SharedFile>> FetchAvailableFiles(string userId)
         {
-            var requestUrl = $"{UserControllerPath}fetchfiles/{userId}";
+            var requestUrl = $"{UserControllerPath}/fetchfiles/{userId}";
             var result = await ExecuteCall<IList<SharedFile>>(requestUrl);
             return result;
         }
@@ -134,7 +134,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <returns></returns>
         public async Task<IActionResult> UpdateUserInformation(AppUser user)
         {
-            var requestUrl = $"{UserControllerPath}update/{user}";
+            var requestUrl = $"{UserControllerPath}/update/{user}";
             var result = await ExecuteCall<IActionResult>(requestUrl);
             return result;
         }
