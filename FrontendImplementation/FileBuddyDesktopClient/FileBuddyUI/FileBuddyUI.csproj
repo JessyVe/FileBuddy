@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UI\Models\**" />
+    <EmbeddedResource Remove="UI\Models\**" />
+    <None Remove="UI\Models\**" />
+    <Page Remove="UI\Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dragablz.NetCore" Version="0.3.3" />
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="MaterialDesignThemes" Version="3.1.0" />
@@ -14,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Helper\" />
-    <Folder Include="UI\Models\" />
   </ItemGroup>
 
   <ItemGroup>

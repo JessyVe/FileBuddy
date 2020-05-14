@@ -1,5 +1,4 @@
 ﻿using FileBuddyUI.UI.ViewModels;
-using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -53,6 +52,11 @@ namespace FileBuddyUI
             DataContext = _loginScreenViewModel;
         }
 
+        private void OnSwitchToRegisterScreen(object sender, MouseButtonEventArgs e)
+        {
+            DataContext = _registerScreenViewModel;
+        }
+
         private void OnLoginLableMouseEnter(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Hand;
@@ -61,11 +65,6 @@ namespace FileBuddyUI
         private void OnLoginLableMouseLeave(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Arrow;
-        }
-
-        private void OnSwitchToRegisterScreen(object sender, MouseButtonEventArgs e)
-        {
-            DataContext = _registerScreenViewModel;
         }
     }
 }
