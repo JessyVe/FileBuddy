@@ -5,7 +5,9 @@ using SharedRessources.Dtos;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace FileBuddyUI.UI.ViewModels
 {
@@ -19,11 +21,12 @@ namespace FileBuddyUI.UI.ViewModels
 
         public DisplayedSharedFile SelectedDowloadFile { get; set; }
 
-        public string CurrentAction { 
-            get; set; }
-
         public ICommand OnRemoveFileCommand { get; }
         public ICommand OnDownloadFile { get; }
+
+        // TODO: Extract into class
+        public string CurrentAction { get; set; }
+        public Brush CurrentActionColor { get; set; }
 
         public DashboardViewModel()
         {
@@ -36,6 +39,7 @@ namespace FileBuddyUI.UI.ViewModels
             OnDownloadFile = new RelayCommand(o => DownloadFile());
 
             CurrentAction = UITexts.DragFileHere;
+            CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
 
             GenerateDemoData();
         }
@@ -76,7 +80,9 @@ namespace FileBuddyUI.UI.ViewModels
             if (UploadFiles.Count == 0)
             {
                 CurrentAction = UITexts.DragFileHere;
+                CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
                 OnPropertyChanged(nameof(CurrentAction));
+                OnPropertyChanged(nameof(CurrentActionColor));
             }
         }
 
@@ -89,7 +95,10 @@ namespace FileBuddyUI.UI.ViewModels
             };
             UploadFiles.Add(sharedFile);
             CurrentAction = UITexts.ShareNow;
+            CurrentActionColor = (Brush)Application.Current.Resources["BuddyGreen"];
+
             OnPropertyChanged(nameof(CurrentAction));
+            OnPropertyChanged(nameof(CurrentActionColor));
         }
     }
 }

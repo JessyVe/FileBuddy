@@ -10,10 +10,10 @@ namespace FileBuddyUI.UI.Views
     /// </summary>
     public partial class FileDropArea : UserControl
     {
-        private readonly Brush DefaultBrush = (Brush)Application.Current.Resources["BuddyDarkGrey"];
         private readonly Brush AnimationBrush = (Brush)Application.Current.Resources["BuddyDarkOrange"];
 
         private string _lastState;
+        private Brush _lastBrush;
 
         public FileDropArea()
         {
@@ -38,10 +38,11 @@ namespace FileBuddyUI.UI.Views
 
         private void cDragArea_DragEnter(object sender, DragEventArgs e)
         {
-            cDragArea.Background = AnimationBrush;
-
             _lastState = lbDrop.Content.ToString();
+            _lastBrush = cDragArea.Background;
+
             lbDrop.Content = UITexts.ReleaseFile;
+            cDragArea.Background = AnimationBrush;
         }
 
         private void cDragArea_DragLeave(object sender, DragEventArgs e)
@@ -51,7 +52,7 @@ namespace FileBuddyUI.UI.Views
 
         private void ReturnToDefault()
         {
-            cDragArea.Background = DefaultBrush;
+            cDragArea.Background = _lastBrush;
             lbDrop.Content = _lastState;
         }
     }

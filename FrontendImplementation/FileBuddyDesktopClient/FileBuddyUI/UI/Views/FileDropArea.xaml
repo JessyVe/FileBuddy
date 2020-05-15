@@ -82,12 +82,12 @@
         <materialDesign:Card HorizontalAlignment="Stretch"
                              Grid.Row="1"
                              VerticalAlignment="Stretch"
-                             Background="{StaticResource BuddyDarkGrey}"
+                             Background="{Binding CurrentActionColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                              Margin="10"  
                              Name="cDragArea">
 
             <Border Style="{StaticResource MyBorderStyle}">
-                <Label Foreground="DarkGray"
+                <Label Foreground="Black"
                    Content="{Binding CurrentAction, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                    Name="lbDrop"
                    FontWeight="Bold" 
