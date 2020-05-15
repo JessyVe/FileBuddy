@@ -52,6 +52,7 @@ namespace FileBuddyUI.UI.ViewModels
             try
             {
                 var fetchedFiles = await ApiClient.Instance.FetchAvailableFiles(UserInformation.Instance.CurrentUser.Id);
+                ReceivedFiles.Clear();
                 foreach (var file in fetchedFiles)
                 {
                     ReceivedFiles.Add(file);

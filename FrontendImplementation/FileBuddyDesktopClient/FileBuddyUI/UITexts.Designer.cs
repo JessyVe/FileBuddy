@@ -70,6 +70,15 @@ namespace FileBuddyUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mail address and/or password field is empty!.
+        /// </summary>
+        internal static string NoDataLoginError {
+            get {
+                return ResourceManager.GetString("NoDataLoginError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Release file.
         /// </summary>
         internal static string ReleaseFile {

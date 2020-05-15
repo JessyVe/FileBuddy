@@ -120,6 +120,9 @@
   <data name="DragFileHere" xml:space="preserve">
     <value>Drag file here</value>
   </data>
+  <data name="NoDataLoginError" xml:space="preserve">
+    <value>Mail address and/or password field is empty!</value>
+  </data>
   <data name="ReleaseFile" xml:space="preserve">
     <value>Release file</value>
   </data>

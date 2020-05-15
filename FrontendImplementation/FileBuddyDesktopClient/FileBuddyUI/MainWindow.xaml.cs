@@ -2,6 +2,7 @@
 using FileBuddyUI.UI.ViewModels;
 using System.Windows;
 using System.Windows.Input;
+using ToastNotifications.Messages;
 
 namespace FileBuddyUI
 {
@@ -26,7 +27,7 @@ namespace FileBuddyUI
             _loginScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;
             _registerScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;
 
-            DataContext = _loginScreenViewModel;
+            DataContext = _loginScreenViewModel; 
         }
 
         private void OnAuthentificationenSuccess(object sender, System.EventArgs e)
