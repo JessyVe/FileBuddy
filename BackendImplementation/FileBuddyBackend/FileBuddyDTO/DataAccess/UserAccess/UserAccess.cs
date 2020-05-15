@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedRessources.Database;
+using SharedRessources.DisplayedTypes;
 using SharedRessources.Dtos;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,17 +17,31 @@ namespace SharedRessources.DataAccess.UserAccess
         /// </summary>
         /// <param name="userHashId"></param>
         /// <returns></returns>
-        public IList<SharedFile> FetchAvailableFiles(int userId)
+        public IList<DisplayedSharedFile> FetchAvailableFiles(int userId)
         {
             Log.Debug("Fetching available files. ");
+            var displayedSharedFiles = new List<DisplayedSharedFile>();
+
             using (var context = new SQLiteDBContext())
             {
                 var fileIds = context.AuthorizedAccess
                     .Where(access => access.UserId == userId)
                     .Select(access => access.SharedFileId).ToList();
 
-                return context.SharedFile.Where(file => fileIds.Contains(file.Id)).ToList();
+                var availableFiles = context.SharedFile.Where(file => fileIds.Contains(file.Id)).ToList();
+                foreach(var file in availableFiles)
+                {
+                    displayedSharedFiles.Add(new DisplayedSharedFile()
+                    {
+                        ApiPath = file.ApiPath, 
+                        SharedFileName = file.SharedFileName, 
+                        UploadDate = file.UploadDate, 
+                        OwnerName = context.AppUser.Where(user => user.Id == file.OwnerUserId)
+                                                   .Select(user => user.Name).ToString()
+                    });
+                }
             }
+            return displayedSharedFiles;
         }
 
         /// <summary>

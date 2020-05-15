@@ -1,11 +1,12 @@
-﻿using SharedRessources.Dtos;
+﻿using SharedRessources.DisplayedTypes;
+using SharedRessources.Dtos;
 using System.Collections.Generic;
 
 namespace SharedRessources.DataAccess.UserAccess
 {
     public interface IUserAccess
     {
-        IList<SharedFile> FetchAvailableFiles(int userId);
+        IList<DisplayedSharedFile> FetchAvailableFiles(int userId);
 
         bool UpdateUserInformation(AppUser user);
         AppUser GetUserInformation(int userId);

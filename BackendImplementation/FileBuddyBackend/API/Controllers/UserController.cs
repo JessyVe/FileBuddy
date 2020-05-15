@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using SharedRessources.DataAccess.UserAccess;
+using SharedRessources.DisplayedTypes;
 using SharedRessources.Dtos;
 
 namespace API.Controllers
@@ -56,7 +57,7 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("fetchfiles/{userId}")]
-        public IList<SharedFile> FetchAvailableFiles(int userId)
+        public IList<DisplayedSharedFile> FetchAvailableFiles(int userId)
         {
             return _userAccess.FetchAvailableFiles(userId);
         }
