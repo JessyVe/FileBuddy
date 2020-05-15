@@ -61,33 +61,8 @@ namespace SharedRessources.DataAccess.ApiAccess
             };
             form.Add(content);
 
-            //var requestContent = new MultipartFormDataContent();
-            //var fileContent = new ByteArrayContent(File.ReadAllBytes(filePath));
-
-            ////imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse("audio/*");
-            //requestContent.Add(fileContent);
-
             var response = await _client.PostAsync(requestUrl, form);            
             return await GetResponseOrError<string>(response);
-
-            //MultipartFormDataContent form = new MultipartFormDataContent();
-            //Dictionary<string, string> parameters = new Dictionary<string, string>();
-            //HttpContent DictionaryItems = new FormUrlEncodedContent(parameters);
-            //form.Add(DictionaryItems, "model");
-
-            //using var stream = new FileStream(filePath, FileMode.Open);
-
-            //HttpContent content = new StringContent(json, Encoding.UTF32, "application/json");
-            //content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-            //{
-            //    Name = "uploadedFile1",
-            //    FileName = Path.GetFileName(filePath)
-            //};
-            //content = new StreamContent(stream);
-            //form.Add(content, "uploadedFile1");
-
-            //var response = await _client.PostAsync(requestUrl, form);
-            //return await GetResponseOrError<string>(response);
         }
 
         /// <summary>
