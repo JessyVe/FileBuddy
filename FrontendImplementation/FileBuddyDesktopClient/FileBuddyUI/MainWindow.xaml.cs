@@ -13,6 +13,8 @@ namespace FileBuddyUI
         private readonly RegisterScreenViewModel _registerScreenViewModel;
         private readonly DashboardViewModel _dashboardViewModel;
 
+
+
         public MainWindow()
         {
             InitializeComponent();
@@ -20,7 +22,7 @@ namespace FileBuddyUI
 
             _loginScreenViewModel = new LoginScreenViewModel();
             _registerScreenViewModel = new RegisterScreenViewModel();
-            _dashboardViewModel = new DashboardViewModel();
+            _dashboardViewModel = new DashboardViewModel();          
 
             _loginScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;
             _registerScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;

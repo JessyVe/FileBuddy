@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dragablz;
+using FileBuddyUI.UI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;

@@ -14,7 +14,9 @@
         Title="Login" 
         Width="Auto" Height="Auto" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"      
-        MouseLeftButtonDown="WindowMouseLeftButtonDown">
+        MouseLeftButtonDown="WindowMouseLeftButtonDown"
+        
+        ResizeMode="NoResize">
     <x:Code>
         <![CDATA[            
             private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

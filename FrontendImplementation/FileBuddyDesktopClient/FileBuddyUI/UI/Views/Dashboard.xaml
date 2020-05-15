@@ -69,43 +69,37 @@
                               Grid.Row="2"
                               x:Name="lvReceivedFiles"
                               ItemsSource="{Binding ReceivedFiles}">
+
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <uc:FileRepresentation/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                        
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                 <Setter Property="Padding" Value="15 10" />
-                            </Style>
-                        </ListView.ItemContainerStyle>                        
+
+                                <Style.Triggers>
+                                    <Trigger Property="Control.IsMouseOver" Value="True">
+                                        <Setter Property="Control.Background" Value="{StaticResource BuddyDarkGrey}" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>                          
+                        </ListView.ItemContainerStyle>
                     </ListView>
 
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Sent">
+
+            <TabItem Header="Sent"
+                     Background="Black">
                 <StackPanel Orientation="Vertical"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             Background="Black">
-                    <ListView Grid.Column="0" 
-                              Grid.Row="2"
-                              x:Name="lvSentFiles"
-                              ItemsSource="{Binding SentFiles}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <uc:FileRepresentation/>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="Padding" Value="15 10" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
-
+                    <uc:FileDropArea/>
                 </StackPanel>
             </TabItem>
         </dragablz:TabablzControl>
