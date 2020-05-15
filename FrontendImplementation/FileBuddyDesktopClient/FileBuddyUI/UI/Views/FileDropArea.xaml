@@ -32,7 +32,7 @@
                   ScrollViewer.CanContentScroll="False"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   HorizontalContentAlignment="Stretch"                  
-                  ItemsSource="{Binding UploadFiles}"
+                  ItemsSource="{Binding ToUploadFiles}"
                   SelectedItem="{Binding SelectedUploadFile}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -87,15 +87,18 @@
                              Name="cDragArea">
 
             <Border Style="{StaticResource MyBorderStyle}">
-                <Label Foreground="Black"
-                   Content="{Binding CurrentAction, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                   Name="lbDrop"
-                   FontWeight="Bold" 
-                   FontSize="14"
-                   HorizontalAlignment="Stretch"
-                   VerticalAlignment="Center"
-                   VerticalContentAlignment="Center"
-                   HorizontalContentAlignment="Center"/>
+                <Button Foreground="Black"
+                        Background="{x:Null}"
+                        BorderBrush="{x:Null}"
+                        Content="{Binding CurrentAction, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Name="lbDrop"
+                        FontWeight="Bold" 
+                        FontSize="14"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        Command="{Binding OnUploadFiles}"/>
             </Border>
         </materialDesign:Card>
     </Grid>

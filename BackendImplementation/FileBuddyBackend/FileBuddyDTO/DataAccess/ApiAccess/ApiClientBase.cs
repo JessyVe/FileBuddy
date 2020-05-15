@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -12,7 +14,7 @@ namespace SharedRessources.DataAccess.ApiAccess
     public abstract class ApiClientBase
     {
         protected HttpClient _client;
-        private static readonly log4net.ILog Log = 
+        private static readonly log4net.ILog Log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -42,6 +44,50 @@ namespace SharedRessources.DataAccess.ApiAccess
         {
             var response = await _client.PostAsJsonAsync(requestUrl, contentObject);
             return await GetResponseOrError<TResponse>(response);
+        }
+
+        protected async Task<string> ExecuteCallWithMultipartFormDataContent(string requestUrl, string filePath)
+        {
+            MultipartFormDataContent form = new MultipartFormDataContent();
+            HttpContent content = new StringContent("fileToUpload");
+            form.Add(content, "fileToUpload");
+
+            var stream = new FileStream(filePath, FileMode.Open);
+            content = new StreamContent(stream);
+            content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            {
+                Name = "fileToUpload",
+                FileName = Path.GetFileName(filePath)
+            };
+            form.Add(content);
+
+            //var requestContent = new MultipartFormDataContent();
+            //var fileContent = new ByteArrayContent(File.ReadAllBytes(filePath));
+
+            ////imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse("audio/*");
+            //requestContent.Add(fileContent);
+
+            var response = await _client.PostAsync(requestUrl, form);            
+            return await GetResponseOrError<string>(response);
+
+            //MultipartFormDataContent form = new MultipartFormDataContent();
+            //Dictionary<string, string> parameters = new Dictionary<string, string>();
+            //HttpContent DictionaryItems = new FormUrlEncodedContent(parameters);
+            //form.Add(DictionaryItems, "model");
+
+            //using var stream = new FileStream(filePath, FileMode.Open);
+
+            //HttpContent content = new StringContent(json, Encoding.UTF32, "application/json");
+            //content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            //{
+            //    Name = "uploadedFile1",
+            //    FileName = Path.GetFileName(filePath)
+            //};
+            //content = new StreamContent(stream);
+            //form.Add(content, "uploadedFile1");
+
+            //var response = await _client.PostAsync(requestUrl, form);
+            //return await GetResponseOrError<string>(response);
         }
 
         /// <summary>

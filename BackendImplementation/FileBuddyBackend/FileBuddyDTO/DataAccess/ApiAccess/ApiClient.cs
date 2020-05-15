@@ -3,7 +3,6 @@ using SharedRessources.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace SharedRessources.DataAccess.ApiAccess
@@ -42,8 +41,8 @@ namespace SharedRessources.DataAccess.ApiAccess
                 BaseAddress = new Uri($"{_baseAddress}:{_port}"),
             };
             _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+           // _client.DefaultRequestHeaders.Accept.Add(
+              //  new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         /// <summary>
@@ -93,11 +92,11 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="files"></param>
         /// <param name="userGroups"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Upload(int userId, IList<UserGroup> userGroups)
+        public async Task<IActionResult> Upload(int userId, IList<UserGroup> userGroups, string filePath)
         {
-            var requestUrl = $"{FileControllerPath}/upload/{userId}/{userGroups}";
-            var result = await ExecuteCall<IActionResult>(requestUrl);
-            return result;
+            var requestUrl = $"{FileControllerPath}/upload/{userId}/{1}"; // TODO: Change to user group
+            var result = await ExecuteCallWithMultipartFormDataContent(requestUrl, filePath);
+            return default;
         }
 
         /// <summary>
