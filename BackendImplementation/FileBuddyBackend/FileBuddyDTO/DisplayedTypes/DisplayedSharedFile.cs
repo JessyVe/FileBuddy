@@ -3,7 +3,7 @@ using System;
 
 namespace SharedRessources.DisplayedTypes
 {
-    public class DisplayedSharedFile 
+    public class DisplayedSharedFile
     {
         public string SharedFileName { get; set; }
         public string ApiPath { get; set; }
@@ -13,7 +13,24 @@ namespace SharedRessources.DisplayedTypes
         public string Timestamp => GetTimeSinceSent();
         private string GetTimeSinceSent()
         {
-            return "hello";
+            var minutesSinceSend = (DateTime.Now - UploadDate).TotalMinutes;
+            
+            if(minutesSinceSend <= 1)
+            {
+                return "Just now";
+            } else if(minutesSinceSend <= 59)
+            {
+                return $"{minutesSinceSend}min";
+            }
+            else if (minutesSinceSend < 1440)
+            {
+                return $"{minutesSinceSend / 60}h";
+            }
+            else if (minutesSinceSend < 10080)
+            {
+                return $"{minutesSinceSend / 60 / 24}days";
+            }
+            return UploadDate.ToString("yyyy-MM-dd H:mm");
         }
     }
 }
