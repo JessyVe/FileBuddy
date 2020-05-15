@@ -1,4 +1,5 @@
-﻿using FileBuddyUI.UI.ViewModels;
+﻿using FileBuddyUI.UI.Helper;
+using FileBuddyUI.UI.ViewModels;
 using System.Windows;
 using System.Windows.Input;
 
@@ -30,6 +31,7 @@ namespace FileBuddyUI
 
         private void OnAuthentificationenSuccess(object sender, System.EventArgs e)
         {
+            UserInformation.Instance.CurrentUser = ((AuthentificationEventArgs)e).AppUser;
             DataContext = _dashboardViewModel;
         }
 

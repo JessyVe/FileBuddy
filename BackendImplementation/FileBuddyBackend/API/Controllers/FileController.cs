@@ -31,34 +31,35 @@ namespace API.Controllers
         /// <param name="files"></param>
         /// <param name="userGroups"></param>
         /// <returns></returns>
-        [Route("upload/{userId}/{userGroups}")]
-        [HttpPost, DisableRequestSizeLimit]
-        public IActionResult Upload(int userId, IList<UserGroup> userGroups)
+        [Route("upload/{userId}/{receiverId}")]
+        [HttpPost]
+        public IActionResult Upload(int userId, int receiverId)
         {
             try
             {
                 var file = Request.Form.Files[0];
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-                if (file.Length > 0)
-                {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var apiPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
 
-                    using (var stream = new FileStream(apiPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                    // TODO: Initialize new SharedFile object
-                   // _fileDataAccess.UploadFile(apiPath, userId, userGroups);
+                var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                var apiPath = Path.Combine(pathToSave, fileName);
 
-                    return Ok(new { dbPath });
-                }
-                else
+                using (var stream = new FileStream(apiPath, FileMode.Create))
                 {
-                    return BadRequest();
+                    file.CopyTo(stream);
                 }
+
+                var sharedFile = new SharedFile()
+                {
+                    ApiPath = apiPath,
+                    OwnerUserId = userId, 
+                    SharedFileName = fileName, 
+                    UploadDate = DateTime.Now
+                };
+                 _fileDataAccess.UploadFile(sharedFile, new List<int>() { receiverId });
+
+                return Ok();
+
             }
             catch (Exception ex)
             {
