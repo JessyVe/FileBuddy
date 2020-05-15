@@ -1,16 +1,7 @@
 ﻿using FileBuddyUI.UI.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FileBuddyUI.UI.Views
 {
@@ -22,8 +13,7 @@ namespace FileBuddyUI.UI.Views
         private readonly Brush DefaultBrush = (Brush)Application.Current.Resources["BuddyDarkGrey"];
         private readonly Brush AnimationBrush = (Brush)Application.Current.Resources["BuddyDarkOrange"];
 
-        private readonly string DefaultDropLableText = "Drag file here";
-        private readonly string AnimationDropLableText = "Release file";
+        private string _lastState;
 
         public FileDropArea()
         {
@@ -32,6 +22,8 @@ namespace FileBuddyUI.UI.Views
 
         private void File_Drop(object sender, DragEventArgs e)
         {
+            ReturnToDefault();
+
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 // Note that you can have more than one file.
@@ -47,13 +39,20 @@ namespace FileBuddyUI.UI.Views
         private void cDragArea_DragEnter(object sender, DragEventArgs e)
         {
             cDragArea.Background = AnimationBrush;
-            lbDrop.Content = AnimationDropLableText;
+
+            _lastState = lbDrop.Content.ToString();
+            lbDrop.Content = UITexts.ReleaseFile;
         }
 
         private void cDragArea_DragLeave(object sender, DragEventArgs e)
         {
+            ReturnToDefault();
+        }
+
+        private void ReturnToDefault()
+        {
             cDragArea.Background = DefaultBrush;
-            lbDrop.Content = DefaultDropLableText;
+            lbDrop.Content = _lastState;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using SharedRessources.Dtos;
-using System;
+﻿using System;
 
 namespace SharedRessources.DisplayedTypes
 {

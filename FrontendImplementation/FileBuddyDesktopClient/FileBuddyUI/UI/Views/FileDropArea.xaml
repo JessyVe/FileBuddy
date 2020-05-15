@@ -18,10 +18,10 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid  AllowDrop="true"
-                 Drop="File_Drop"
-                 DragEnter="cDragArea_DragEnter" 
-                 DragLeave="cDragArea_DragLeave">
+    <Grid AllowDrop="true"
+          Drop="File_Drop"
+          DragEnter="cDragArea_DragEnter" 
+          DragLeave="cDragArea_DragLeave">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.8*"/>
             <RowDefinition Height="0.2*"/>
@@ -32,7 +32,7 @@
                   ScrollViewer.CanContentScroll="False"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   HorizontalContentAlignment="Stretch"                  
-                  ItemsSource="{Binding FilePaths}"
+                  ItemsSource="{Binding UploadFiles}"
                   SelectedItem="{Binding SelectedUploadFile}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -61,7 +61,7 @@
                         <Label HorizontalContentAlignment="Left"
                                HorizontalAlignment="Left"
                                VerticalContentAlignment="Center" 
-                               Content="{Binding}" />
+                               Content="{Binding SharedFileName}" />
 
                         <Button Background="{x:Null}" Grid.Column="1"
                                         BorderBrush="{x:Null}"
@@ -88,7 +88,7 @@
 
             <Border Style="{StaticResource MyBorderStyle}">
                 <Label Foreground="DarkGray"
-                   Content="Drag file here"
+                   Content="{Binding CurrentAction, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                    Name="lbDrop"
                    FontWeight="Bold" 
                    FontSize="14"

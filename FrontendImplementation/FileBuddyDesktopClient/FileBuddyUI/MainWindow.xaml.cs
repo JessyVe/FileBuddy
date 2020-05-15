@@ -13,8 +13,6 @@ namespace FileBuddyUI
         private readonly RegisterScreenViewModel _registerScreenViewModel;
         private readonly DashboardViewModel _dashboardViewModel;
 
-
-
         public MainWindow()
         {
             InitializeComponent();

@@ -19,6 +19,9 @@ namespace FileBuddyUI.UI.ViewModels
 
         public DisplayedSharedFile SelectedDowloadFile { get; set; }
 
+        public string CurrentAction { 
+            get; set; }
+
         public ICommand OnRemoveFileCommand { get; }
         public ICommand OnDownloadFile { get; }
 
@@ -31,6 +34,8 @@ namespace FileBuddyUI.UI.ViewModels
 
             OnRemoveFileCommand = new RelayCommand(o => RemoveFile());
             OnDownloadFile = new RelayCommand(o => DownloadFile());
+
+            CurrentAction = UITexts.DragFileHere;
 
             GenerateDemoData();
         }
@@ -67,6 +72,12 @@ namespace FileBuddyUI.UI.ViewModels
         private void RemoveFile()
         {
             UploadFiles.Remove(SelectedUploadFile);
+
+            if (UploadFiles.Count == 0)
+            {
+                CurrentAction = UITexts.DragFileHere;
+                OnPropertyChanged(nameof(CurrentAction));
+            }
         }
 
         public void AddUploadFile(string fullFilePath)
@@ -77,6 +88,8 @@ namespace FileBuddyUI.UI.ViewModels
 
             };
             UploadFiles.Add(sharedFile);
+            CurrentAction = UITexts.ShareNow;
+            OnPropertyChanged(nameof(CurrentAction));
         }
     }
 }
