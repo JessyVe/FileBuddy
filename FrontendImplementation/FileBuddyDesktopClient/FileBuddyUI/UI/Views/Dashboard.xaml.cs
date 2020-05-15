@@ -24,5 +24,11 @@ namespace FileBuddyUI.UI.Views
         {
             InitializeComponent();
         }
+
+        private void FileRepresentation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var context = DataContext as DashboardViewModel;
+            context.OnDownloadFile.Execute(null);
+        }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using FileBuddyUI.UI.Helper;
+using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.DisplayedTypes;
+using SharedRessources.Dtos;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
 
 namespace FileBuddyUI.UI.ViewModels
@@ -11,21 +14,37 @@ namespace FileBuddyUI.UI.ViewModels
         public ObservableCollection<DisplayedSharedFile> ReceivedFiles { get; set; }
         public ObservableCollection<DisplayedSharedFile> SentFiles { get; set; }
 
-        public ObservableCollection<string> FilePaths { get; set; }
-        public string SelectedFile { get; set; }
+        public ObservableCollection<SharedFile> UploadFiles { get; set; }
+        public SharedFile SelectedUploadFile { get; set; }
 
-        private ICommand OnRemoveFileCommand;
+        public DisplayedSharedFile SelectedDowloadFile { get; set; }
+
+        public ICommand OnRemoveFileCommand { get; }
+        public ICommand OnDownloadFile { get; }
 
         public DashboardViewModel()
         {
             ReceivedFiles = new ObservableCollection<DisplayedSharedFile>();
             SentFiles = new ObservableCollection<DisplayedSharedFile>();
 
-            FilePaths = new ObservableCollection<string>();
+            UploadFiles = new ObservableCollection<SharedFile>();
 
             OnRemoveFileCommand = new RelayCommand(o => RemoveFile());
+            OnDownloadFile = new RelayCommand(o => DownloadFile());
 
             GenerateDemoData();
+        }
+
+        private async void DownloadFile()
+        {
+            try
+            {
+                var result = await ApiClient.Instance.Download(SelectedDowloadFile.ApiPath);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Show message
+            }
         }
 
         private void GenerateDemoData()
@@ -43,21 +62,21 @@ namespace FileBuddyUI.UI.ViewModels
                 UploadDate = DateTime.Now,
                 OwnerName = "Tony"
             });
-
-            FilePaths.Add("asdf1");
-            FilePaths.Add("asdf2");
-            FilePaths.Add("asdf3jshdfashidflakshdfklasdhfkaujdflö");
-        }
-
-        private void FileDropped(string[] filePaths)
-        {
-            foreach (var filePath in filePaths)
-                FilePaths.Add(filePath);
         }
 
         private void RemoveFile()
         {
-            
+            UploadFiles.Remove(SelectedUploadFile);
+        }
+
+        public void AddUploadFile(string fullFilePath)
+        {
+            var sharedFile = new SharedFile()
+            {
+                SharedFileName = Path.GetFileName(fullFilePath),
+
+            };
+            UploadFiles.Add(sharedFile);
         }
     }
 }

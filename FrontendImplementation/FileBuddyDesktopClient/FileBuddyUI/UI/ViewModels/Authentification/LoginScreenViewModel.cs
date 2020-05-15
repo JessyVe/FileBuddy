@@ -9,8 +9,8 @@ namespace FileBuddyUI.UI.ViewModels
 {
     public class LoginScreenViewModel : BaseAuthentificationViewModel
     {
-        public ICommand OnLogin { get; set; }
-        public ICommand OnLoginWithMac { get; set; }
+        public ICommand OnLogin { get; }
+        public ICommand OnLoginWithMac { get; }
 
         public LoginScreenViewModel()
         {

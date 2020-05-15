@@ -55,7 +55,7 @@
                        FontWeight="Bold" />                              
             </Grid>
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" x:Name="gDownloads">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.1*"/>
                     <ColumnDefinition Width="0.6*"/>
@@ -64,12 +64,17 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="{Binding SharedFileName}"  
                        Grid.Column="1"/>
-                <materialDesign:PackIcon Kind="Download" 
-                                         Grid.Column="2"                                    
+
+                <Button Grid.Column="2"  
+                        Background="{x:Null}"
+                        BorderThickness="0"
+                        BorderBrush="{x:Null}">
+                <materialDesign:PackIcon Kind="Download"                                                                           
                                          Foreground="{StaticResource BuddyGrey}"
                                          HorizontalAlignment="Stretch"
                                          VerticalAlignment="Stretch">
                 </materialDesign:PackIcon>
+                </Button>
             </Grid>
 
             <Separator Grid.Row="2"

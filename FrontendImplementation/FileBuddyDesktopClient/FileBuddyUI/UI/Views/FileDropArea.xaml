@@ -32,7 +32,8 @@
                   ScrollViewer.CanContentScroll="False"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   HorizontalContentAlignment="Stretch"                  
-                  ItemsSource="{Binding FilePaths}">
+                  ItemsSource="{Binding FilePaths}"
+                  SelectedItem="{Binding SelectedUploadFile}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -41,7 +42,11 @@
                         <Trigger Property="Control.IsMouseOver" Value="True">
                             <Setter Property="Control.Background" Value="{StaticResource BuddyDarkGrey}" />
                         </Trigger>
-                    </Style.Triggers>
+
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter Property="IsSelected" Value="True"/>
+                        </Trigger>
+                    </Style.Triggers>        
                 </Style>
 
             </ListView.ItemContainerStyle>
@@ -61,7 +66,7 @@
                         <Button Background="{x:Null}" Grid.Column="1"
                                         BorderBrush="{x:Null}"
                                         HorizontalAlignment="Right"
-                                        Command="{Binding ElementName=lvdropFiles,Path=DataContext.RemoveFileCommand}">
+                                        Command="{Binding ElementName=lvdropFiles,Path=DataContext.OnRemoveFileCommand}">
                             <materialDesign:PackIcon Kind="Delete" 
                                          Grid.Column="4"                                    
                                          Foreground="{StaticResource BuddyGrey}"

@@ -68,11 +68,12 @@
                     <ListView Grid.Column="0" 
                               Grid.Row="2"
                               x:Name="lvReceivedFiles"
-                              ItemsSource="{Binding ReceivedFiles}">
+                              ItemsSource="{Binding ReceivedFiles}"
+                              SelectedItem="{Binding SelectedDowloadFile}">
 
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <uc:FileRepresentation/>
+                                <uc:FileRepresentation MouseDoubleClick="FileRepresentation_MouseDoubleClick"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                         
@@ -84,6 +85,9 @@
                                 <Style.Triggers>
                                     <Trigger Property="Control.IsMouseOver" Value="True">
                                         <Setter Property="Control.Background" Value="{StaticResource BuddyDarkGrey}" />
+                                    </Trigger>
+                                    <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                        <Setter Property="IsSelected" Value="True"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>                          

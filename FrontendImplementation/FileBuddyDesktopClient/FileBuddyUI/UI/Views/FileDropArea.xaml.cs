@@ -40,7 +40,7 @@ namespace FileBuddyUI.UI.Views
                 var context = DataContext as DashboardViewModel;
 
                 foreach (var file in files)
-                    context.FilePaths.Add(file);
+                    context.AddUploadFile(file);
             }
         }
 
