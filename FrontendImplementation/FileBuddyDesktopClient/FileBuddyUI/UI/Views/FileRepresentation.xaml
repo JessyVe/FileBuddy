@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="FileBuddyUI.UI.Views.FileRepresentation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FileBuddyUI.UI.Views"
+             mc:Ignorable="d" 
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  >
+    <materialDesign:Card Background="{x:Null}"
+                         Margin="10 2"
+                         VerticalAlignment="Stretch">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.6*"/>
+                <RowDefinition Height="0.1*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.1*"/>
+                    <ColumnDefinition Width="0.6*"/>
+                    <ColumnDefinition Width="0.1*"/>
+                    <ColumnDefinition Width="0.1*"/>
+                </Grid.ColumnDefinitions>
+
+                <materialDesign:PackIcon Kind="AccountCircleOutline" 
+                                         Grid.Column="0"                                    
+                                         Foreground="{StaticResource BuddyDarkOrange}"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch">
+                </materialDesign:PackIcon>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal">
+                    <Label Content="User1"                  
+                           VerticalAlignment="Center"
+                           Foreground="{StaticResource BuddyOrange}"
+                           FontWeight="Bold" />
+
+                    <materialDesign:PackIcon Kind="Star" 
+                                             Grid.Column="2"                                    
+                                             Foreground="{StaticResource BuddyOrange}"
+                                             HorizontalAlignment="Stretch"
+                                             VerticalAlignment="Stretch">
+                    </materialDesign:PackIcon>
+                </StackPanel>
+
+                <Label Content="10min"  
+                       Grid.Column="2"
+                       FontSize="9"
+                       VerticalAlignment="Center"
+                       HorizontalContentAlignment="Center"
+                       Foreground="{StaticResource BuddyOrange}"
+                       FontWeight="Bold" />
+
+                <materialDesign:PackIcon Kind="Download" 
+                                         Grid.Column="4"                                    
+                                         Foreground="{StaticResource BuddyDarkGrey}"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch">
+                </materialDesign:PackIcon>               
+            </Grid>
+            
+            <ListView Grid.Row="1"/>
+            <Separator Grid.Row="2"/>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>

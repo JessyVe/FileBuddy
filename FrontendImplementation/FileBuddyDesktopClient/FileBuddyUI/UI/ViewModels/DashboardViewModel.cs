@@ -7,19 +7,19 @@ namespace FileBuddyUI.UI.ViewModels
 {
     public class DashboardViewModel : ViewModelBase
     {
-        public ObservableCollection<SharedFile> ReceivedFiles { get; set; }
+        public ObservableCollection<DisplayedSharedFile> ReceivedFiles { get; set; }
         public ObservableCollection<SharedFile> SentFiles { get; set; }
 
         public DashboardViewModel()
         {
-            ReceivedFiles = new ObservableCollection<SharedFile>();
+            ReceivedFiles = new ObservableCollection<DisplayedSharedFile>();
             SentFiles = new ObservableCollection<SharedFile>();
             GenerateDemoData();
         }
 
         private void GenerateDemoData()
         {
-            ReceivedFiles.Add(new SharedFile()
+            ReceivedFiles.Add(new DisplayedSharedFile()
             {
                 SharedFileName = "Received.txt", 
                 UploadDate = DateTime.Now

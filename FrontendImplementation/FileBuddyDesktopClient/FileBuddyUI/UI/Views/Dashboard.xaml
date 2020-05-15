@@ -6,17 +6,19 @@
              xmlns:local="clr-namespace:FileBuddyUI.UI.ViewModels"
              
              xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:uc="clr-namespace:FileBuddyUI.UI.Views"
              
              mc:Ignorable="d" 
              Height="450" Width="500">
     <StackPanel AllowDrop="true">
 
-        <Grid Margin="10 20 10 10">
+        <Grid Margin="10 18 10 20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.05*"/>
                 <ColumnDefinition Width="0.8*"/>
                 <ColumnDefinition Width="0.15*"/>
+                <ColumnDefinition Width="0.08*"/>
             </Grid.ColumnDefinitions>
             <materialDesign:PackIcon Kind="Magnify" 
                                      Grid.Column="0"                                    
@@ -30,6 +32,25 @@
                      Foreground="{StaticResource BuddyGrey}"
                      materialDesign:HintAssist.Hint="I am searching for...">
             </TextBox>
+
+            <materialDesign:PopupBox Grid.Column="3" PlacementMode="BottomAndAlignLeftEdges" 
+                                     StaysOpen="False"
+                                     Height="25">
+                <materialDesign:PopupBox.ToggleContent>
+                    <materialDesign:PackIcon Foreground="{StaticResource BuddyGrey}" 
+                                             Kind="DotsVertical"/>
+                </materialDesign:PopupBox.ToggleContent>
+
+                <StackPanel>
+                    <Button x:Name="BtAccountSettings" 
+                                Content="Account"
+                                FontSize="12"/>
+                    <Separator/>
+                    <Button x:Name="BtLogout" 
+                                Content="Contacts"
+                                FontSize="12"/>
+                </StackPanel>
+            </materialDesign:PopupBox>
         </Grid>
 
         <dragablz:TabablzControl x:Name="tabControl" 
@@ -39,7 +60,10 @@
                 <dragablz:InterTabController />
             </dragablz:TabablzControl.InterTabController>
             <TabItem Header="Received">
-                <StackPanel Height="500" Orientation="Vertical">
+                <StackPanel Orientation="Vertical"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="Black">
 
                     <ListView Grid.Column="0" 
                               Grid.Row="2"
@@ -47,9 +71,7 @@
                               ItemsSource="{Binding ReceivedFiles}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <materialDesign:Card>
-                                    <Label Content="{Binding SharedFileName}" FontWeight="Bold" />
-                                </materialDesign:Card>
+                                <uc:FileRepresentation/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
@@ -57,17 +79,17 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Sent">
-                <StackPanel Height="500" Orientation="Vertical">
-
+                <StackPanel Orientation="Vertical"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="Black">
                     <ListView Grid.Column="0" 
                               Grid.Row="2"
                               x:Name="lvSentFiles"
                               ItemsSource="{Binding SentFiles}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <materialDesign:Card>
-                                    <Label Content="{Binding SharedFileName}" FontWeight="Bold" />
-                                </materialDesign:Card>
+                                <uc:FileRepresentation/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

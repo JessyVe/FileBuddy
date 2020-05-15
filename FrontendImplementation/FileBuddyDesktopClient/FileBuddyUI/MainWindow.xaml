@@ -77,11 +77,12 @@
             <Button Background="{x:Null}" 
                     BorderThickness="0" 
                     Grid.Column="2"
-                    Click="OnWindowMinimize">
+                    Click="OnClose"
+                    IsCancel="True">
                 <materialDesign:PackIcon Kind="WindowClose"                                      
                                          Foreground="{StaticResource BuddyGrey}"
                                          HorizontalAlignment="Stretch"
-                                         VerticalAlignment="Stretch">
+                                         VerticalAlignment="Stretch" >
                 </materialDesign:PackIcon>
             </Button>
         </Grid>
