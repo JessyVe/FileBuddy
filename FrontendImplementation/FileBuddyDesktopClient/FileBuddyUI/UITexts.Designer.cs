@@ -61,6 +61,15 @@ namespace FileBuddyUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Looks like we were not able to log you in....
+        /// </summary>
+        internal static string AuthentificationFailed {
+            get {
+                return ResourceManager.GetString("AuthentificationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drag file here.
         /// </summary>
         internal static string DragFileHere {
@@ -70,11 +79,47 @@ namespace FileBuddyUI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mail address and/or password field is empty!.
+        ///   Looks up a localized string similar to Ups! Something went wrong!.
+        /// </summary>
+        internal static string ExceptionThrown {
+            get {
+                return ResourceManager.GetString("ExceptionThrown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail address and password field is empty!.
         /// </summary>
         internal static string NoDataLoginError {
             get {
                 return ResourceManager.GetString("NoDataLoginError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No mail address was given!.
+        /// </summary>
+        internal static string NoMailAddressGiven {
+            get {
+                return ResourceManager.GetString("NoMailAddressGiven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No password was given!.
+        /// </summary>
+        internal static string NoPasswordGiven {
+            get {
+                return ResourceManager.GetString("NoPasswordGiven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No username was given!.
+        /// </summary>
+        internal static string NoUsernameGiven {
+            get {
+                return ResourceManager.GetString("NoUsernameGiven", resourceCulture);
             }
         }
         

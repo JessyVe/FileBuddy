@@ -4,6 +4,7 @@ using SharedRessources.Dtos;
 using SharedRessources.Services;
 using System;
 using System.Windows.Input;
+using ToastNotifications.Messages;
 
 namespace FileBuddyUI.UI.ViewModels
 {
@@ -22,9 +23,20 @@ namespace FileBuddyUI.UI.ViewModels
         {
             try
             {
-                if (string.IsNullOrEmpty(MailAddress) || string.IsNullOrEmpty(Password))
+                if (string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(MailAddress))
                 {
-                    // TODO: Show message
+                    ToastMessenger.NotifierInstance.ShowWarning(UITexts.NoDataLoginError);
+                    return;
+                }
+                else if (string.IsNullOrEmpty(Password))
+                {
+                    ToastMessenger.NotifierInstance.ShowWarning(UITexts.NoPasswordGiven);
+                    return;
+                }
+                else if (string.IsNullOrEmpty(MailAddress))
+                {
+                    ToastMessenger.NotifierInstance.ShowWarning(UITexts.NoMailAddressGiven);
+                    return;
                 }
 
                 var user = new AppUser()

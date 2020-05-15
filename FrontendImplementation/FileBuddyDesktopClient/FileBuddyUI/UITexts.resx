@@ -117,11 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuthentificationFailed" xml:space="preserve">
+    <value>Looks like we were not able to log you in...</value>
+  </data>
   <data name="DragFileHere" xml:space="preserve">
     <value>Drag file here</value>
   </data>
+  <data name="ExceptionThrown" xml:space="preserve">
+    <value>Ups! Something went wrong!</value>
+  </data>
   <data name="NoDataLoginError" xml:space="preserve">
-    <value>Mail address and/or password field is empty!</value>
+    <value>Mail address and password field is empty!</value>
+  </data>
+  <data name="NoMailAddressGiven" xml:space="preserve">
+    <value>No mail address was given!</value>
+  </data>
+  <data name="NoPasswordGiven" xml:space="preserve">
+    <value>No password was given!</value>
+  </data>
+  <data name="NoUsernameGiven" xml:space="preserve">
+    <value>No username was given!</value>
   </data>
   <data name="ReleaseFile" xml:space="preserve">
     <value>Release file</value>

@@ -39,8 +39,6 @@ namespace API.Controllers
             {
                 var file = Request.Form.Files[0];
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
-
                 var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                 var apiPath = Path.Combine(pathToSave, fileName);
 
