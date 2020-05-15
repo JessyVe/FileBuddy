@@ -4,13 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FileBuddyUI.UI.Views"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"            
              
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  >
     <materialDesign:Card Background="{x:Null}"
-                         Margin="10 2"
-                         VerticalAlignment="Stretch">
-        <Grid VerticalAlignment="Stretch">
+                         HorizontalAlignment="Stretch">
+        <Grid HorizontalAlignment="Stretch">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.3*"/>
                 <RowDefinition Height="0.6*"/>
@@ -57,14 +56,15 @@
 
                 <materialDesign:PackIcon Kind="Download" 
                                          Grid.Column="4"                                    
-                                         Foreground="{StaticResource BuddyDarkGrey}"
+                                         Foreground="{StaticResource BuddyGrey}"
                                          HorizontalAlignment="Stretch"
                                          VerticalAlignment="Stretch">
                 </materialDesign:PackIcon>               
             </Grid>
             
             <ListView Grid.Row="1"/>
-            <Separator Grid.Row="2"/>
+            <Separator Grid.Row="2"
+                       Margin="15 5"/>
         </Grid>
     </materialDesign:Card>
 </UserControl>

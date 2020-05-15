@@ -74,6 +74,12 @@
                                 <uc:FileRepresentation/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="Padding" Value="15 10" />
+                            </Style>
+                        </ListView.ItemContainerStyle>                        
                     </ListView>
 
                 </StackPanel>
@@ -92,6 +98,12 @@
                                 <uc:FileRepresentation/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="Padding" Value="15 10" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
                     </ListView>
 
                 </StackPanel>
