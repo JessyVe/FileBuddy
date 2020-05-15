@@ -12,7 +12,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         Task<AppUser> RegisterUser(AppUser user);
         Task<IActionResult> Upload(int userId, IList<UserGroup> userGroups, string filePath);
         Task<IActionResult> Download(string apiPath);
-        Task<IList<SharedFile>> FetchAvailableFiles(string userId);
+        Task<string> FetchAvailableFiles(int userId);
         Task<IActionResult> UpdateUserInformation(AppUser user);     
     }
 }

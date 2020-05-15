@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SharedRessources.DisplayedTypes;
 using SharedRessources.Dtos;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace SharedRessources.DataAccess.ApiAccess
     /// <summary>
     /// Implements methods to access the FileBuddy API
     /// </summary>
-    public class ApiClient : ApiClientBase, IApiClient
+    public class ApiClient : ApiClientBase//, IApiClient
     {
         // TODO: Inject all privates as configuration
         // TODO: Extract into configuration
@@ -94,7 +95,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <returns></returns>
         public async Task<IActionResult> Upload(int userId, IList<UserGroup> userGroups, string filePath)
         {
-            var requestUrl = $"{FileControllerPath}/upload/{userId}/{1}"; // TODO: Change to user group
+            var requestUrl = $"{FileControllerPath}/upload/{userId}/{userId}"; // TODO: Change to user group
             var result = await ExecuteCallWithMultipartFormDataContent(requestUrl, filePath);
             return default;
         }
@@ -119,10 +120,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<IList<SharedFile>> FetchAvailableFiles(string userId)
+        public async Task<ICollection<DisplayedSharedFile>> FetchAvailableFiles(int userId)
         {
             var requestUrl = $"{UserControllerPath}/fetchfiles/{userId}";
-            var result = await ExecuteCall<IList<SharedFile>>(requestUrl);
+            var result = await ExecuteCall<ICollection<DisplayedSharedFile>>(requestUrl);
             return result;
         }
 

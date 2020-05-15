@@ -17,7 +17,7 @@ namespace SharedRessources.DataAccess.UserAccess
         /// </summary>
         /// <param name="userHashId"></param>
         /// <returns></returns>
-        public IList<DisplayedSharedFile> FetchAvailableFiles(int userId)
+        public ICollection<DisplayedSharedFile> FetchAvailableFiles(int userId)
         {
             Log.Debug("Fetching available files. ");
             var displayedSharedFiles = new List<DisplayedSharedFile>();
@@ -31,13 +31,13 @@ namespace SharedRessources.DataAccess.UserAccess
                 var availableFiles = context.SharedFile.Where(file => fileIds.Contains(file.Id)).ToList();
                 foreach(var file in availableFiles)
                 {
+                    var ownerName = context.AppUser.Where(user => user.Id == file.OwnerUserId).First().Name;
                     displayedSharedFiles.Add(new DisplayedSharedFile()
                     {
                         ApiPath = file.ApiPath, 
                         SharedFileName = file.SharedFileName, 
                         UploadDate = file.UploadDate, 
-                        OwnerName = context.AppUser.Where(user => user.Id == file.OwnerUserId)
-                                                   .Select(user => user.Name).ToString()
+                        OwnerName = ownerName
                     });
                 }
             }

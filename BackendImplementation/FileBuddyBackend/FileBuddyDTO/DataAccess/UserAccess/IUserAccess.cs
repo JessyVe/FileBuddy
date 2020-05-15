@@ -6,7 +6,7 @@ namespace SharedRessources.DataAccess.UserAccess
 {
     public interface IUserAccess
     {
-        IList<DisplayedSharedFile> FetchAvailableFiles(int userId);
+        ICollection<DisplayedSharedFile> FetchAvailableFiles(int userId);
 
         bool UpdateUserInformation(AppUser user);
         AppUser GetUserInformation(int userId);

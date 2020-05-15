@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SharedRessources.Database;
 using SharedRessources.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,15 +39,17 @@ namespace SharedRessources.DataAccess.FileDataAccess
         public void UploadFile(SharedFile sharedFile, IList<int> authorizedAccessGrantedTo)
         {
             Log.Debug("File upload was completed. ");
-            var sharedFileId = -1;
             using (var context = new SQLiteDBContext())
             {
-                sharedFileId = context.SharedFile.Add(sharedFile).Entity.Id;
+                context.SharedFile.Add(sharedFile);
                 context.Entry(sharedFile).State = EntityState.Added;
-
                 context.SaveChanges();
             }
-            SaveAuthorizedAccessGranted(authorizedAccessGrantedTo, sharedFileId);
+
+            if (sharedFile.Id == 0)
+                throw new Exception("Database insert faild.");
+
+            SaveAuthorizedAccessGranted(authorizedAccessGrantedTo, sharedFile.Id);
         }
 
         /// <summary>

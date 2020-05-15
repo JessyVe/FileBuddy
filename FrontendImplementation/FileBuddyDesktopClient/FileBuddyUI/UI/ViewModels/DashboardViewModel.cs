@@ -25,6 +25,7 @@ namespace FileBuddyUI.UI.ViewModels
         public ICommand OnRemoveFileCommand { get; }
         public ICommand OnDownloadFile { get; }
         public ICommand OnUploadFiles { get; }
+        public ICommand OnFetchFiles { get; }
 
         // TODO: Extract into class
         public string CurrentAction { get; set; }
@@ -40,24 +41,44 @@ namespace FileBuddyUI.UI.ViewModels
             OnRemoveFileCommand = new RelayCommand(o => RemoveFile());
             OnDownloadFile = new RelayCommand(o => DownloadFile());
             OnUploadFiles = new RelayCommand(o => UploadFiles());
+            OnFetchFiles = new RelayCommand(o => FetchFiles());
 
             CurrentAction = UITexts.DragFileHere;
             CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
         }
 
+        private async void FetchFiles()
+        {
+            try
+            {
+                var fetchedFiles = await ApiClient.Instance.FetchAvailableFiles(UserInformation.Instance.CurrentUser.Id);
+                foreach (var file in fetchedFiles)
+                {
+                    ReceivedFiles.Add(file);
+                }
+            }
+            catch (Exception ex)
+            {
+                // TODO: Show message
+            }
+        }
+
         private async void UploadFiles()
         {
+            var successfullSendFiles = new List<UploadFile>();
             foreach (var uploadFile in ToUploadFiles)
             {
                 try
                 {
                     await ApiClient.Instance.Upload(UserInformation.Instance.CurrentUser.Id, new List<UserGroup>(), uploadFile.FullPath);
+                    successfullSendFiles.Add(uploadFile);
                 }
                 catch (Exception ex)
                 {
                     // TODO: Show message
                 }
             }
+            successfullSendFiles.ForEach(file => RemoveFile(file));
         }
 
         private async void DownloadFile()
@@ -72,18 +93,21 @@ namespace FileBuddyUI.UI.ViewModels
             }
         }
 
-        private void RemoveFile()
+        private void RemoveFile(UploadFile file = null)
         {
-            ToUploadFiles.Remove(SelectedUploadFile);
+            ToUploadFiles.Remove(file ?? SelectedUploadFile);
 
             if (ToUploadFiles.Count == 0)
-            {
-                CurrentAction = UITexts.DragFileHere;
-                CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
+                SetUIToDefault();
+        }
 
-                OnPropertyChanged(nameof(CurrentAction));
-                OnPropertyChanged(nameof(CurrentActionColor));
-            }
+        private void SetUIToDefault()
+        {
+            CurrentAction = UITexts.DragFileHere;
+            CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
+
+            OnPropertyChanged(nameof(CurrentAction));
+            OnPropertyChanged(nameof(CurrentActionColor));
         }
 
         public void AddUploadFile(string fullFilePath)
@@ -91,7 +115,7 @@ namespace FileBuddyUI.UI.ViewModels
             var sharedFile = new UploadFile()
             {
                 SharedFileName = Path.GetFileName(fullFilePath),
-                FullPath = fullFilePath 
+                FullPath = fullFilePath
             };
             ToUploadFiles.Add(sharedFile);
             CurrentAction = UITexts.ShareNow;

@@ -60,41 +60,64 @@
                 <dragablz:InterTabController />
             </dragablz:TabablzControl.InterTabController>
             <TabItem Header="Received">
-                <StackPanel Orientation="Vertical"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Background="Black">
+                <Grid Background="Black">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.2*"/>
+                        <RowDefinition Height="0.8*"/>
+                    </Grid.RowDefinitions>
 
-                    <ListView Grid.Column="0" 
-                              Grid.Row="2"
-                              x:Name="lvReceivedFiles"
-                              ItemsSource="{Binding ReceivedFiles}"
-                              SelectedItem="{Binding SelectedDowloadFile}">
+                    <Button Grid.Column="0"  
+                            HorizontalAlignment="Right"
+                            Background="{x:Null}"
+                            BorderThickness="0"
+                            BorderBrush="{x:Null}"
+                            Command="{Binding OnFetchFiles}">
+                        <materialDesign:PackIcon Kind="Refresh"                                                                           
+                                         Foreground="{StaticResource BuddyGrey}"
+                                         HorizontalAlignment="Stretch"
+                                         VerticalAlignment="Stretch">
+                        </materialDesign:PackIcon>
+                    </Button>
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <uc:FileRepresentation MouseDoubleClick="FileRepresentation_MouseDoubleClick"/>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                        
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="Padding" Value="15 10" />
 
-                                <Style.Triggers>
-                                    <Trigger Property="Control.IsMouseOver" Value="True">
-                                        <Setter Property="Control.Background" Value="{StaticResource BuddyDarkGrey}" />
-                                    </Trigger>
-                                    <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                        <Setter Property="IsSelected" Value="True"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>                          
-                        </ListView.ItemContainerStyle>
-                    </ListView>
+                    <StackPanel Orientation="Vertical"
+                                Grid.Row="1"
+                                Height="350" Width="500"
+                                Background="Black">
 
-                </StackPanel>
+                        <ListView Grid.Column="0" 
+                                  Grid.Row="2"
+                                  x:Name="lvReceivedFiles"
+                                  Height="350" Width="500"
+                                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                  ScrollViewer.CanContentScroll="False"
+                                  ItemsSource="{Binding ReceivedFiles}"
+                                  SelectedItem="{Binding SelectedDowloadFile}">
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <uc:FileRepresentation MouseDoubleClick="FileRepresentation_MouseDoubleClick"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Padding" Value="15 10" />
+
+                                    <Style.Triggers>
+                                        <Trigger Property="Control.IsMouseOver" Value="True">
+                                            <Setter Property="Control.Background" Value="{StaticResource BuddyDarkGrey}" />
+                                        </Trigger>
+                                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                            <Setter Property="IsSelected" Value="True"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </StackPanel>
+                </Grid>
             </TabItem>
 
             <TabItem Header="Sent"

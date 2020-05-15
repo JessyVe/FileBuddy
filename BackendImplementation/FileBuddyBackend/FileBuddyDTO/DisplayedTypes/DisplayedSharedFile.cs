@@ -12,7 +12,7 @@ namespace SharedRessources.DisplayedTypes
         public string Timestamp => GetTimeSinceSent();
         private string GetTimeSinceSent()
         {
-            var minutesSinceSend = (DateTime.Now - UploadDate).TotalMinutes;
+            var minutesSinceSend = (int)(DateTime.Now - UploadDate).TotalMinutes;
             
             if(minutesSinceSend <= 1)
             {
