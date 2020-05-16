@@ -1,7 +1,9 @@
-﻿using System;
+﻿using SharedRessources.Dtos;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -13,9 +15,17 @@ namespace SharedRessources.DataAccess.ApiAccess
     /// </summary>
     public abstract class ApiClientBase
     {
+        private string _destination;
+
         protected HttpClient _client;
         private static readonly log4net.ILog Log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        protected ApiClientBase()
+        {
+            _destination = Path.Combine(Directory.GetCurrentDirectory(), "Downloads");
+            Directory.CreateDirectory(_destination);
+        }
 
         /// <summary>
         /// Executes a call to the given url and returns 
@@ -61,7 +71,7 @@ namespace SharedRessources.DataAccess.ApiAccess
             };
             form.Add(content);
 
-            var response = await _client.PostAsync(requestUrl, form);            
+            var response = await _client.PostAsync(requestUrl, form);
             return await GetResponseOrError<string>(response);
         }
 
@@ -90,6 +100,23 @@ namespace SharedRessources.DataAccess.ApiAccess
             var errorMessage = $"Request was unsuccessful. Statuscode {response.StatusCode} was received. ";
             Log.Error(errorMessage);
             throw new Exception(errorMessage);
+        }
+
+        public async Task<string> DownloadFile(string requestUrl, DownloadRequest downloadRequest)
+        {
+            var response = await _client.PostAsJsonAsync(requestUrl, downloadRequest);
+            Stream data = response.Content.ReadAsStreamAsync().Result;
+
+            var mailMessage = new MailMessage();
+            mailMessage.Attachments.Add(new Attachment(data, response.Content.Headers.ContentDisposition.FileName));
+
+            var filePath = Path.Combine(_destination, response.Content.Headers.ContentDisposition.FileName);
+            using (FileStream fs = File.Create(filePath))
+            {
+                data.Seek(0, SeekOrigin.Begin);
+                data.CopyTo(fs);
+            }
+            return filePath;
         }
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -70,15 +71,15 @@ namespace API.Controllers
         /// </summary>
         /// <param name="apiPath"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("download/{apiPath}")]
-        public IActionResult Download(string apiPath)
+        [HttpPost]
+        [Route("download")]
+        public async Task<IActionResult> Download(DownloadRequest downloadRequest)
         {
             var fileProvider = new FileExtensionContentTypeProvider();
 
-            if (!fileProvider.TryGetContentType(apiPath, out string contentType))
+            if (!fileProvider.TryGetContentType(downloadRequest.ApiPath, out string contentType))
             {
-                var errorText = $"Unable to find Content Type for file name {apiPath}.";
+                var errorText = $"Unable to find Content Type for file name {downloadRequest.ApiPath}.";
 
                 Log.Error(errorText);
                 return BadRequest(errorText);
@@ -86,7 +87,7 @@ namespace API.Controllers
 
             _fileDataAccess.FileDownloaded(new DownloadTransaction()); // TODO: Create actual object
 
-            return PhysicalFile(apiPath, contentType, Path.GetFileName(apiPath));
+            return PhysicalFile(downloadRequest.ApiPath, contentType, Path.GetFileName(downloadRequest.ApiPath));
         }
     }
 }

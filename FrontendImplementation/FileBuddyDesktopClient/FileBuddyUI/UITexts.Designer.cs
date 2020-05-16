@@ -97,6 +97,15 @@ namespace FileBuddyUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File was saved at {0}..
+        /// </summary>
+        internal static string FileSavedAt {
+            get {
+                return ResourceManager.GetString("FileSavedAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Given mail address is invalid!.
         /// </summary>
         internal static string InvalidMailAddress {
@@ -192,6 +201,15 @@ namespace FileBuddyUI {
         internal static string ShareNow {
             get {
                 return ResourceManager.GetString("ShareNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} file(s) were successfully uploaded!.
+        /// </summary>
+        internal static string SuccessfullUpload {
+            get {
+                return ResourceManager.GetString("SuccessfullUpload", resourceCulture);
             }
         }
         

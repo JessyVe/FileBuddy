@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SharedRessources.DisplayedTypes
 {
-    public class DisplayedSharedFile
+    public class DisplayedSharedFile : IComparable<DisplayedSharedFile>, IEquatable<DisplayedSharedFile>
     {
         public string SharedFileName { get; set; }
         public string ApiPath { get; set; }
@@ -10,6 +11,23 @@ namespace SharedRessources.DisplayedTypes
         public DateTime UploadDate { get; set; }
 
         public string Timestamp => GetTimeSinceSent();
+
+        public int CompareTo([AllowNull] DisplayedSharedFile other)
+        {
+            if(Timestamp == other.Timestamp) 
+                return 0;
+
+            return Timestamp.CompareTo(other.Timestamp);
+        }
+
+        public bool Equals(DisplayedSharedFile other)
+        {
+            if (Timestamp.Equals(other.Timestamp) && OwnerName.Equals(other.OwnerName) && ApiPath.Equals(other.ApiPath)) 
+                return true;
+
+            return false;
+        }
+
         private string GetTimeSinceSent()
         {
             var minutesSinceSend = (int)(DateTime.Now - UploadDate).TotalMinutes;

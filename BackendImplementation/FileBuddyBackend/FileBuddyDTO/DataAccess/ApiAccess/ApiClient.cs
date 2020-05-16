@@ -11,7 +11,7 @@ namespace SharedRessources.DataAccess.ApiAccess
     /// <summary>
     /// Implements methods to access the FileBuddy API
     /// </summary>
-    public class ApiClient : ApiClientBase//, IApiClient
+    public class ApiClient : ApiClientBase, IApiClient
     {
         // TODO: Inject all privates as configuration
         // TODO: Extract into configuration
@@ -42,8 +42,6 @@ namespace SharedRessources.DataAccess.ApiAccess
                 BaseAddress = new Uri($"{_baseAddress}:{_port}"),
             };
             _client.DefaultRequestHeaders.Accept.Clear();
-           // _client.DefaultRequestHeaders.Accept.Add(
-              //  new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         /// <summary>
@@ -93,11 +91,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="files"></param>
         /// <param name="userGroups"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Upload(int userId, IList<UserGroup> userGroups, string filePath)
+        public async Task Upload(int userId, IList<UserGroup> userGroups, string filePath)
         {
             var requestUrl = $"{FileControllerPath}/upload/{userId}/{userId}"; // TODO: Change to user group
-            var result = await ExecuteCallWithMultipartFormDataContent(requestUrl, filePath);
-            return default;
+            await ExecuteCallWithMultipartFormDataContent(requestUrl, filePath); 
         }
 
         /// <summary>
@@ -107,11 +104,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="files"></param>
         /// <param name="userGroups"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Download(string apiPath)
+        public async Task<string> Download(DownloadRequest downloadRequest)
         {
-            var requestUrl = $"{FileControllerPath}/download/{apiPath}";
-            var result = await ExecuteCall<IActionResult>(requestUrl);
-            return result;
+            var requestUrl = $"{FileControllerPath}/download";
+            return await DownloadFile(requestUrl, downloadRequest);
         }
 
         /// <summary>

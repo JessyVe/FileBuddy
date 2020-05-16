@@ -129,6 +129,9 @@
   <data name="FileIsAlreadyShared" xml:space="preserve">
     <value>File will already be shared.</value>
   </data>
+  <data name="FileSavedAt" xml:space="preserve">
+    <value>File was saved at {0}.</value>
+  </data>
   <data name="InvalidMailAddress" xml:space="preserve">
     <value>Given mail address is invalid!</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="ShareNow" xml:space="preserve">
     <value>Share now!</value>
+  </data>
+  <data name="SuccessfullUpload" xml:space="preserve">
+    <value>{0} file(s) were successfully uploaded!</value>
   </data>
   <data name="WelcomeBack" xml:space="preserve">
     <value>Welcome back {0}!</value>

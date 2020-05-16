@@ -61,6 +61,7 @@ namespace SharedRessources.DataAccess.Authentification
                     return user;
                 }
             }
+            
             throw new Exception("User with specified mailAddress was not found or password is invalid!");
         }
 

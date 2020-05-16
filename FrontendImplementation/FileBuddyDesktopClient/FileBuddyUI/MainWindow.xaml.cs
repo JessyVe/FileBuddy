@@ -41,6 +41,7 @@ namespace FileBuddyUI
                 ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.WelcomeBack, args.AppUser.Name));
 
             DataContext = _dashboardViewModel;
+            _dashboardViewModel.FetchFiles();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

@@ -32,7 +32,7 @@ namespace FileBuddyUI.UI.ViewModels
         public string CurrentAction { get; set; }
         public Brush CurrentActionColor { get; set; }
 
-        private IList<string> CurrentUploadPaths;
+        private readonly IList<string> _currentUploadPaths;
 
         public DashboardViewModel()
         {
@@ -49,10 +49,10 @@ namespace FileBuddyUI.UI.ViewModels
             CurrentAction = UITexts.DragFileHere;
             CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
 
-            CurrentUploadPaths = new List<string>();
+            _currentUploadPaths = new List<string>();
         }
 
-        private async void FetchFiles()
+        public async void FetchFiles()
         {
             try
             {
@@ -69,6 +69,7 @@ namespace FileBuddyUI.UI.ViewModels
                 {
                     ReceivedFiles.Add(file);
                 }
+                CollectionSorter.Sort<DisplayedSharedFile>(ReceivedFiles);
             }
             catch (Exception ex)
             {
@@ -84,7 +85,7 @@ namespace FileBuddyUI.UI.ViewModels
                 try
                 {
                     await ApiClient.Instance.Upload(UserInformation.Instance.CurrentUser.Id, new List<UserGroup>(), uploadFile.FullPath);
-                    successfullSendFiles.Add(uploadFile);
+                    successfullSendFiles.Add(uploadFile);                   
                 }
                 catch (Exception ex)
                 {
@@ -92,13 +93,19 @@ namespace FileBuddyUI.UI.ViewModels
                 }
             }
             successfullSendFiles.ForEach(file => RemoveFile(file));
+            ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.SuccessfullUpload, successfullSendFiles.Count));
         }
 
         private async void DownloadFile()
         {
             try
             {
-                var result = await ApiClient.Instance.Download(SelectedDowloadFile.ApiPath);
+                var savedPath = await ApiClient.Instance.Download(new DownloadRequest()
+                {
+                    ApiPath = SelectedDowloadFile.ApiPath, 
+                    ReceiverId = UserInformation.Instance.CurrentUser.Id
+                });
+                ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.FileSavedAt, savedPath));
             }
             catch (Exception ex)
             {
@@ -109,7 +116,7 @@ namespace FileBuddyUI.UI.ViewModels
         private void RemoveFile(UploadFile file = null)
         {
             ToUploadFiles.Remove(file ?? SelectedUploadFile);
-            CurrentUploadPaths.Remove(file?.FullPath ?? SelectedUploadFile?.FullPath);
+            _currentUploadPaths.Remove(file?.FullPath ?? SelectedUploadFile?.FullPath);
 
             if (ToUploadFiles.Count == 0)
                 SetUIToDefault();
@@ -126,13 +133,13 @@ namespace FileBuddyUI.UI.ViewModels
 
         public void AddUploadFile(string fullFilePath)
         {
-            if (CurrentUploadPaths.Contains(fullFilePath))
+            if (_currentUploadPaths.Contains(fullFilePath))
             {
                 ToastMessenger.NotifierInstance.ShowInformation(UITexts.FileIsAlreadyShared);
                 return;
             }
 
-            CurrentUploadPaths.Add(fullFilePath);
+            _currentUploadPaths.Add(fullFilePath);
             var sharedFile = new UploadFile()
             {
                 SharedFileName = Path.GetFileName(fullFilePath),

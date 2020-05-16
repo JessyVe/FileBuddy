@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SharedRessources.DisplayedTypes;
 using SharedRessources.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,9 +11,9 @@ namespace SharedRessources.DataAccess.ApiAccess
         Task<AppUser> LoginWithMacAddress(string macAddress);
         Task<AppUser> LoginWithMailAddress(AppUser user);
         Task<AppUser> RegisterUser(AppUser user);
-        Task<IActionResult> Upload(int userId, IList<UserGroup> userGroups, string filePath);
-        Task<IActionResult> Download(string apiPath);
-        Task<string> FetchAvailableFiles(int userId);
+        Task Upload(int userId, IList<UserGroup> userGroups, string filePath);
+        Task<string> Download(DownloadRequest downloadRequest);
+        Task<ICollection<DisplayedSharedFile>> FetchAvailableFiles(int userId);
         Task<IActionResult> UpdateUserInformation(AppUser user);     
     }
 }
