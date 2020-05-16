@@ -88,6 +88,15 @@ namespace FileBuddyUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File will already be shared..
+        /// </summary>
+        internal static string FileIsAlreadyShared {
+            get {
+                return ResourceManager.GetString("FileIsAlreadyShared", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Given mail address is invalid!.
         /// </summary>
         internal static string InvalidMailAddress {
@@ -106,11 +115,29 @@ namespace FileBuddyUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To successfully register username, mail address and password need to be provided..
+        /// </summary>
+        internal static string NoDataRegister {
+            get {
+                return ResourceManager.GetString("NoDataRegister", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No mail address was given!.
         /// </summary>
         internal static string NoMailAddressGiven {
             get {
                 return ResourceManager.GetString("NoMailAddressGiven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No files were received..
+        /// </summary>
+        internal static string NoNewFiles {
+            get {
+                return ResourceManager.GetString("NoNewFiles", resourceCulture);
             }
         }
         
@@ -133,11 +160,29 @@ namespace FileBuddyUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} files are available for you to download..
+        /// </summary>
+        internal static string ReceivedFiles {
+            get {
+                return ResourceManager.GetString("ReceivedFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Release file.
         /// </summary>
         internal static string ReleaseFile {
             get {
                 return ResourceManager.GetString("ReleaseFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} files were successfully shared!.
+        /// </summary>
+        internal static string SentFiles {
+            get {
+                return ResourceManager.GetString("SentFiles", resourceCulture);
             }
         }
         

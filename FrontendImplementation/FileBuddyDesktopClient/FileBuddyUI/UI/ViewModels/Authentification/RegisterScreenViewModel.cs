@@ -3,6 +3,7 @@ using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.Dtos;
 using System;
 using System.Windows.Input;
+using ToastNotifications.Messages;
 
 namespace FileBuddyUI.UI.ViewModels
 {
@@ -22,29 +23,35 @@ namespace FileBuddyUI.UI.ViewModels
             {
                 if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(MailAddress) || string.IsNullOrEmpty(Password))
                 {
-                    // TODO: Show message
+                    ToastMessenger.NotifierInstance.ShowWarning(UITexts.NoDataRegister);
                 }
 
                 var user = new AppUser()
                 {
                     Name = Username,
                     MailAddress = MailAddress,
-                    Password = Password, 
+                    Password = Password,
                     AccountCreationDate = DateTime.Now
                 };
 
                 UIService.SetBusyState();
                 var loggedInUser = await ApiClient.Instance.RegisterUser(user);
-                // TODO: Check data
-                OnAuthentificationSuccess(new AuthentificationEventArgs()
+                if (loggedInUser.Id > 0)
                 {
-                    AppUser = loggedInUser, 
-                    RegisteredAsNewUser = true
-                });
+                    OnAuthentificationSuccess(new AuthentificationEventArgs()
+                    {
+                        AppUser = loggedInUser,
+                        RegisteredAsNewUser = true
+                    });
+                }
+                else
+                {
+                    ToastMessenger.NotifierInstance.ShowError(UITexts.AuthentificationFailed);
+                }
             }
             catch (Exception ex)
             {
-                // TODO: Show message
+                ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
         }
     }

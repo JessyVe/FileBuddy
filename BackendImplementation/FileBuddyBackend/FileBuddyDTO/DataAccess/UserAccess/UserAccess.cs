@@ -41,6 +41,7 @@ namespace SharedRessources.DataAccess.UserAccess
                     });
                 }
             }
+            displayedSharedFiles.OrderBy(f => f.UploadDate);
             return displayedSharedFiles;
         }
 

@@ -51,6 +51,7 @@
                 Foreground="WhiteSmoke"
                 Margin="90 8"
                 Command="{Binding OnRegister}"
-                BorderThickness="0"/>
+                BorderThickness="0"
+                IsDefault="True"/>
     </StackPanel>
 </UserControl>

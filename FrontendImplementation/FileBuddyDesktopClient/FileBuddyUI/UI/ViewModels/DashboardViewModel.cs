@@ -9,6 +9,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using ToastNotifications.Messages;
 
 namespace FileBuddyUI.UI.ViewModels
 {
@@ -31,6 +32,8 @@ namespace FileBuddyUI.UI.ViewModels
         public string CurrentAction { get; set; }
         public Brush CurrentActionColor { get; set; }
 
+        private IList<string> CurrentUploadPaths;
+
         public DashboardViewModel()
         {
             ReceivedFiles = new ObservableCollection<DisplayedSharedFile>();
@@ -45,6 +48,8 @@ namespace FileBuddyUI.UI.ViewModels
 
             CurrentAction = UITexts.DragFileHere;
             CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
+
+            CurrentUploadPaths = new List<string>();
         }
 
         private async void FetchFiles()
@@ -52,6 +57,13 @@ namespace FileBuddyUI.UI.ViewModels
             try
             {
                 var fetchedFiles = await ApiClient.Instance.FetchAvailableFiles(UserInformation.Instance.CurrentUser.Id);
+                var fileCount = fetchedFiles.Count;
+
+                if(fileCount == 0)
+                     ToastMessenger.NotifierInstance.ShowInformation(UITexts.NoNewFiles);
+                else
+                    ToastMessenger.NotifierInstance.ShowInformation(string.Format(UITexts.ReceivedFiles, fetchedFiles.Count));
+
                 ReceivedFiles.Clear();
                 foreach (var file in fetchedFiles)
                 {
@@ -60,7 +72,7 @@ namespace FileBuddyUI.UI.ViewModels
             }
             catch (Exception ex)
             {
-                // TODO: Show message
+                ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
         }
 
@@ -76,7 +88,7 @@ namespace FileBuddyUI.UI.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    // TODO: Show message
+                    ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
                 }
             }
             successfullSendFiles.ForEach(file => RemoveFile(file));
@@ -90,13 +102,14 @@ namespace FileBuddyUI.UI.ViewModels
             }
             catch (Exception ex)
             {
-                // TODO: Show message
+                ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
         }
 
         private void RemoveFile(UploadFile file = null)
         {
             ToUploadFiles.Remove(file ?? SelectedUploadFile);
+            CurrentUploadPaths.Remove(file?.FullPath ?? SelectedUploadFile?.FullPath);
 
             if (ToUploadFiles.Count == 0)
                 SetUIToDefault();
@@ -113,6 +126,13 @@ namespace FileBuddyUI.UI.ViewModels
 
         public void AddUploadFile(string fullFilePath)
         {
+            if (CurrentUploadPaths.Contains(fullFilePath))
+            {
+                ToastMessenger.NotifierInstance.ShowInformation(UITexts.FileIsAlreadyShared);
+                return;
+            }
+
+            CurrentUploadPaths.Add(fullFilePath);
             var sharedFile = new UploadFile()
             {
                 SharedFileName = Path.GetFileName(fullFilePath),
