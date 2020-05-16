@@ -1,6 +1,7 @@
 ﻿using FileBuddyUI.UI.Helper;
 using SharedRessources.Services;
 using System;
+using ToastNotifications.Messages;
 
 namespace FileBuddyUI.UI.ViewModels
 {
@@ -14,8 +15,8 @@ namespace FileBuddyUI.UI.ViewModels
             {
                 if (DataValidator.IsMailAddressValid(value))
                     _mailAddress = value;
-
-                // TODO: Else show error
+                else
+                    ToastMessenger.NotifierInstance.ShowWarning(UITexts.InvalidMailAddress);
             }
         }
 

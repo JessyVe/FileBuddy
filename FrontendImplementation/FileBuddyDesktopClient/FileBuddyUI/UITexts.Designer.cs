@@ -88,6 +88,15 @@ namespace FileBuddyUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Given mail address is invalid!.
+        /// </summary>
+        internal static string InvalidMailAddress {
+            get {
+                return ResourceManager.GetString("InvalidMailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mail address and password field is empty!.
         /// </summary>
         internal static string NoDataLoginError {

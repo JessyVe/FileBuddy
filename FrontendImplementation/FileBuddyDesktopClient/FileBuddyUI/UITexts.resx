@@ -126,6 +126,9 @@
   <data name="ExceptionThrown" xml:space="preserve">
     <value>Ups! Something went wrong!</value>
   </data>
+  <data name="InvalidMailAddress" xml:space="preserve">
+    <value>Given mail address is invalid!</value>
+  </data>
   <data name="NoDataLoginError" xml:space="preserve">
     <value>Mail address and password field is empty!</value>
   </data>

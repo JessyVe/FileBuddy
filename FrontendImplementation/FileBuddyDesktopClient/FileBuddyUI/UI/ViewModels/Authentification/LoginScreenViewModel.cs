@@ -47,14 +47,20 @@ namespace FileBuddyUI.UI.ViewModels
 
                 UIService.SetBusyState();
                 var loggedInUser = await ApiClient.Instance.LoginWithMailAddress(user);
-                // TODO: Check data
-                OnAuthentificationSuccess(new AuthentificationEventArgs()
+
+                if (loggedInUser.Id > 0)
+                {                   
+                    OnAuthentificationSuccess(new AuthentificationEventArgs()
+                    {
+                        AppUser = loggedInUser
+                    });
+                } else
                 {
-                    AppUser = loggedInUser
-                });
+                    ToastMessenger.NotifierInstance.ShowError(UITexts.AuthentificationFailed);
+                }
             } catch(Exception ex)
             {
-                // TODO: Show message
+                ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
         }
 
@@ -64,15 +70,21 @@ namespace FileBuddyUI.UI.ViewModels
             {
                 UIService.SetBusyState();
                 var loggedInUser = await ApiClient.Instance.LoginWithMacAddress(MacAddressRetriever.GetMacAddress());
-                // TODO: Check data
-                OnAuthentificationSuccess(new AuthentificationEventArgs()
+                if (loggedInUser.Id > 0)
                 {
-                    AppUser = loggedInUser
-                });
+                    OnAuthentificationSuccess(new AuthentificationEventArgs()
+                    {
+                        AppUser = loggedInUser
+                    });
+                }
+                else
+                {
+                    ToastMessenger.NotifierInstance.ShowError(UITexts.AuthentificationFailed);
+                }
             }
             catch (Exception ex)
             {
-                // TODO: Show message
+                ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
         }
     }
