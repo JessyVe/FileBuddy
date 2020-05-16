@@ -147,4 +147,10 @@
   <data name="ShareNow" xml:space="preserve">
     <value>Share now!</value>
   </data>
+  <data name="WelcomeBack" xml:space="preserve">
+    <value>Welcome back {0}!</value>
+  </data>
+  <data name="WelcomeText" xml:space="preserve">
+    <value>Welcome to FileBuddy!</value>
+  </data>
 </root>

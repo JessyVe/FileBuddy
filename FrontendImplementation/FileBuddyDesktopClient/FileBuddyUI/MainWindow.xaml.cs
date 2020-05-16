@@ -32,7 +32,14 @@ namespace FileBuddyUI
 
         private void OnAuthentificationenSuccess(object sender, System.EventArgs e)
         {
-            UserInformation.Instance.CurrentUser = ((AuthentificationEventArgs)e).AppUser;
+            var args = e as AuthentificationEventArgs;
+            UserInformation.Instance.CurrentUser = args.AppUser;
+
+            if(args.RegisteredAsNewUser)
+                ToastMessenger.NotifierInstance.ShowSuccess(UITexts.WelcomeText);
+            else
+                ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.WelcomeBack, args.AppUser.Name));
+
             DataContext = _dashboardViewModel;
         }
 

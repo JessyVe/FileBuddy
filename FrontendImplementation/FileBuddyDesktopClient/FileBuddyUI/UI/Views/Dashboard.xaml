@@ -13,46 +13,6 @@
              Height="450" Width="500">
     <StackPanel AllowDrop="true">
 
-        <Grid Margin="10 18 10 20">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.05*"/>
-                <ColumnDefinition Width="0.8*"/>
-                <ColumnDefinition Width="0.15*"/>
-                <ColumnDefinition Width="0.08*"/>
-            </Grid.ColumnDefinitions>
-            <materialDesign:PackIcon Kind="Magnify" 
-                                     Grid.Column="0"                                    
-                                     Foreground="{StaticResource BuddyGrey}"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch">
-            </materialDesign:PackIcon>
-            <TextBox Name="txMail" 
-                     Grid.Column="1"  
-                     Text="{Binding MailAddress}"
-                     Foreground="{StaticResource BuddyGrey}"
-                     materialDesign:HintAssist.Hint="I am searching for...">
-            </TextBox>
-
-            <materialDesign:PopupBox Grid.Column="3" PlacementMode="BottomAndAlignLeftEdges" 
-                                     StaysOpen="False"
-                                     Height="25">
-                <materialDesign:PopupBox.ToggleContent>
-                    <materialDesign:PackIcon Foreground="{StaticResource BuddyGrey}" 
-                                             Kind="DotsVertical"/>
-                </materialDesign:PopupBox.ToggleContent>
-
-                <StackPanel>
-                    <Button x:Name="BtAccountSettings" 
-                                Content="Account"
-                                FontSize="12"/>
-                    <Separator/>
-                    <Button x:Name="BtLogout" 
-                                Content="Contacts"
-                                FontSize="12"/>
-                </StackPanel>
-            </materialDesign:PopupBox>
-        </Grid>
-
         <dragablz:TabablzControl x:Name="tabControl" 
                                  BorderThickness="0"
                                  Visibility="Visible">

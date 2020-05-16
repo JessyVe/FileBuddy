@@ -149,5 +149,23 @@ namespace FileBuddyUI {
                 return ResourceManager.GetString("ShareNow", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome back {0}!.
+        /// </summary>
+        internal static string WelcomeBack {
+            get {
+                return ResourceManager.GetString("WelcomeBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to FileBuddy!.
+        /// </summary>
+        internal static string WelcomeText {
+            get {
+                return ResourceManager.GetString("WelcomeText", resourceCulture);
+            }
+        }
     }
 }
