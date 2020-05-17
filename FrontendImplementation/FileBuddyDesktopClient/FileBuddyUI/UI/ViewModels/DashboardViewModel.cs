@@ -138,6 +138,11 @@ namespace FileBuddyUI.UI.ViewModels
                 ToastMessenger.NotifierInstance.ShowInformation(UITexts.FileIsAlreadyShared);
                 return;
             }
+            if(Path.GetFileName(fullFilePath).Contains(" "))
+            {
+                ToastMessenger.NotifierInstance.ShowWarning(UITexts.FilenameWithBlanks);
+                return;
+            }
 
             _currentUploadPaths.Add(fullFilePath);
             var sharedFile = new UploadFile()

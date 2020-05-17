@@ -97,6 +97,15 @@ namespace FileBuddyUI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File names may not contain blanks!.
+        /// </summary>
+        internal static string FilenameWithBlanks {
+            get {
+                return ResourceManager.GetString("FilenameWithBlanks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File was saved at {0}..
         /// </summary>
         internal static string FileSavedAt {

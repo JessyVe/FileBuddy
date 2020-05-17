@@ -129,6 +129,9 @@
   <data name="FileIsAlreadyShared" xml:space="preserve">
     <value>File will already be shared.</value>
   </data>
+  <data name="FilenameWithBlanks" xml:space="preserve">
+    <value>File names may not contain blanks!</value>
+  </data>
   <data name="FileSavedAt" xml:space="preserve">
     <value>File was saved at {0}.</value>
   </data>
