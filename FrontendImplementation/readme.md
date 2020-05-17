@@ -26,10 +26,10 @@ Currently the received list must be updated manually (refresh button; top-right 
 ![Login screen](../images/login-screen.PNG)
 
 ### Register screen
-![Register screen](../images/received-screen-with-files.PNG)
+![Register screen](../images/register-screen.PNG)
 
 ### Main screen - "Received"
-![Main screen](../images/register-screen.PNG)
+![Main screen](../images/received-screen-with-files.PNG)
 
 ### Main screen - "Share"
 ![Main screen](../images/share-screen-with-files.PNG)
