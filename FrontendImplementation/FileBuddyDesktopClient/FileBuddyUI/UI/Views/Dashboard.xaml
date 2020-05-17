@@ -80,7 +80,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Sent"
+            <TabItem Header="Share"
                      Background="Black">
                 <StackPanel Orientation="Vertical"
                             HorizontalAlignment="Stretch"
