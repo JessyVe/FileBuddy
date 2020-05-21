@@ -13,9 +13,9 @@ Bachelor program:
 -  Web Service Development
 
 ## Introduction
-There are two user interfaces planned for the interaction with the API. At the current moment (2020-05-17) the first protoype for the desktop application is lauchned. This WPF (= Windows Presentation Foundation) application provides the registeration of user, as well as Mail+Password logging and basic file sharing.
+At the current moment (2020-05-17) the first protoype for the desktop application is lauchned. This WPF (= Windows Presentation Foundation) application provides the registeration of user, as well as Mail+Password logging and basic file sharing.
 
-For demo pruposes files are automatically shared with the sender.
+For demo pruposes files are automatically shared only with the sender.
 
 ## Basic application layout
 By design, the main window is organized into two tabs *Received*, showing all files you are able to download with double click, and *Share*, which provides a drag-and-drop function to place the files you want to share.
