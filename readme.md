@@ -40,7 +40,7 @@ The project was developed in the [Visual Studio 19 Community Edition](<[https://
 After this, the follwing windows should open (mind that building process might take a long at the first time):
 
 - Console of API with start up information
-- [Desktop client](https://github.com/JessyVe/FileBuddy/tree/master/FrontendImplementation)
+- Desktop client
 - Brower window (default browser) with [Swagger UI](https://swagger.io/tools/swagger-ui/) API documentation
 
 ## Backend implementation
@@ -56,24 +56,24 @@ At the current moment (2020-05-17) the first protoype for the desktop applicatio
 
 For demo pruposes files are automatically shared only with the sender.
 
-## Basic application layout
+### Basic application layout
 
 By design, the main window is organized into two tabs _Received_, showing all files you are able to download with double click, and _Share_, which provides a drag-and-drop function to place the files you want to share.
 
 Currently the received list must be updated manually (refresh button; top-right corner).
 
-### Login screen
+#### Login screen
 
 ![Login screen](images/login-screen.PNG)
 
-### Register screen
+#### Register screen
 
 ![Register screen](images/register-screen.PNG)
 
-### Main screen - "Received"
+#### Main screen - "Received"
 
 ![Main screen](images/received-screen-with-files.PNG)
 
-### Main screen - "Share"
+#### Main screen - "Share"
 
 ![Main screen](images/share-screen-with-files.PNG)
