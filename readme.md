@@ -64,16 +64,16 @@ Currently the received list must be updated manually (refresh button; top-right 
 
 ### Login screen
 
-![Login screen](../images/login-screen.PNG)
+![Login screen](images/login-screen.PNG)
 
 ### Register screen
 
-![Register screen](../images/register-screen.PNG)
+![Register screen](images/register-screen.PNG)
 
 ### Main screen - "Received"
 
-![Main screen](../images/received-screen-with-files.PNG)
+![Main screen](images/received-screen-with-files.PNG)
 
 ### Main screen - "Share"
 
-![Main screen](../images/share-screen-with-files.PNG)
+![Main screen](images/share-screen-with-files.PNG)
