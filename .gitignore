@@ -10,3 +10,17 @@ FrontendImplementation/FileBuddyDesktopClient/FileBuddyUI/bin/Debug/
 BackendImplementation/FileBuddyBackend/FileBuddyDTO/bin/Debug/
 BackendImplementation/FileBuddyBackend/API/bin/Debug/
 BackendImplementation/FileBuddyBackend/WebSocketServer/bin/Debug/
+FileBuddy/API/bin/
+FileBuddy/API/obj/
+FileBuddy/.vs/FileBuddyProgram/v16/Server/sqlite3/storage.ide-wal
+FileBuddy/.vs/
+FileBuddy/BackendTests/obj/
+FileBuddy/FileBuddyUI/bin/
+FileBuddy/FileBuddyUI/obj/
+FileBuddy/SharedResources/obj/
+FileBuddy/SharedResources/bin/
+FileBuddy/WebSocketServer/obj/
+FileBuddy/WebSocketServerUI/bin/
+FileBuddy/WebSocketServerUI/obj/
+FileBuddy/WebSocketServer/bin/Debug/netcoreapp3.1/WebSocketServer.dll
+FileBuddy/WebSocketServer/bin/
