@@ -15,7 +15,7 @@ namespace FileBuddyUI.UI.Helper
         private bool _isConnected = false;
         public bool IsConnected
         {
-            get => _isConnected; 
+            get => _isConnected;
             set
             {
                 if (_isConnected == value)
@@ -43,16 +43,17 @@ namespace FileBuddyUI.UI.Helper
         {
             get
             {
-                if (_instance == null) 
+                if (_instance == null)
                     _instance = new WebSocketClient();
 
                 return _instance;
             }
         }
 
-        private WebSocketClient() {
+        private WebSocketClient()
+        {
 
-            
+
         }
 
         public event EventHandler NewUpdateRequestReceived;
@@ -64,7 +65,7 @@ namespace FileBuddyUI.UI.Helper
         }
 
         public async Task Connect()
-        {        
+        {
             if (SetupClient())
             {
                 var packet = await GetNewConnectionPacket();
@@ -81,12 +82,24 @@ namespace FileBuddyUI.UI.Helper
             }
             catch (Exception ex)
             {
-
+                Log.ErrorFormat("Connection to server could not be established.", ex);
             }
             return true;
         }
 
-        private async Task InitializeConnection(ClientMessage connectionPacket)
+        private async Task<UserConnectionMessage> GetNewConnectionPacket()
+        {
+            _listenTask = Task.Run(() => _client.ConnectToServer());
+
+            IsConnected = await _listenTask;
+
+            return new UserConnectionMessage
+            {
+                UserId = UserInformation.Instance.CurrentUser.Id,
+            };
+        }
+
+        private async Task InitializeConnection(UserConnectionMessage connectionPacket)
         {
             _pinged = false;
 
@@ -94,33 +107,12 @@ namespace FileBuddyUI.UI.Helper
             {
                 _updateTask = Task.Run(() => Update());
                 await _client.SendObject(connectionPacket);
-                _connectionTask = Task.Run(() => MonitorConnection());        
+                _connectionTask = Task.Run(() => MonitorConnection());
             }
             else
             {
                 await Disconnect();
             }
-        }
-
-        private async Task<ClientMessage> GetNewConnectionPacket()
-        {
-            _listenTask = Task.Run(() => _client.ConnectToServer());
-
-            IsConnected = await _listenTask;
-
-            var notifyServer = new UserConnectionPacket
-            {
-                UserId = UserInformation.Instance.CurrentUser.Id,
-                IsJoining = true,
-                UserGuid = _client.UserId.ToString()
-            };
-
-            var personalPacket = new ClientMessage
-            {
-                SenderId = _client.UserId,
-                Package = notifyServer
-            };
-            return personalPacket;
         }
 
         public async Task Disconnect()
@@ -164,7 +156,7 @@ namespace FileBuddyUI.UI.Helper
             {
                 Thread.Sleep(1);
                 var timePassed = (_pingSent.TimeOfDay - _pingLastSent.TimeOfDay);
-                if (timePassed > TimeSpan.FromSeconds(5))
+                if (timePassed > TimeSpan.FromSeconds(10))
                 {
                     if (!_pinged)
                     {
@@ -173,7 +165,7 @@ namespace FileBuddyUI.UI.Helper
 
                         Thread.Sleep(5000);
 
-                        if (_pinged)
+                        if (!_pinged)
                             await Task.Run(() => Disconnect());
                     }
                 }
@@ -197,21 +189,14 @@ namespace FileBuddyUI.UI.Helper
 
         private bool ManagePacket(object packet)
         {
-            NewUpdateRequestReceived.Invoke(this, new EventArgs());
-
             if (packet != null)
             {
-                if (packet is UpdateMessage chatP)
+                if (packet is UpdateMessage)
                 {
-                    NewUpdateRequestReceived.Invoke(this, new EventArgs());
+                    //NewUpdateRequestReceived.Invoke(this, new EventArgs());
                 }
 
-                if (packet is UserConnectionPacket connectionP)
-                {
-                   
-                }
-
-                if (packet is PingMessage pingP)
+                if (packet is PingMessage)
                 {
                     _pingLastSent = DateTime.Now;
                     _pingSent = _pingLastSent;

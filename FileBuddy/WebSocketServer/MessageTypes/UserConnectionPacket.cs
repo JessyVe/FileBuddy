@@ -3,7 +3,7 @@
 namespace WebSocketServer.MessageTypes
 {
     [Serializable]
-    public class UserConnectionPacket
+    public class UserConnectionMessage
     {
         public int UserId { get; set; }
         public string UserGuid { get; set; }

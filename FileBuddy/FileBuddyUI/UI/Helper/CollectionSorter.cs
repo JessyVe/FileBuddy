@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FileBuddyUI.UI.Helper
 {
     public static class CollectionSorter
     {
-        public static void Sort<T>(this ObservableCollection<T> observable) where T : IComparable<T>, IEquatable<T>
+        public static async Task Sort<T>(this ObservableCollection<T> observable) where T : IComparable<T>, IEquatable<T>
         {
             List<T> sorted = observable.OrderBy(x => x).ToList();
 

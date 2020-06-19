@@ -12,12 +12,14 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using ToastNotifications.Messages;
-using WebSocketServer.Helper;
 
 namespace FileBuddyUI.UI.ViewModels
 {
     public class DashboardViewModel : PropertyChangedBase
     {
+        private static readonly log4net.ILog Log =
+         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public ObservableCollection<DisplayedSharedFile> ReceivedFiles { get; set; }
         public ObservableCollection<DisplayedSharedFile> SentFiles { get; set; }
 
@@ -52,15 +54,10 @@ namespace FileBuddyUI.UI.ViewModels
             OnFetchFiles = new RelayCommand(o => FetchFiles());
 
             CurrentAction = UITexts.DragFileHere;
-            CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
-
-            Task.Run(() => WebSocketClient.Instance.Connect()).ContinueWith(asdf => 
-            { 
-            
-            });
+            CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];          
         }
 
-        public async void FetchFiles()
+        public async Task FetchFiles()
         {
             try
             {
@@ -77,7 +74,7 @@ namespace FileBuddyUI.UI.ViewModels
                 {
                     ReceivedFiles.Add(file);
                 }
-                CollectionSorter.Sort(ReceivedFiles);
+               await CollectionSorter.Sort(ReceivedFiles);
             }
             catch (Exception ex)
             {

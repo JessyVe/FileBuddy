@@ -17,7 +17,7 @@ namespace WebSocketServer.Client
         private static readonly log4net.ILog Log =
                 log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public int UserId { get; private set; }
+        public int UserId { get; set; }
         public Socket Socket { get; private set; }
         public IPEndPoint EndPoint { get; private set; }
         public IPAddress Address { get; private set; }

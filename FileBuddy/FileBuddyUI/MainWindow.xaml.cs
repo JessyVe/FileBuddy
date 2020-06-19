@@ -4,6 +4,7 @@ using FileBuddyUI.UI.ViewModels;
 using System.Windows;
 using System.Windows.Input;
 using ToastNotifications.Messages;
+using System.Threading.Tasks;
 
 namespace FileBuddyUI
 {
@@ -12,6 +13,9 @@ namespace FileBuddyUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static readonly log4net.ILog Log =
+         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly LoginScreenViewModel _loginScreenViewModel;
         private readonly RegisterScreenViewModel _registerScreenViewModel;
         private readonly DashboardViewModel _dashboardViewModel;
@@ -31,7 +35,7 @@ namespace FileBuddyUI
             DataContext = _loginScreenViewModel;
         }
 
-        private void OnAuthentificationenSuccess(object sender, System.EventArgs e)
+        private async void OnAuthentificationenSuccess(object sender, System.EventArgs e)
         {
             var args = e as AuthentificationEventArgs;
             UserInformation.Instance.CurrentUser = args.AppUser;
@@ -42,7 +46,20 @@ namespace FileBuddyUI
                 ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.WelcomeBack, args.AppUser.Name));
 
             DataContext = _dashboardViewModel;
-            _dashboardViewModel.FetchFiles();
+
+            await _dashboardViewModel.FetchFiles();
+            await ConnectToSocketServer();
+        }
+
+        private async Task ConnectToSocketServer()
+        {
+            await WebSocketClient.Instance.Connect().ContinueWith(_ =>
+            {
+                if (WebSocketClient.Instance.IsConnected)
+                    Log.Info($"Successfully connected to socket server ({SettingsHelper.Instance.ApplicationSettings.SocketServerAddress}:{SettingsHelper.Instance.ApplicationSettings.SocketServerPort})");
+                else
+                    Log.Error($"Unable to connect to socket server ({SettingsHelper.Instance.ApplicationSettings.SocketServerAddress}:{SettingsHelper.Instance.ApplicationSettings.SocketServerPort})");
+            });
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

@@ -43,8 +43,15 @@ namespace WebSocketServer.Server
                           SocketType.Stream, ProtocolType.Tcp)
             { ReceiveTimeout = 5000 };
 
-            Socket.Bind(EndPoint);
-            Socket.Listen(10);
+            try
+            {
+
+                Socket.Bind(EndPoint);
+                Socket.Listen(10);
+            } catch(SocketException ex)
+            {
+                Log.ErrorFormat("Socket address may already be in use.", ex);
+            }
         }
 
         public async Task StartServer()
@@ -82,7 +89,6 @@ namespace WebSocketServer.Server
                             var client = new SocketClient();
                             var newGuid = await client.CreateGuid(newConnection);
                             await client.SendMessage(newGuid);
-
                             Connections.Add(client);
                         }
                     }
