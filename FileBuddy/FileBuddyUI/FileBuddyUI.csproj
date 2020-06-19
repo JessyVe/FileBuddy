@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SharedResources\SharedRessources.csproj" />
+    <ProjectReference Include="..\WebSocketServer\WebSocketServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
