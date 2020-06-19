@@ -38,7 +38,7 @@ namespace FileBuddyUI.UI.Views
 
         private void cDragArea_DragEnter(object sender, DragEventArgs e)
         {
-            _lastState = lbDrop.Content.ToString();
+            _lastState = lbDrop.Content?.ToString();
             _lastBrush = cDragArea.Background;
 
             lbDrop.Content = UITexts.ReleaseFile;

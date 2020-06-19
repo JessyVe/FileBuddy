@@ -25,10 +25,9 @@ namespace FileBuddyUI.UI.ViewModels
 
         public ObservableCollection<DisplayedSharedFile> ReceivedFiles { get; set; }
         public ObservableCollection<DisplayedSharedFile> SentFiles { get; set; }
-
         public ObservableCollection<UploadFile> ToUploadFiles { get; set; }
-        public UploadFile SelectedUploadFile { get; set; }
 
+        public UploadFile SelectedUploadFile { get; set; }
         public DisplayedSharedFile SelectedDowloadFile { get; set; }
 
         public ICommand OnRemoveFileCommand { get; }
@@ -37,8 +36,9 @@ namespace FileBuddyUI.UI.ViewModels
         public ICommand OnFetchFiles { get; }
 
 
-        public string CurrentAction { get; set; }
-        public Brush CurrentActionColor { get; set; }
+        public string CurrentDragAreaAction { get; set; }
+        public Brush CurrentDragAreaActionColor { get; set; }
+
 
         private readonly IList<string> _currentUploadPaths;
 
@@ -56,8 +56,14 @@ namespace FileBuddyUI.UI.ViewModels
             OnUploadFiles = new RelayCommand(o => UploadFiles());
             OnFetchFiles = new RelayCommand(o => FetchFiles());
 
-            CurrentAction = UITexts.DragFileHere;
-            CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];          
+            CurrentDragAreaAction = UITexts.DragFileHere;
+            CurrentDragAreaActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
+
+            // Subscribe to client socket event (triggered if data is received)
+            WebSocketClient.Instance.NewUpdateRequestReceived += new EventHandler(delegate (Object o, EventArgs a)
+            {
+                Task.Run(() => FetchFiles());
+            });
         }
 
         /// <summary>
@@ -97,6 +103,9 @@ namespace FileBuddyUI.UI.ViewModels
         /// </summary>
         private async void UploadFiles()
         {
+            if (ToUploadFiles.Count == 0)
+                return;
+
             Log.Debug("Attempting to upload files to API.");
 
             var successfullSendFiles = new List<UploadFile>();
@@ -171,11 +180,11 @@ namespace FileBuddyUI.UI.ViewModels
         /// </summary>
         private void SetUIToDefault()
         {
-            CurrentAction = UITexts.DragFileHere;
-            CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
+            CurrentDragAreaAction = UITexts.DragFileHere;
+            CurrentDragAreaActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
 
-            OnPropertyChanged(nameof(CurrentAction));
-            OnPropertyChanged(nameof(CurrentActionColor));
+            OnPropertyChanged(nameof(CurrentDragAreaAction));
+            OnPropertyChanged(nameof(CurrentDragAreaActionColor));
         }
 
         /// <summary>
@@ -205,11 +214,11 @@ namespace FileBuddyUI.UI.ViewModels
             };
             ToUploadFiles.Add(sharedFile);
 
-            CurrentAction = UITexts.ShareNow;
-            CurrentActionColor = (Brush)Application.Current.Resources["BuddyGreen"];
+            CurrentDragAreaAction = UITexts.ShareNow;
+            CurrentDragAreaActionColor = (Brush)Application.Current.Resources["BuddyGreen"];
 
-            OnPropertyChanged(nameof(CurrentAction));
-            OnPropertyChanged(nameof(CurrentActionColor));
+            OnPropertyChanged(nameof(CurrentDragAreaAction));
+            OnPropertyChanged(nameof(CurrentDragAreaActionColor));
         }
     }
 }

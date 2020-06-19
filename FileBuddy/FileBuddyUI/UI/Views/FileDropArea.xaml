@@ -82,7 +82,7 @@
         <materialDesign:Card HorizontalAlignment="Stretch"
                              Grid.Row="1"
                              VerticalAlignment="Stretch"
-                             Background="{Binding CurrentActionColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                             Background="{Binding CurrentDragAreaActionColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                              Margin="10"  
                              Name="cDragArea">
 
@@ -90,7 +90,7 @@
                 <Button Foreground="Black"
                         Background="{x:Null}"
                         BorderBrush="{x:Null}"
-                        Content="{Binding CurrentAction, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Content="{Binding CurrentDragAreaAction, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Name="lbDrop"
                         FontWeight="Bold" 
                         FontSize="14"

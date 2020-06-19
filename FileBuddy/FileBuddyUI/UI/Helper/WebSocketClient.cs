@@ -10,7 +10,7 @@ namespace FileBuddyUI.UI.Helper
     public class WebSocketClient : PropertyChangedBase
     {
         private static readonly log4net.ILog Log =
-         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private bool _isConnected = false;
         public bool IsConnected
@@ -38,7 +38,6 @@ namespace FileBuddyUI.UI.Helper
         private bool _pinged = false;
 
         private static WebSocketClient _instance;
-
         public static WebSocketClient Instance
         {
             get
@@ -51,14 +50,10 @@ namespace FileBuddyUI.UI.Helper
         }
 
         private WebSocketClient()
-        {
-
-
-        }
+        { }
 
         public event EventHandler NewUpdateRequestReceived;
-
-        protected virtual void OnThresholdReached(EventArgs e)
+        protected virtual void OnNewUpdateRequestReceived(EventArgs e)
         {
             EventHandler handler = NewUpdateRequestReceived;
             handler?.Invoke(this, e);
@@ -193,7 +188,7 @@ namespace FileBuddyUI.UI.Helper
             {
                 if (packet is UpdateMessage)
                 {
-                    //NewUpdateRequestReceived.Invoke(this, new EventArgs());
+                    OnNewUpdateRequestReceived(new EventArgs());
                 }
 
                 if (packet is PingMessage)
