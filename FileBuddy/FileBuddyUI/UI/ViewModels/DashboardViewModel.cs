@@ -62,7 +62,11 @@ namespace FileBuddyUI.UI.ViewModels
             // Subscribe to client socket event (triggered if data is received)
             WebSocketClient.Instance.NewUpdateRequestReceived += new EventHandler(delegate (Object o, EventArgs a)
             {
-                Task.Run(() => FetchFiles());
+                Task.Run(() =>
+                App.Current.Dispatcher.Invoke(async delegate
+                {
+                    await FetchFiles();
+                }));
             });
         }
 
@@ -199,8 +203,8 @@ namespace FileBuddyUI.UI.ViewModels
                 return;
             }
             // filenames containing blanks can not be processed by the API
-            if (Path.GetFileName(fullFilePath).Contains(" ")) 
-            {                
+            if (Path.GetFileName(fullFilePath).Contains(" "))
+            {
                 ToastMessenger.NotifierInstance.ShowWarning(UITexts.FilenameWithBlanks);
                 return;
             }
