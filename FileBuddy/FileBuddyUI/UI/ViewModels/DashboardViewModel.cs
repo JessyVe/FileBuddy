@@ -15,10 +15,13 @@ using ToastNotifications.Messages;
 
 namespace FileBuddyUI.UI.ViewModels
 {
+    /// <summary>
+    /// Logic for the dashboard UI.
+    /// </summary>
     public class DashboardViewModel : PropertyChangedBase
     {
         private static readonly log4net.ILog Log =
-         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                 log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public ObservableCollection<DisplayedSharedFile> ReceivedFiles { get; set; }
         public ObservableCollection<DisplayedSharedFile> SentFiles { get; set; }
@@ -33,7 +36,7 @@ namespace FileBuddyUI.UI.ViewModels
         public ICommand OnUploadFiles { get; }
         public ICommand OnFetchFiles { get; }
 
-        // TODO: Extract into class
+
         public string CurrentAction { get; set; }
         public Brush CurrentActionColor { get; set; }
 
@@ -57,8 +60,14 @@ namespace FileBuddyUI.UI.ViewModels
             CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];          
         }
 
+        /// <summary>
+        /// Fetches file information for files, which are downloadabel 
+        /// for the sign in user.
+        /// </summary>
+        /// <returns></returns>
         public async Task FetchFiles()
         {
+            Log.Debug("Attempting to fetch files from API.");
             try
             {
                 var fetchedFiles = await ApiClient.Instance.FetchAvailableFiles(UserInformation.Instance.CurrentUser.Id);
@@ -74,16 +83,22 @@ namespace FileBuddyUI.UI.ViewModels
                 {
                     ReceivedFiles.Add(file);
                 }
-               await CollectionSorter.Sort(ReceivedFiles);
+                Log.Debug($"{fetchedFiles.Count} files(s) were fetched for current user. ");
             }
             catch (Exception ex)
             {
+                Log.ErrorFormat("An error occured while fetching files from API. ", ex);
                 ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
         }
 
+        /// <summary>
+        /// Uploads files to the API and sends notification via web socket.
+        /// </summary>
         private async void UploadFiles()
         {
+            Log.Debug("Attempting to upload files to API.");
+
             var successfullSendFiles = new List<UploadFile>();
             foreach (var uploadFile in ToUploadFiles)
             {
@@ -91,24 +106,35 @@ namespace FileBuddyUI.UI.ViewModels
                 {
                     await ApiClient.Instance.Upload(UserInformation.Instance.CurrentUser.Id, new List<UserGroup>(), uploadFile.FullPath);
                     successfullSendFiles.Add(uploadFile);
+
+                    if (!WebSocketClient.Instance.IsConnected)
+                    {
+                        Log.Error("An error occured while uploading files. Update request to web server could not be send. Not connected to server. ");
+                        ToastMessenger.NotifierInstance.ShowError("You are not connected to a server. Realtime update may not be possible!");
+                    }
+                    else
+                    {
+                        await WebSocketClient.Instance.Send(UserInformation.Instance.CurrentUser.Id);
+                        Log.Debug("Update request was sent to server. ");
+                    }
                 }
                 catch (Exception ex)
                 {
                     ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
                 }
             }
+            Log.Debug($"{ToUploadFiles.Count} file(s) were uploaded to the API. ");
+
             successfullSendFiles.ForEach(file => RemoveFile(file));
             ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.SuccessfullUpload, successfullSendFiles.Count));
-
-
-            if (!WebSocketClient.Instance.IsConnected)
-                ToastMessenger.NotifierInstance.ShowError("You are not connected to a server. Realtime update may not be possible!");
-            else
-                await WebSocketClient.Instance.Send(UserInformation.Instance.CurrentUser.Id);
         }
 
+        /// <summary>
+        /// Downloads request file form API.
+        /// </summary>
         private async void DownloadFile()
         {
+            Log.Debug("Attempting to download files from API.");
             try
             {
                 var savedPath = await ApiClient.Instance.Download(new DownloadRequest()
@@ -116,14 +142,21 @@ namespace FileBuddyUI.UI.ViewModels
                     ApiPath = SelectedDowloadFile.ApiPath,
                     ReceiverId = UserInformation.Instance.CurrentUser.Id
                 });
+                Log.Debug($"File was downloaded and save at: {savedPath}");
                 ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.FileSavedAt, savedPath));
             }
             catch (Exception ex)
             {
+                Log.ErrorFormat("An error occured while downloading files from API. ", ex);
                 ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
         }
 
+        /// <summary>
+        /// Removes either the given file or the object 
+        /// containing the selected path from the upload list.
+        /// </summary>
+        /// <param name="file"></param>
         private void RemoveFile(UploadFile file = null)
         {
             ToUploadFiles.Remove(file ?? SelectedUploadFile);
@@ -133,6 +166,9 @@ namespace FileBuddyUI.UI.ViewModels
                 SetUIToDefault();
         }
 
+        /// <summary>
+        /// Resets the UI to its initial state.
+        /// </summary>
         private void SetUIToDefault()
         {
             CurrentAction = UITexts.DragFileHere;
@@ -142,6 +178,10 @@ namespace FileBuddyUI.UI.ViewModels
             OnPropertyChanged(nameof(CurrentActionColor));
         }
 
+        /// <summary>
+        /// Adds a new object to the upload list and changes the ui accordingly. 
+        /// </summary>
+        /// <param name="fullFilePath"></param>
         public void AddUploadFile(string fullFilePath)
         {
             if (_currentUploadPaths.Contains(fullFilePath))
@@ -149,19 +189,22 @@ namespace FileBuddyUI.UI.ViewModels
                 ToastMessenger.NotifierInstance.ShowInformation(UITexts.FileIsAlreadyShared);
                 return;
             }
-            if (Path.GetFileName(fullFilePath).Contains(" "))
-            {
+            // filenames containing blanks can not be processed by the API
+            if (Path.GetFileName(fullFilePath).Contains(" ")) 
+            {                
                 ToastMessenger.NotifierInstance.ShowWarning(UITexts.FilenameWithBlanks);
                 return;
             }
 
             _currentUploadPaths.Add(fullFilePath);
+
             var sharedFile = new UploadFile()
             {
                 SharedFileName = Path.GetFileName(fullFilePath),
                 FullPath = fullFilePath
             };
             ToUploadFiles.Add(sharedFile);
+
             CurrentAction = UITexts.ShareNow;
             CurrentActionColor = (Brush)Application.Current.Resources["BuddyGreen"];
 

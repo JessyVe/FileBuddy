@@ -14,7 +14,7 @@ namespace WebSocketServerUI
         { }
 
         /// <summary>
-        /// Processes all user requestes.
+        /// Processes all user messages.
         /// </summary>
         /// <param name="receivedMessage"></param>
         /// <param name="client"></param>
