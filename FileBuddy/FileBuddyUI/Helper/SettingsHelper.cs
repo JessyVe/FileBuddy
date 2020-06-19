@@ -1,4 +1,6 @@
-﻿namespace FileBuddyUI.Helper
+﻿using System.Net;
+
+namespace FileBuddyUI.Helper
 {
     public class SettingsHelper
     {
@@ -17,6 +19,10 @@
 
         private SettingsHelper() { }
 
-        public ApplicationSettings ApplicationSettings { get; set; }
+        public ApplicationSettings ApplicationSettings { get; set; } = new ApplicationSettings()
+        {
+            SocketServerAddress = IPAddress.Parse("127.0.0.1"),
+            SocketServerPort = 8000
+        };
     }
 }

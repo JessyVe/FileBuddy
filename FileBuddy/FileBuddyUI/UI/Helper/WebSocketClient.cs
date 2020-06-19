@@ -1,6 +1,5 @@
 ﻿using FileBuddyUI.Helper;
 using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using WebSocketServer.Client;
@@ -8,35 +7,23 @@ using WebSocketServer.MessageTypes;
 
 namespace FileBuddyUI.UI.Helper
 {
-    public class WebSocketClientViewModel : ViewModelBase
+    public class WebSocketClient : PropertyChangedBase
     {
-        private string _status;
-        public string Status
+        private static readonly log4net.ILog Log =
+         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private bool _isConnected = false;
+        public bool IsConnected
         {
-            get => _status;
+            get => _isConnected; 
             set
             {
-                if (_status == value)
+                if (_isConnected == value)
                     return;
 
-                _status = value;
+                _isConnected = value;
 
-                OnPropertyChanged(nameof(Status));
-            }
-        }
-
-        private bool _isRunning = false;
-        public bool IsRunning
-        {
-            get => _isRunning; 
-            set
-            {
-                if (_isRunning == value)
-                    return;
-
-                _isRunning = value;
-
-                OnPropertyChanged(nameof(IsRunning));
+                OnPropertyChanged(nameof(IsConnected));
             }
         }
 
@@ -50,10 +37,34 @@ namespace FileBuddyUI.UI.Helper
         private DateTime _pingLastSent;
         private bool _pinged = false;
 
-        public async Task Connect()
-        {
-            Status = "Connecting...";
+        private static WebSocketClient _instance;
 
+        public static WebSocketClient Instance
+        {
+            get
+            {
+                if (_instance == null) 
+                    _instance = new WebSocketClient();
+
+                return _instance;
+            }
+        }
+
+        private WebSocketClient() {
+
+            
+        }
+
+        public event EventHandler NewUpdateRequestReceived;
+
+        protected virtual void OnThresholdReached(EventArgs e)
+        {
+            EventHandler handler = NewUpdateRequestReceived;
+            handler?.Invoke(this, e);
+        }
+
+        public async Task Connect()
+        {        
             if (SetupClient())
             {
                 var packet = await GetNewConnectionPacket();
@@ -63,8 +74,15 @@ namespace FileBuddyUI.UI.Helper
 
         private bool SetupClient()
         {
-            _client = new SocketClient(SettingsHelper.Instance.ApplicationSettings.SocketServerAddress, 
-                SettingsHelper.Instance.ApplicationSettings.SocketServerPort, 100);
+            try
+            {
+                _client = new SocketClient(SettingsHelper.Instance.ApplicationSettings.SocketServerAddress,
+                    SettingsHelper.Instance.ApplicationSettings.SocketServerPort, 100);
+            }
+            catch (Exception ex)
+            {
+
+            }
             return true;
         }
 
@@ -72,16 +90,14 @@ namespace FileBuddyUI.UI.Helper
         {
             _pinged = false;
 
-            if (IsRunning)
+            if (IsConnected)
             {
                 _updateTask = Task.Run(() => Update());
                 await _client.SendObject(connectionPacket);
-                _connectionTask = Task.Run(() => MonitorConnection());
-                Status = "Connected";
+                _connectionTask = Task.Run(() => MonitorConnection());        
             }
             else
             {
-                Status = "Connection failed";
                 await Disconnect();
             }
         }
@@ -90,7 +106,7 @@ namespace FileBuddyUI.UI.Helper
         {
             _listenTask = Task.Run(() => _client.ConnectToServer());
 
-            IsRunning = await _listenTask;
+            IsConnected = await _listenTask;
 
             var notifyServer = new UserConnectionPacket
             {
@@ -109,16 +125,14 @@ namespace FileBuddyUI.UI.Helper
 
         public async Task Disconnect()
         {
-            if (IsRunning)
+            if (IsConnected)
             {
-                IsRunning = false;
+                IsConnected = false;
                 await _connectionTask;
                 await _updateTask;
 
                 _client.Disconnect();
             }
-
-            Status = "Disconnected";
         }
 
         public async Task Send(int receiverId)
@@ -131,7 +145,7 @@ namespace FileBuddyUI.UI.Helper
 
         private async Task Update()
         {
-            while (IsRunning)
+            while (IsConnected)
             {
                 Thread.Sleep(1);
                 var recieved = await MonitorData();
@@ -146,7 +160,7 @@ namespace FileBuddyUI.UI.Helper
             _pingSent = DateTime.Now;
             _pingLastSent = DateTime.Now;
 
-            while (IsRunning)
+            while (IsConnected)
             {
                 Thread.Sleep(1);
                 var timePassed = (_pingSent.TimeOfDay - _pingLastSent.TimeOfDay);
@@ -183,11 +197,13 @@ namespace FileBuddyUI.UI.Helper
 
         private bool ManagePacket(object packet)
         {
+            NewUpdateRequestReceived.Invoke(this, new EventArgs());
+
             if (packet != null)
             {
                 if (packet is UpdateMessage chatP)
                 {
-                   
+                    NewUpdateRequestReceived.Invoke(this, new EventArgs());
                 }
 
                 if (packet is UserConnectionPacket connectionP)

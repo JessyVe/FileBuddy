@@ -24,3 +24,4 @@ FileBuddy/WebSocketServerUI/bin/
 FileBuddy/WebSocketServerUI/obj/
 FileBuddy/WebSocketServer/bin/Debug/netcoreapp3.1/WebSocketServer.dll
 FileBuddy/WebSocketServer/bin/
+FileBuddy/BackendTests/bin/

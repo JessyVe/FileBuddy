@@ -23,12 +23,12 @@ namespace FileBuddyUI
 
             _loginScreenViewModel = new LoginScreenViewModel();
             _registerScreenViewModel = new RegisterScreenViewModel();
-            _dashboardViewModel = new DashboardViewModel();          
+            _dashboardViewModel = new DashboardViewModel();
 
             _loginScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;
             _registerScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;
 
-            DataContext = _loginScreenViewModel; 
+            DataContext = _loginScreenViewModel;
         }
 
         private void OnAuthentificationenSuccess(object sender, System.EventArgs e)

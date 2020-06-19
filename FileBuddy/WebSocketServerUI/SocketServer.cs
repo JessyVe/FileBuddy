@@ -1,6 +1,6 @@
-﻿using SharedRessources.Dtos.MessageTypes;
-using System.Net;
+﻿using System.Net;
 using WebSocketServer.Client;
+using WebSocketServer.MessageTypes;
 using WebSocketServer.Server;
 
 namespace WebSocketServerUI

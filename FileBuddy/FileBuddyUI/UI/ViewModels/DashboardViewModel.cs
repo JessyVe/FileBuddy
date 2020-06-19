@@ -7,14 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using ToastNotifications.Messages;
+using WebSocketServer.Helper;
 
 namespace FileBuddyUI.UI.ViewModels
 {
-    public class DashboardViewModel : WebSocketClientViewModel
+    public class DashboardViewModel : PropertyChangedBase
     {
         public ObservableCollection<DisplayedSharedFile> ReceivedFiles { get; set; }
         public ObservableCollection<DisplayedSharedFile> SentFiles { get; set; }
@@ -37,11 +39,13 @@ namespace FileBuddyUI.UI.ViewModels
 
         public DashboardViewModel()
         {
+            // Initialize collections
             ReceivedFiles = new ObservableCollection<DisplayedSharedFile>();
             SentFiles = new ObservableCollection<DisplayedSharedFile>();
-
             ToUploadFiles = new ObservableCollection<UploadFile>();
+            _currentUploadPaths = new List<string>();
 
+            // Initialize ui events
             OnRemoveFileCommand = new RelayCommand(o => RemoveFile());
             OnDownloadFile = new RelayCommand(o => DownloadFile());
             OnUploadFiles = new RelayCommand(o => UploadFiles());
@@ -50,7 +54,10 @@ namespace FileBuddyUI.UI.ViewModels
             CurrentAction = UITexts.DragFileHere;
             CurrentActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
 
-            _currentUploadPaths = new List<string>();
+            Task.Run(() => WebSocketClient.Instance.Connect()).ContinueWith(asdf => 
+            { 
+            
+            });
         }
 
         public async void FetchFiles()
@@ -60,8 +67,8 @@ namespace FileBuddyUI.UI.ViewModels
                 var fetchedFiles = await ApiClient.Instance.FetchAvailableFiles(UserInformation.Instance.CurrentUser.Id);
                 var fileCount = fetchedFiles.Count;
 
-                if(fileCount == 0)
-                     ToastMessenger.NotifierInstance.ShowInformation(UITexts.NoNewFiles);
+                if (fileCount == 0)
+                    ToastMessenger.NotifierInstance.ShowInformation(UITexts.NoNewFiles);
                 else
                     ToastMessenger.NotifierInstance.ShowInformation(string.Format(UITexts.ReceivedFiles, fetchedFiles.Count));
 
@@ -86,7 +93,7 @@ namespace FileBuddyUI.UI.ViewModels
                 try
                 {
                     await ApiClient.Instance.Upload(UserInformation.Instance.CurrentUser.Id, new List<UserGroup>(), uploadFile.FullPath);
-                    successfullSendFiles.Add(uploadFile);                   
+                    successfullSendFiles.Add(uploadFile);
                 }
                 catch (Exception ex)
                 {
@@ -95,6 +102,12 @@ namespace FileBuddyUI.UI.ViewModels
             }
             successfullSendFiles.ForEach(file => RemoveFile(file));
             ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.SuccessfullUpload, successfullSendFiles.Count));
+
+
+            if (!WebSocketClient.Instance.IsConnected)
+                ToastMessenger.NotifierInstance.ShowError("You are not connected to a server. Realtime update may not be possible!");
+            else
+                await WebSocketClient.Instance.Send(UserInformation.Instance.CurrentUser.Id);
         }
 
         private async void DownloadFile()
@@ -103,7 +116,7 @@ namespace FileBuddyUI.UI.ViewModels
             {
                 var savedPath = await ApiClient.Instance.Download(new DownloadRequest()
                 {
-                    ApiPath = SelectedDowloadFile.ApiPath, 
+                    ApiPath = SelectedDowloadFile.ApiPath,
                     ReceiverId = UserInformation.Instance.CurrentUser.Id
                 });
                 ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.FileSavedAt, savedPath));
@@ -139,7 +152,7 @@ namespace FileBuddyUI.UI.ViewModels
                 ToastMessenger.NotifierInstance.ShowInformation(UITexts.FileIsAlreadyShared);
                 return;
             }
-            if(Path.GetFileName(fullFilePath).Contains(" "))
+            if (Path.GetFileName(fullFilePath).Contains(" "))
             {
                 ToastMessenger.NotifierInstance.ShowWarning(UITexts.FilenameWithBlanks);
                 return;

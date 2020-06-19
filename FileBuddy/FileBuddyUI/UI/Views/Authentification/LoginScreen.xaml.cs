@@ -1,11 +1,6 @@
 ﻿using FileBuddyUI.UI.ViewModels;
-using SharedRessources.DataAccess.ApiAccess;
-using SharedRessources.Dtos;
-using SharedRessources.Services;
-using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace FileBuddyUI.UI.Views
 {

@@ -5,7 +5,7 @@ namespace FileBuddyUI.UI.Helper
     /// <summary>
     /// Implements the base functionalities for a view model
     /// </summary>
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class PropertyChangedBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

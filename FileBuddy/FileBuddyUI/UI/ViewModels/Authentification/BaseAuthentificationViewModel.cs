@@ -5,7 +5,7 @@ using ToastNotifications.Messages;
 
 namespace FileBuddyUI.UI.ViewModels
 {
-    public abstract class BaseAuthentificationViewModel : ViewModelBase
+    public abstract class BaseAuthentificationViewModel : PropertyChangedBase
     {
         private string _mailAddress;
         public string MailAddress
