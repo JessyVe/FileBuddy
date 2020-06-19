@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileBuddyUI.Helper;
+using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using WebSocketServer.MessageTypes;
 
 namespace FileBuddyUI.UI.Helper
 {
-    public class WebSocketClient : ViewModelBase
+    public class WebSocketClientViewModel : ViewModelBase
     {
         private string _status;
         public string Status
@@ -49,20 +50,21 @@ namespace FileBuddyUI.UI.Helper
         private DateTime _pingLastSent;
         private bool _pinged = false;
 
-        public async Task Connect(string address, int port)
+        public async Task Connect()
         {
             Status = "Connecting...";
 
-            if (SetupClient(address, port))
+            if (SetupClient())
             {
                 var packet = await GetNewConnectionPacket();
                 await InitializeConnection(packet);
             }
         }
 
-        private bool SetupClient(string address, int port)
+        private bool SetupClient()
         {
-            _client = new SocketClient(IPAddress.Parse(address), port, 100);
+            _client = new SocketClient(SettingsHelper.Instance.ApplicationSettings.SocketServerAddress, 
+                SettingsHelper.Instance.ApplicationSettings.SocketServerPort, 100);
             return true;
         }
 

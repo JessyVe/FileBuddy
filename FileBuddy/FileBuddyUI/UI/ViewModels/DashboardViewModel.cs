@@ -1,4 +1,5 @@
-﻿using FileBuddyUI.UI.Helper;
+﻿using FileBuddyUI.Helper;
+using FileBuddyUI.UI.Helper;
 using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.DisplayedTypes;
 using SharedRessources.Dtos;
@@ -13,7 +14,7 @@ using ToastNotifications.Messages;
 
 namespace FileBuddyUI.UI.ViewModels
 {
-    public class DashboardViewModel : ViewModelBase
+    public class DashboardViewModel : WebSocketClientViewModel
     {
         public ObservableCollection<DisplayedSharedFile> ReceivedFiles { get; set; }
         public ObservableCollection<DisplayedSharedFile> SentFiles { get; set; }
@@ -69,7 +70,7 @@ namespace FileBuddyUI.UI.ViewModels
                 {
                     ReceivedFiles.Add(file);
                 }
-                CollectionSorter.Sort<DisplayedSharedFile>(ReceivedFiles);
+                CollectionSorter.Sort(ReceivedFiles);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using FileBuddyUI.UI.Helper;
+﻿using FileBuddyUI.Helper;
+using FileBuddyUI.UI.Helper;
 using FileBuddyUI.UI.ViewModels;
 using System.Windows;
 using System.Windows.Input;

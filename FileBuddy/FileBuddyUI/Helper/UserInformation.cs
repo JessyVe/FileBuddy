@@ -1,7 +1,10 @@
 ﻿using SharedRessources.Dtos;
 
-namespace FileBuddyUI
+namespace FileBuddyUI.Helper
 {
+    /// <summary>
+    /// Holds informations of currently locked in user.
+    /// </summary>
     public class UserInformation
     {
         private static UserInformation _instance;
