@@ -72,17 +72,5 @@ namespace SharedRessources.DataAccess.Authentification
         {
             return TokenGenerator.GenerateAuthentificationToken();
         }
-
-        public AuthentificationToken RefreshToken(AuthentificationToken authentificationToken)
-        {
-            Log.Debug("Attempting to refresh authentification token.");
-            throw new NotImplementedException();
-        }
-
-        public void RevokeToken(string userId)
-        {
-            Log.Debug("Attempting to revoke authentification token.");
-            throw new NotImplementedException();
-        }
     }
 }

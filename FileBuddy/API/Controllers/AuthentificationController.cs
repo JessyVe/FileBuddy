@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedRessources.DataAccess.Authentification;
 using SharedRessources.Dtos;
+using SharedRessources.Services.TokenLogic;
 
 namespace API.Controllers
 {
@@ -19,7 +20,7 @@ namespace API.Controllers
 
         public AuthentificationController()
         {
-            _authentificationService = new AuthentificationService();
+            _authentificationService = new AuthentificationService();          
         }
 
         /// <summary>
@@ -92,41 +93,6 @@ namespace API.Controllers
             }
             Log.Debug("User was logged in successfully!");
             return loggedInUser;
-        }
-
-        /// <summary>
-        /// Returns a refreshed authentification token.
-        /// </summary>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("refresh")]
-        public ActionResult<AuthentificationToken> RefreshToken(AuthentificationToken token)
-        {
-            var refreshToken = _authentificationService.RefreshToken(token);
-
-            if (refreshToken == null)
-            {
-                var errorText = "Unable to refresh given token.";
-                Log.Error(errorText);
-                return BadRequest(errorText);
-            }
-            return refreshToken;
-        }
-
-        /// <summary>
-        /// Revokes to token of the user sending the request.
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [Authorize]
-        [Route("revoketoken")]
-        public IActionResult Revoke()
-        {
-            var userId = User.Identity.Name;
-            _authentificationService.RevokeToken(userId);
-
-            return NoContent();
-        }
+        }       
     }
 }
