@@ -4,7 +4,7 @@ namespace SharedRessources.Services
 {
     public static class MacAddressRetriever
     {
-        private static readonly log4net.ILog Log 
+        private static readonly log4net.ILog Log
             = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -19,16 +19,12 @@ namespace SharedRessources.Services
 
             foreach (var nic in NetworkInterface.GetAllNetworkInterfaces())
             {
-                Log.Debug(
-                    "Found MAC Address: " + nic.GetPhysicalAddress() +
-                    " Type: " + nic.NetworkInterfaceType);
+                Log.Debug($"Found MAC Address: {nic.GetPhysicalAddress()} Type: {nic.NetworkInterfaceType}");
 
-                string tempMac = nic.GetPhysicalAddress().ToString();
-                if (nic.Speed > maxSpeed &&
-                    !string.IsNullOrEmpty(tempMac) &&
-                    tempMac.Length >= MIN_MAC_ADDR_LENGTH)
+                var tempMac = nic.GetPhysicalAddress().ToString();
+                if (nic.Speed > maxSpeed && !string.IsNullOrEmpty(tempMac) && tempMac.Length >= MIN_MAC_ADDR_LENGTH)
                 {
-                    Log.Debug("New Max Speed = " + nic.Speed + ", MAC: " + tempMac);
+                    Log.Debug($"New Max Speed = {nic.Speed} , MAC: {tempMac}");
                     maxSpeed = nic.Speed;
                     macAddress = tempMac;
                 }

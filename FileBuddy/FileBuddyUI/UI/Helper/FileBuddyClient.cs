@@ -132,24 +132,22 @@ namespace FileBuddyUI.UI.Helper
 
             while (IsConnected)
             {
-                Thread.Sleep(1);
                 var timePassed = (_pingSent.TimeOfDay - _pingLastSent.TimeOfDay);
-                if (timePassed > TimeSpan.FromSeconds(10))
+
+                if (timePassed > TimeSpan.FromSeconds(20))
                 {
                     if (!_pinged)
                     {
-                        var result = await _client.PingConnection();
-                        _pinged = true;
+                        _pingSent = DateTime.Now;
 
-                        Thread.Sleep(5000);
+                        var result = await _client.PingConnection();  // send a ping request
+                        _pinged = true; // ping was executed
 
-                        if (!_pinged)
+                        Thread.Sleep(15000); // wait a pre-definied time for a response
+
+                        if (_pinged) // _pinged should be rested to false by now (Method: ManagePacket)
                             await Task.Run(() => DisconnectFromServer());
                     }
-                }
-                else
-                {
-                    _pingSent = DateTime.Now;
                 }
             }
         }
@@ -173,7 +171,6 @@ namespace FileBuddyUI.UI.Helper
                 {
                     OnNewUpdateRequestReceived(new EventArgs());
                 }
-
                 if (packet is PingMessage)
                 {
                     _pingLastSent = DateTime.Now;

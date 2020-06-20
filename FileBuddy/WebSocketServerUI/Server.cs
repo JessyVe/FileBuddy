@@ -1,8 +1,12 @@
 ﻿using log4net;
+using SharedRessources.Services;
 using System;
+using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 using WebSocketServer.Server;
 
 namespace WebSocketServerUI
@@ -22,9 +26,17 @@ namespace WebSocketServerUI
 
         public static void Main(string[] args) 
         {
+            var log4netConfig = new XmlDocument();
+            log4netConfig.Load(File.OpenRead("log4net.config"));
+            var repo = log4net.LogManager.CreateRepository(Assembly.GetEntryAssembly(),
+                       typeof(log4net.Repository.Hierarchy.Hierarchy));
+            log4net.Config.XmlConfigurator.Configure(repo, log4netConfig["log4net"]);
+
             Log.Info("*** Server will be available in short. Please wait ... ***");
             var server = new Server();
             server.StartServer();
+
+
 
             Console.Read();
         }

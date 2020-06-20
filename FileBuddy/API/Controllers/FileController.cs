@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -56,13 +55,14 @@ namespace API.Controllers
                     SharedFileName = fileName, 
                     UploadDate = DateTime.Now
                 };
-                 _fileDataAccess.UploadFile(sharedFile, new List<int>() { receiverId });
+                Log.Debug("File upload was completed. ");
+                _fileDataAccess.UploadFile(sharedFile, new List<int>() { receiverId });
 
                 return Ok();
-
             }
             catch (Exception ex)
             {
+                Log.ErrorFormat("Error while uploading file.", ex);
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
@@ -86,9 +86,9 @@ namespace API.Controllers
                 Log.Error(errorText);
                 return BadRequest(errorText);
             }
-
-            _fileDataAccess.FileDownloaded(new DownloadTransaction()); // TODO: Create actual object
+            _fileDataAccess.FileDownloaded(new DownloadTransaction()); // TODO: Create actual object (only for advance purposes; history of downloads)
             Log.Debug("Successfully initialized download.");
+
             return PhysicalFile(downloadRequest.ApiPath, contentType, Path.GetFileName(downloadRequest.ApiPath));
         }
     }

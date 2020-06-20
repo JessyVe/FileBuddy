@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace SharedRessources.Services
 {
     public static class JsonConverter
     {
-        private static readonly log4net.ILog Log =
-            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Returns a json string representing the given object.
         /// </summary>
@@ -27,26 +23,6 @@ namespace SharedRessources.Services
         public static T GetObjectFromJson<T>(string jsonString)
         {
             return JsonConvert.DeserializeObject<T>(jsonString);
-        }
-
-        /// <summary>
-        /// Returns true if conversation the the given type is possible.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="jsonString"></param>
-        /// <returns></returns>
-        public static bool TryParseJson<T>(string jsonString)
-        {
-            try
-            {
-                JsonConvert.DeserializeObject<T>(jsonString);
-                return true;
-
-            } catch(Exception ex)
-            {
-                Log.ErrorFormat("Unable to parse given string", ex);
-                return false;
-            } 
         }
     }
 }

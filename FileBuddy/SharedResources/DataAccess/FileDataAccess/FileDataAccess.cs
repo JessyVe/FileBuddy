@@ -23,7 +23,7 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// <returns></returns>
         public string GetApiPathOfFile(int fileId)
         {
-            Log.Debug("Api path was requested. ");
+            Log.Debug("File path was requested. ");
             using (var context = new SQLiteDBContext())
             {
                 return context.SharedFile.First(file => file.Id == fileId)?.ApiPath ?? default;
@@ -38,7 +38,7 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// <returns></returns>
         public void UploadFile(SharedFile sharedFile, IList<int> authorizedAccessGrantedTo)
         {
-            Log.Debug("File upload was completed. ");
+            Log.Debug("Information about new file upload will be save in database.");
             using (var context = new SQLiteDBContext())
             {
                 context.SharedFile.Add(sharedFile);
@@ -47,8 +47,10 @@ namespace SharedRessources.DataAccess.FileDataAccess
             }
 
             if (sharedFile.Id == 0)
+            {
+                Log.Error("Unable to save file information in database.");
                 throw new Exception("Database insert faild.");
-
+            }
             SaveAuthorizedAccessGranted(authorizedAccessGrantedTo, sharedFile.Id);
         }
 
