@@ -21,6 +21,7 @@ namespace FileBuddyUI.Helper
 
         public ApplicationSettings ApplicationSettings { get; set; } = new ApplicationSettings()
         {
+            // TODO: Load settings from acutal settings file. 
             SocketServerAddress = IPAddress.Parse("127.0.0.1"),
             SocketServerPort = 8000
         };

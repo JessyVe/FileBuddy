@@ -1,0 +1,2 @@
+2020-06-20 08:39:21,203 [4] DEBUG API.Controllers.AuthentificationController - LoginWithMailAddress()-Method was called.
+2020-06-20 08:39:21,217 [4] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to login user with mail address.

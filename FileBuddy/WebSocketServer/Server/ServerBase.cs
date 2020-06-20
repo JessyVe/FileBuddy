@@ -27,6 +27,8 @@ namespace WebSocketServer.Server
 
         public bool IsRunning { get; private set; }  
 
+        public string ConnectionInformation { get; private set; }
+
         public ServerBase(IPAddress address, int port)
         {
             EndPoint = new IPEndPoint(address, port);
@@ -38,16 +40,17 @@ namespace WebSocketServer.Server
         protected abstract void ProcessClientPackets(object receivedMessage, SocketClient client);
 
         private void SetupSocket()
-        {
-            Socket = new Socket(AddressFamily.InterNetwork,
-                          SocketType.Stream, ProtocolType.Tcp)
-            { ReceiveTimeout = 5000 };
-
+        {          
             try
             {
+                Socket = new Socket(AddressFamily.InterNetwork,
+                         SocketType.Stream, ProtocolType.Tcp)
+                { ReceiveTimeout = 5000 };
 
                 Socket.Bind(EndPoint);
                 Socket.Listen(10);
+                ConnectionInformation = $"{EndPoint.Address}:{EndPoint.Port}";
+
             } catch(SocketException ex)
             {
                 Log.ErrorFormat("Socket address may already be in use.", ex);
@@ -90,6 +93,7 @@ namespace WebSocketServer.Server
                             var newGuid = await client.CreateGuid(newConnection);
                             await client.SendMessage(newGuid);
                             Connections.Add(client);
+                            Log.Info("A new connection was established.");
                         }
                     }
                     catch (Exception ex)
@@ -113,12 +117,16 @@ namespace WebSocketServer.Server
                     if (!client.IsSocketConnected())
                     {
                         Connections.Remove(client);
+                        Log.Info("A connection was now longer valid and was removed. ");
                     }
                     // handle client message if received
                     else if (client.Socket.Available != 0)
                     {
+                        Log.Debug("A new message was received from client. ");
                         var receivedMessage = ReadMessage(client.Socket);
-                        ProcessClientPackets(receivedMessage, client);
+
+                        if(receivedMessage != null)
+                            ProcessClientPackets(receivedMessage, client);
                     }
                 }
             }
@@ -134,14 +142,21 @@ namespace WebSocketServer.Server
         {
             byte[] data = new byte[clientSocket.ReceiveBufferSize];
 
-            using (var networkStream = new NetworkStream(clientSocket))
+            try
             {
-                networkStream.Read(data, 0, data.Length);
-                var memory = new MemoryStream(data) { Position = 0 };
-                var formatter = new BinaryFormatter();
+                using (var networkStream = new NetworkStream(clientSocket))
+                {
+                    networkStream.Read(data, 0, data.Length);
+                    var memory = new MemoryStream(data) { Position = 0 };
+                    var formatter = new BinaryFormatter();
 
-                return formatter.Deserialize(memory);
+                    return formatter.Deserialize(memory);
+                }
+            } catch(Exception ex)
+            {
+                Log.ErrorFormat("Error while reading message from client. Request can not be processed. ", ex);
             }
+            return null;
         }
     }
 }

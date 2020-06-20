@@ -3,7 +3,6 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using WebSocketServer.Server;
 
 namespace WebSocketServerUI
@@ -20,8 +19,6 @@ namespace WebSocketServerUI
 
         private Task _updateTask;
         private Task _listenTask;
-
-        public ICommand RunCommand { get; set; }
 
         public static void Main(string[] args) 
         {
@@ -53,6 +50,7 @@ namespace WebSocketServerUI
 
             Log.Info("Setting up server...");
             _socketServer = new SocketServer(IPAddress.Any, socketPort);
+            Log.Info($"Variables are initialized. The server is now online ({_socketServer.ConnectionInformation})");
         }
 
         private async Task Stop()

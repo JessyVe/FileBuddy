@@ -45,7 +45,9 @@ namespace SharedRessources.DataAccess.Authentification
                         return user;
                 }
             }
-            throw new Exception("User with specified MAC address was not found or password is invalid!");
+            var ex = new Exception("User with specified MAC address was not found or password is invalid!");
+            Log.ErrorFormat("Login Failed.", ex);
+            throw ex;
         }
 
         public AppUser LoginWithMailAddress(string mailAddress, string password)
@@ -61,8 +63,9 @@ namespace SharedRessources.DataAccess.Authentification
                     return user;
                 }
             }
-            
-            throw new Exception("User with specified mailAddress was not found or password is invalid!");
+            var ex = new Exception("User with specified mailAddress was not found or password is invalid!");
+            Log.ErrorFormat("Login Failed.", ex);
+            throw ex;
         }
 
         private AuthentificationToken CreateAuthentificationToken(string userId)

@@ -7,28 +7,14 @@ using WebSocketServer.MessageTypes;
 
 namespace FileBuddyUI.UI.Helper
 {
-    public class WebSocketClient : PropertyChangedBase
+    public class FileBuddyClient : IWebSocketClient
     {
         private static readonly log4net.ILog Log =
                 log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private bool _isConnected = false;
-        public bool IsConnected
-        {
-            get => _isConnected;
-            set
-            {
-                if (_isConnected == value)
-                    return;
-
-                _isConnected = value;
-
-                OnPropertyChanged(nameof(IsConnected));
-            }
-        }
+        public bool IsConnected { get; set; }
 
         private SocketClient _client;
-
         private Task<bool> _listenTask;
         private Task _updateTask;
         private Task _connectionTask;
@@ -37,20 +23,22 @@ namespace FileBuddyUI.UI.Helper
         private DateTime _pingLastSent;
         private bool _pinged = false;
 
-        private static WebSocketClient _instance;
-        public static WebSocketClient Instance
+        #region Singleton
+        private static FileBuddyClient _instance;
+        public static FileBuddyClient Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new WebSocketClient();
+                    _instance = new FileBuddyClient();
 
                 return _instance;
             }
         }
 
-        private WebSocketClient()
+        private FileBuddyClient()
         { }
+        #endregion
 
         public event EventHandler NewUpdateRequestReceived;
         protected virtual void OnNewUpdateRequestReceived(EventArgs e)
@@ -59,7 +47,7 @@ namespace FileBuddyUI.UI.Helper
             handler?.Invoke(this, e);
         }
 
-        public async Task Connect()
+        public async Task ConnectToServer()
         {
             if (SetupClient())
             {
@@ -103,14 +91,12 @@ namespace FileBuddyUI.UI.Helper
                 _updateTask = Task.Run(() => Update());
                 await _client.SendObject(connectionPacket);
                 _connectionTask = Task.Run(() => MonitorConnection());
+                return;
             }
-            else
-            {
-                await Disconnect();
-            }
+            await DisconnectFromServer();
         }
 
-        public async Task Disconnect()
+        public async Task DisconnectFromServer()
         {
             if (IsConnected)
             {
@@ -135,10 +121,7 @@ namespace FileBuddyUI.UI.Helper
             while (IsConnected)
             {
                 Thread.Sleep(1);
-                var recieved = await MonitorData();
-
-                if (recieved)
-                    Console.WriteLine(recieved);
+                await MonitorData();
             }
         }
 
@@ -161,7 +144,7 @@ namespace FileBuddyUI.UI.Helper
                         Thread.Sleep(5000);
 
                         if (!_pinged)
-                            await Task.Run(() => Disconnect());
+                            await Task.Run(() => DisconnectFromServer());
                     }
                 }
                 else

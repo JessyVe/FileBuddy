@@ -42,6 +42,7 @@ namespace API.Controllers
                 Log.Error(errorText);
                 return BadRequest(errorText);
             }
+            Log.Debug("User was registered successfully!");
             return Ok(user);
         }
 
@@ -64,6 +65,7 @@ namespace API.Controllers
                 Log.Error(errorText);
                 return BadRequest(errorText);
             }
+            Log.Debug("User was logged in successfully!");
             return loggedInUser;
         }
 
@@ -88,6 +90,7 @@ namespace API.Controllers
                 Log.Error(errorText);
                 return BadRequest(errorText);
             }
+            Log.Debug("User was logged in successfully!");
             return loggedInUser;
         }
 
@@ -104,7 +107,7 @@ namespace API.Controllers
 
             if (refreshToken == null)
             {
-                var errorText = "Refresh given token.";
+                var errorText = "Unable to refresh given token.";
                 Log.Error(errorText);
                 return BadRequest(errorText);
             }

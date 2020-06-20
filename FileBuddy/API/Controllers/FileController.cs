@@ -36,6 +36,7 @@ namespace API.Controllers
         [HttpPost]
         public IActionResult Upload(int userId, int receiverId)
         {
+            Log.Debug("Upload() - Method was called.");
             try
             {
                 var file = Request.Form.Files[0];
@@ -73,10 +74,11 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("download")]
-        public async Task<IActionResult> Download(DownloadRequest downloadRequest)
+        public IActionResult Download(DownloadRequest downloadRequest)
         {
-            var fileProvider = new FileExtensionContentTypeProvider();
+            Log.Debug("Download() - Method was called.");
 
+            var fileProvider = new FileExtensionContentTypeProvider();
             if (!fileProvider.TryGetContentType(downloadRequest.ApiPath, out string contentType))
             {
                 var errorText = $"Unable to find Content Type for file name {downloadRequest.ApiPath}.";
@@ -86,7 +88,7 @@ namespace API.Controllers
             }
 
             _fileDataAccess.FileDownloaded(new DownloadTransaction()); // TODO: Create actual object
-
+            Log.Debug("Successfully initialized download.");
             return PhysicalFile(downloadRequest.ApiPath, contentType, Path.GetFileName(downloadRequest.ApiPath));
         }
     }

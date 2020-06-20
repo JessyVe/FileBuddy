@@ -32,11 +32,13 @@ namespace API.Controllers
         [Route("update/{user}")]
         public IActionResult UpdateUserInformation(AppUser user)
         {
+            Log.Debug("UpdateUserInformation() - Method was called.");
             try
             {
                 var success = _userAccess.UpdateUserInformation(user);
                 if (success)
                 {
+                    Log.Debug("User data was updated successfully.");
                     return Accepted();
                 }
             }
@@ -60,7 +62,10 @@ namespace API.Controllers
         [Route("fetchfiles/{userId}")]
         public string FetchAvailableFiles(int userId)
         {
+            Log.Debug("FetchAvailableFiles() - Method was called.");
             var files = _userAccess.FetchAvailableFiles(userId);
+
+            Log.Debug($"{files.Count} file(s)  were fetched for user.");
             return JsonConverter.GetAsJson(files);
         }
     }

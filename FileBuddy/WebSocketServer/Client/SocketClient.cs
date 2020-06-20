@@ -21,7 +21,6 @@ namespace WebSocketServer.Client
         public Socket Socket { get; private set; }
         public IPEndPoint EndPoint { get; private set; }
         public IPAddress Address { get; private set; }
-        public bool IsConnected { get; private set; }
 
         public bool IsGuidAssigned { get; set; }
 

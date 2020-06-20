@@ -5,6 +5,10 @@ using System.Windows;
 using System.Windows.Input;
 using ToastNotifications.Messages;
 using System.Threading.Tasks;
+using System.Xml;
+using System.IO;
+using System.Reflection;
+using SharedRessources.Services;
 
 namespace FileBuddyUI
 {
@@ -14,7 +18,7 @@ namespace FileBuddyUI
     public partial class MainWindow : Window
     {
         private static readonly log4net.ILog Log =
-         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+              log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly LoginScreenViewModel _loginScreenViewModel;
         private readonly RegisterScreenViewModel _registerScreenViewModel;
@@ -23,6 +27,10 @@ namespace FileBuddyUI
         public MainWindow()
         {
             InitializeComponent();
+            LoggingConfigurationLoader.LoadLoggingConfiguration(Assembly.GetEntryAssembly());
+            Log.Info("*** Welcome to FileBuddy! ***");
+            Log.Debug("UI is being set up...");
+
             DataContextChanged += OnDataContextChanged;
 
             _loginScreenViewModel = new LoginScreenViewModel();
@@ -33,10 +41,14 @@ namespace FileBuddyUI
             _registerScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;
 
             DataContext = _loginScreenViewModel;
+
+            Log.Debug("Initialization of components finished!");
         }
 
         private async void OnAuthentificationenSuccess(object sender, System.EventArgs e)
         {
+            Log.Debug("User authentification succeeded.");
+
             var args = e as AuthentificationEventArgs;
             UserInformation.Instance.CurrentUser = args.AppUser;
 
@@ -47,15 +59,18 @@ namespace FileBuddyUI
 
             DataContext = _dashboardViewModel;
 
+            Log.Debug("Files will be fetched from API...");
             await _dashboardViewModel.FetchFiles();
+
+            Log.Debug("Connection to socket server is established...");
             await ConnectToSocketServer();
         }
 
         private async Task ConnectToSocketServer()
         {
-            await WebSocketClient.Instance.Connect().ContinueWith(_ =>
+            await FileBuddyClient.Instance.ConnectToServer().ContinueWith(_ =>
             {
-                if (WebSocketClient.Instance.IsConnected)
+                if (FileBuddyClient.Instance.IsConnected)
                     Log.Info($"Successfully connected to socket server ({SettingsHelper.Instance.ApplicationSettings.SocketServerAddress}:{SettingsHelper.Instance.ApplicationSettings.SocketServerPort})");
                 else
                     Log.Error($"Unable to connect to socket server ({SettingsHelper.Instance.ApplicationSettings.SocketServerAddress}:{SettingsHelper.Instance.ApplicationSettings.SocketServerPort})");
@@ -64,6 +79,7 @@ namespace FileBuddyUI
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            Log.Debug("Data context of main window was changed. UI will be updated.");
             if (DataContext is LoginScreenViewModel)
             {
                 btBackToLogin.Visibility = Visibility.Hidden;

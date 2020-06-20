@@ -20,7 +20,7 @@ namespace WebSocketServerUI
         /// <param name="client"></param>
         protected override void ProcessClientPackets(object receivedMessage, SocketClient client)
         {
-            if(receivedMessage is UserConnectionMessage userConnectionMessage)
+            if (receivedMessage is UserConnectionMessage userConnectionMessage)
             {
                 Log.Debug("userConnectionMessage was received. UserId will be updated.");
                 client.UserId = userConnectionMessage.UserId;
@@ -31,7 +31,7 @@ namespace WebSocketServerUI
                 client.SendObject(pingPacket).Wait();
                 Log.Debug("Ping succeeded!");
             }
-            else if(receivedMessage is UpdateMessage updateMessage)
+            else if (receivedMessage is UpdateMessage updateMessage)
             {
                 Log.Debug("UpdateMessage was received. Affected clients will be notified.");
                 var user = Connections.Find(connection => connection.UserId == updateMessage.ReceiverId);

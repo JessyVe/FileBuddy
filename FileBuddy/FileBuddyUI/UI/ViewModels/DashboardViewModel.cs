@@ -60,7 +60,7 @@ namespace FileBuddyUI.UI.ViewModels
             CurrentDragAreaActionColor = (Brush)Application.Current.Resources["BuddyDarkGrey"];
 
             // Subscribe to client socket event (triggered if data is received)
-            WebSocketClient.Instance.NewUpdateRequestReceived += new EventHandler(delegate (Object o, EventArgs a)
+            FileBuddyClient.Instance.NewUpdateRequestReceived += new EventHandler(delegate (Object o, EventArgs a)
             {
                 Task.Run(() =>
                 App.Current.Dispatcher.Invoke(async delegate
@@ -72,7 +72,7 @@ namespace FileBuddyUI.UI.ViewModels
 
         /// <summary>
         /// Fetches file information for files, which are downloadabel 
-        /// for the sign in user.
+        /// for the signed in user.
         /// </summary>
         /// <returns></returns>
         public async Task FetchFiles()
@@ -120,14 +120,14 @@ namespace FileBuddyUI.UI.ViewModels
                     await ApiClient.Instance.Upload(UserInformation.Instance.CurrentUser.Id, new List<UserGroup>(), uploadFile.FullPath);
                     successfullSendFiles.Add(uploadFile);
 
-                    if (!WebSocketClient.Instance.IsConnected)
+                    if (!FileBuddyClient.Instance.IsConnected)
                     {
                         Log.Error("An error occured while uploading files. Update request to web server could not be send. Not connected to server. ");
                         ToastMessenger.NotifierInstance.ShowError("You are not connected to a server. Realtime update may not be possible!");
                     }
                     else
                     {
-                        await WebSocketClient.Instance.Send(UserInformation.Instance.CurrentUser.Id);
+                        await FileBuddyClient.Instance.Send(UserInformation.Instance.CurrentUser.Id);
                         Log.Debug("Update request was sent to server. ");
                     }
                 }
