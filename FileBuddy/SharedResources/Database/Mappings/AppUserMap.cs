@@ -17,6 +17,8 @@ namespace DatabaseConnection.Database.Mappings
 
             builder.Property(x => x.UserDevices).HasColumnName("user_devices");
             builder.Property(x => x.UserGroups).HasColumnName("user_groups");
+
+            builder.Property(x => x.RefreshToken).HasColumnName("refresh_token");
         }
     }
 }

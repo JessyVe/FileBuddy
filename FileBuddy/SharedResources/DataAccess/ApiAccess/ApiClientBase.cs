@@ -15,11 +15,11 @@ namespace SharedRessources.DataAccess.ApiAccess
     /// </summary>
     public abstract class ApiClientBase
     {
-        private string _destination;
-
-        protected HttpClient _client;
         private static readonly log4net.ILog Log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private readonly string _destination;
+        protected HttpClient _client;
 
         protected ApiClientBase()
         {
@@ -28,21 +28,24 @@ namespace SharedRessources.DataAccess.ApiAccess
         }
 
         /// <summary>
-        /// Executes a call to the given url and returns 
-        /// the result of the API.
+        /// Executes a call to the given url, using the given access token,
+        /// and returns the result of the API.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="requestUrl"></param>
         /// <returns></returns>
-        protected async Task<T> ExecuteCall<T>(string requestUrl)
+        protected async Task<T> ExecuteCall<T>(string requestUrl, string token = "")
         {
+            if (!string.IsNullOrEmpty(token))
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             using var streamTask = _client.GetStreamAsync(requestUrl);
             var response = await JsonSerializer.DeserializeAsync<T>(await streamTask);
             return response;
         }
 
         /// <summary>
-        /// Exceutes a post request to the API 
+        /// Exceutes a post request to the API, using the given access token, 
         /// and returns the result. 
         /// </summary>
         /// <typeparam name="TRequest"></typeparam>
@@ -50,12 +53,21 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="requestUrl"></param>
         /// <param name="contentObject"></param>
         /// <returns></returns>
-        protected async Task<TResponse> ExecutePostCall<TRequest, TResponse>(string requestUrl, TRequest contentObject)
+        protected async Task<TResponse> ExecutePostCall<TRequest, TResponse>(string requestUrl, TRequest contentObject, string token = "")
         {
+            if(!string.IsNullOrEmpty(token))
+                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await _client.PostAsJsonAsync(requestUrl, contentObject);
             return await GetResponseOrError<TResponse>(response);
         }
 
+        /// <summary>
+        /// Executes an API call and uploads given file. 
+        /// </summary>
+        /// <param name="requestUrl"></param>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         protected async Task<string> ExecuteCallWithMultipartFormDataContent(string requestUrl, string filePath)
         {
             MultipartFormDataContent form = new MultipartFormDataContent();
@@ -102,6 +114,12 @@ namespace SharedRessources.DataAccess.ApiAccess
             throw new Exception(errorMessage);
         }
 
+        /// <summary>
+        /// Returns the local path to the downloaded file.
+        /// </summary>
+        /// <param name="requestUrl"></param>
+        /// <param name="downloadRequest"></param>
+        /// <returns></returns>
         public async Task<string> DownloadFile(string requestUrl, DownloadRequest downloadRequest)
         {
             var response = await _client.PostAsJsonAsync(requestUrl, downloadRequest);

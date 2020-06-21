@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using SharedRessources.DataAccess.FileDataAccess;
 using SharedRessources.Dtos;
@@ -11,6 +12,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class FileController : ControllerBase
     {
         private static readonly log4net.ILog Log =
@@ -31,8 +33,8 @@ namespace API.Controllers
         /// <param name="files"></param>
         /// <param name="userGroups"></param>
         /// <returns></returns>
-        [Route("upload/{userId}/{receiverId}")]
         [HttpPost]
+        [Route("upload/{userId}/{receiverId}")]
         public IActionResult Upload(int userId, int receiverId)
         {
             Log.Debug("Upload() - Method was called.");

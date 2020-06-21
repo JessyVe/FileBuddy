@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharedRessources.Dtos;
+using SharedRessources.DataAccess.UserAccess;
 using SharedRessources.Services.TokenLogic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace API.Controllers
 {
@@ -14,62 +14,62 @@ namespace API.Controllers
              log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly ITokenService _tokenService;
+        private readonly IUserAccess _userAccessService;
 
         public TokenController()
         {
             _tokenService = new TokenService();
+            _userAccessService = new UserAccess();
         }
 
         /// <summary>
         /// Returns a refreshed authentification token.
         /// </summary>
-        /// <param name="token"></param>
+        /// <param name="accessToken"></param>
         /// <returns></returns>
-        //[HttpPost]
-        //[Route("refresh")]
-        //public async Task<IActionResult> RefreshToken(string token, string refreshToken)
-        //{
-        //    var principal = _tokenService.GetPrincipalFromExpiredToken(token);
-        //    var username = principal.Identity.Name; //this is mapped to the Name claim by default
+        [HttpPost]
+        public IActionResult RefreshToken(string accessToken, string refreshToken)
+        {
+            var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
+            var username = principal.Identity.Name; 
 
-        //    var user = _usersDb.Users.SingleOrDefault(u => u.Username == username);
-        //    if (user == null || user.RefreshToken != refreshToken)
-        //        return BadRequest();
+            var user = _userAccessService.LoadAllUsersFromDatabase().SingleOrDefault(u => u.Name == username);
+            if (user == null || user.RefreshToken != refreshToken)
+            {
+                Log.Error("Given user was not recognized. Unable to refresh token. ");
+                return BadRequest();
+            }
 
-        //    var newJwtToken = _tokenService.GenerateAccessToken(principal.Claims);
-        //    var newRefreshToken = _tokenService.GenerateRefreshToken();
+            var newJwtToken = _tokenService.GenerateAccessToken(principal.Claims);
+            var newRefreshToken = _tokenService.GenerateRefreshToken();
 
-        //    user.RefreshToken = newRefreshToken;
-        //    await _usersDb.SaveChangesAsync();
+            user.RefreshToken = newRefreshToken;
+            _userAccessService.UpdateUserInformation(user);
 
-        //    return new ObjectResult(new
-        //    {
-        //        token = newJwtToken,
-        //        refreshToken = newRefreshToken
-        //    });
-        //}
+            Log.Debug("Token was successfully refreshed.");
+            return new ObjectResult(new
+            {
+                token = newJwtToken,
+                refreshToken = newRefreshToken
+            });
+        }
 
-        ///// <summary>
-        ///// Revokes to token of the user sending the request.
-        ///// </summary>
-        ///// <returns></returns>
-        //[HttpPost]
-        //[Authorize]
-        //[Route("revoketoken")]
-        //public async Task<IActionResult> Revoke()
-        //{
-        //    var username = User.Identity.Name;
+        [HttpPost, Authorize]
+        public IActionResult RevokeToken()
+        {
+            var username = User.Identity.Name;
+            var user = _userAccessService.LoadAllUsersFromDatabase().SingleOrDefault(u => u.Name == username);
 
-        //    var user = _usersDb.Users.SingleOrDefault(u => u.Username == username);
+            if (user == null)
+            {
+                Log.Error("Given user was not recognized. Unable to revoke token. ");
+                return BadRequest();
+            }
+            user.RefreshToken = null;
+            _userAccessService.UpdateUserInformation(user);
 
-        //    if (user == null)
-        //        return BadRequest();
-
-        //    user.RefreshToken = null;
-
-        //    await _usersDb.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
+            Log.Debug("Token was successfully revoked.");
+            return NoContent();
+        }
     }
 }

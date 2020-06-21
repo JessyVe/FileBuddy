@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedRessources.DataAccess.UserAccess;
-using SharedRessources.DisplayedTypes;
 using SharedRessources.Dtos;
 using SharedRessources.Services;
 
@@ -10,6 +9,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private static readonly log4net.ILog Log =

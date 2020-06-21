@@ -91,6 +91,8 @@ namespace FileBuddyUI.UI.Helper
                 _updateTask = Task.Run(() => Update());
                 await _client.SendObject(connectionPacket);
                 _connectionTask = Task.Run(() => MonitorConnection());
+
+                Log.Info("Connection to server was established successfully!");
                 return;
             }
             await DisconnectFromServer();
@@ -105,11 +107,13 @@ namespace FileBuddyUI.UI.Helper
                 await _updateTask;
 
                 _client.Disconnect();
+                Log.Info("Connection lost. Client was disconnected from server.");
             }
         }
 
         public async Task Send(int receiverId)
         {
+            Log.Debug("Sending an update message to server. ");
             await _client.SendObject(new UpdateMessage()
             {
                 ReceiverId = receiverId
@@ -138,6 +142,7 @@ namespace FileBuddyUI.UI.Helper
                 {
                     if (!_pinged)
                     {
+                        Log.Debug("Pinging server...");
                         _pingSent = DateTime.Now;
 
                         var result = await _client.PingConnection();  // send a ping request
@@ -146,7 +151,10 @@ namespace FileBuddyUI.UI.Helper
                         Thread.Sleep(15000); // wait a pre-definied time for a response
 
                         if (_pinged) // _pinged should be rested to false by now (Method: ManagePacket)
+                        {
+                            Log.Debug("Ping was unsuccessfull. Client will be disconnected.");
                             await Task.Run(() => DisconnectFromServer());
+                        }
                     }
                 }
             }
@@ -163,16 +171,23 @@ namespace FileBuddyUI.UI.Helper
             return false;
         }
 
+        /// <summary>
+        /// Handles recevied message from server. 
+        /// </summary>
+        /// <param name="packet"></param>
+        /// <returns></returns>
         private bool ManagePacket(object packet)
         {
             if (packet != null)
             {
                 if (packet is UpdateMessage)
                 {
+                    Log.Debug("New update message was received. Event will be fired.");
                     OnNewUpdateRequestReceived(new EventArgs());
                 }
                 if (packet is PingMessage)
                 {
+                    Log.Debug("Ping succeeded!");
                     _pingLastSent = DateTime.Now;
                     _pingSent = _pingLastSent;
                     _pinged = false;

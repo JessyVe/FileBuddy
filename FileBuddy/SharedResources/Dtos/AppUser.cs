@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharedRessources.Dtos
 {
@@ -13,8 +14,9 @@ namespace SharedRessources.Dtos
         public string UserDevices { get; set; }
         public string UserGroups { get; set; }
 
-
+        [NotMapped]
         public string AccessToken { get; set; }
+
         public string RefreshToken { get; set; }
     }
 }

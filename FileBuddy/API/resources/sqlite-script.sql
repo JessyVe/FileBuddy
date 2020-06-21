@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS AppUser (
 	account_creation_date	TEXT		NOT NULL,
 	profil_picture			BLOB, 
 	
+	refresh_token 			TEXT,
 	
 	user_devices	TEXT, -- JSON, representing a list of user devices
 	user_groups		TEXT -- JSON, representing a list of user groups

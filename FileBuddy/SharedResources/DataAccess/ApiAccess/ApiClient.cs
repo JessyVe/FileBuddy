@@ -18,7 +18,6 @@ namespace SharedRessources.DataAccess.ApiAccess
         private string _baseAddress = "http://localhost";
         private int _port = 5000;
 
-        // TODO: Extract into resource file
         private const string AuthentificationControllerPath = "api/Authentification";
         private const string FileControllerPath = "api/File";
         private const string UserControllerPath = "api/User";

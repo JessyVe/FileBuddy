@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedRessources.DataAccess.Authentification;
 using SharedRessources.Dtos;
-using SharedRessources.Services.TokenLogic;
 
 namespace API.Controllers
 {
@@ -31,7 +30,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("register")]
-        [AllowAnonymous]
         public ActionResult<AppUser> RegisterUser(AppUser user)
         {
             Log.Debug("RegisterUser()-Method was called.");
@@ -54,7 +52,6 @@ namespace API.Controllers
         /// <param name="macAddress"></param>
         [HttpPost]
         [Route("login/macaddress/{macAddress}")]
-        [AllowAnonymous]
         public ActionResult<AppUser> LoginWithMacAddress(string macAddress)
         {
             Log.Debug("LoginWithMacAddress()-Method was called.");
@@ -79,7 +76,6 @@ namespace API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("login/mailaddress")]
-        [AllowAnonymous]
         public ActionResult<AppUser> LoginWithMailAddress([FromBody] AppUser user)
         {
             Log.Debug("LoginWithMailAddress()-Method was called.");
