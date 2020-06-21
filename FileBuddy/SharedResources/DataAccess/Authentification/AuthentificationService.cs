@@ -11,7 +11,7 @@ namespace SharedRessources.DataAccess.Authentification
     public class AuthentificationService : IAuthentificationService
     {
         private static readonly log4net.ILog Log =
-         log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+                log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public AppUser RegisterUser(AppUser user)
         {
@@ -66,6 +66,24 @@ namespace SharedRessources.DataAccess.Authentification
             var ex = new Exception("User with specified mailAddress was not found or password is invalid!");
             Log.ErrorFormat("Login Failed.", ex);
             throw ex;
+        }
+
+        public bool MailAddressAlreadyInUse(string mailAddress)
+        {
+            Log.Debug("Chechking if mail address is already in use.");
+
+            using (var context = new SQLiteDBContext())
+            {
+                try
+                {
+                    return context.AppUser.Any(user => user.MailAddress.Equals(mailAddress));
+                }
+                catch (Exception ex)
+                {
+                    Log.ErrorFormat("Unable to access database. ", ex);
+                }
+            }
+            return false;
         }
     }
 }

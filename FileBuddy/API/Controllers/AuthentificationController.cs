@@ -39,18 +39,16 @@ namespace API.Controllers
         public ActionResult<AppUser> RegisterUser(AppUser user)
         {
             Log.Debug("RegisterUser()-Method was called.");
-            try
+
+            if (_authentificationService.MailAddressAlreadyInUse(user.MailAddress))
             {
-                _tokenService.GenerateTokensForUser(user);               
-            }
-            catch (Exception ex)
-            {
-                var errorText = "Unable to create access token for new user.";
-                Log.ErrorFormat(errorText, ex);
+                var errorText = "Mail address is already in use.";
+                Log.Error(errorText);
 
                 return BadRequest(errorText);
             }
 
+            _tokenService.GenerateTokensForUser(user);
             _authentificationService.RegisterUser(user);
 
             if (user.Id == 0)
@@ -59,8 +57,7 @@ namespace API.Controllers
                 Log.Error(errorText);
 
                 return BadRequest(errorText);
-            }         
-
+            }
             Log.Debug("User was registered successfully!");
             return Ok(user);
         }
@@ -95,7 +92,7 @@ namespace API.Controllers
             var appUser = _authentificationService.LoginWithMailAddress(user.MailAddress, user.Password);
 
             return AssignTokens(appUser);
-        }       
+        }
 
         /// <summary>
         /// Returns the user object with assigned tokens. 
@@ -103,7 +100,7 @@ namespace API.Controllers
         /// <param name="appUser"></param>
         /// <returns></returns>
         private ActionResult<AppUser> AssignTokens(AppUser appUser)
-        {           
+        {
             if (appUser == null)
             {
                 var errorText = "Unable to login user.";

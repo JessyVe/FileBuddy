@@ -7,5 +7,7 @@ namespace SharedRessources.DataAccess.Authentification
         public AppUser RegisterUser(AppUser user);
         public AppUser LoginWithMacAddress(string macAddress);
         public AppUser LoginWithMailAddress(string mailAddress, string password);
+
+        public bool MailAddressAlreadyInUse(string mailAddress);
     }
 }

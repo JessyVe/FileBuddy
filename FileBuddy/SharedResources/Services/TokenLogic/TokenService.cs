@@ -64,7 +64,7 @@ namespace SharedRessources.Services.TokenLogic
 
         public Claim[] GetUserClaims(AppUser user)
         {
-            return new[] { new Claim(ClaimTypes.Email, user.MailAddress), new Claim(ClaimTypes.GivenName, user.Id.ToString()) };
+            return new[] { new Claim(ClaimTypes.Email, user.MailAddress) };
         }
 
         public string GenerateRefreshToken()

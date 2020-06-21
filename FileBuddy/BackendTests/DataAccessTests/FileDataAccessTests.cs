@@ -28,7 +28,7 @@ namespace BackendTests.DataAccessTests
 
             _authorizedAccessGrantedTo = new List<int>()
             {
-                100, 101, 102
+                1
             };
         }
 

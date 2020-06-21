@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SharedRessources.DataAccess.UserAccess;
 using SharedRessources.Services.TokenLogic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -32,9 +33,15 @@ namespace API.Controllers
         public IActionResult RefreshToken(string accessToken, string refreshToken)
         {
             var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
-            var username = principal.Identity.Name; 
+            var mailAddress = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value; 
 
-            var user = _userAccessService.LoadAllUsersFromDatabase().SingleOrDefault(u => u.Name == username);
+            if(mailAddress == null)
+            {
+                Log.Error("Needed claim was not found. Token can not be refreshed.");
+                return BadRequest();
+            }
+
+            var user = _userAccessService.LoadAllUsersFromDatabase().SingleOrDefault(u => u.MailAddress == mailAddress);
             if (user == null || user.RefreshToken != refreshToken)
             {
                 Log.Error("Given user was not recognized. Unable to refresh token. ");

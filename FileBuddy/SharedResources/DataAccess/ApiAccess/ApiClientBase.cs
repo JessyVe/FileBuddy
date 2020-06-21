@@ -55,8 +55,8 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <returns></returns>
         protected async Task<TResponse> ExecutePostCall<TRequest, TResponse>(string requestUrl, TRequest contentObject, string token = "")
         {
-            if(!string.IsNullOrEmpty(token))
-                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            if (!string.IsNullOrEmpty(token))
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _client.PostAsJsonAsync(requestUrl, contentObject);
             return await GetResponseOrError<TResponse>(response);

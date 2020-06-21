@@ -9,7 +9,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private static readonly log4net.ILog Log =
@@ -53,8 +53,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Returns a dictionary containing all available files for the user. 
-        /// (Key=userId of sender; Value=list of file names)
+        /// Returns a list of available files.
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
