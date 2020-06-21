@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS SharedFile (
 	owner_user_id  			INTEGER		NOT NULL, 
 	upload_date				TEXT 		NOT NULL,
 	
-	FOREIGN KEY(owner_user_id) REFERENCES AppUser(id)
+	FOREIGN KEY(owner_user_id) REFERENCES AppUser(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS DownloadTransaction (
@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS DownloadTransaction (
 	shared_file_id			TEXT		NOT NULL, 
 	download_date			TEXT		NOT NULL,
 	
-	FOREIGN KEY(receiver_user_id) REFERENCES AppUser(id), 
-	FOREIGN KEY(shared_file_id) REFERENCES SharedFile(id)
+	FOREIGN KEY(receiver_user_id) REFERENCES AppUser(id) ON DELETE CASCADE, 
+	FOREIGN KEY(shared_file_id) REFERENCES SharedFile(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS AuthorizedAccess (
@@ -46,6 +46,6 @@ CREATE TABLE IF NOT EXISTS AuthorizedAccess (
 	user_id					INTEGER		NOT NULL, 
 	shared_file_id			TEXT		NOT NULL, 
 	
-	FOREIGN KEY(user_id) REFERENCES AppUser(id), 
-	FOREIGN KEY(shared_file_id) REFERENCES SharedFile(id)
+	FOREIGN KEY(user_id) REFERENCES AppUser(id) ON DELETE CASCADE, 
+	FOREIGN KEY(shared_file_id) REFERENCES SharedFile(id) ON DELETE CASCADE
 );

@@ -164,10 +164,17 @@ namespace FileBuddyUI.UI.Helper
         {
             var newObject = await _client.ReceiveMessage();
 
-            App.Current.Dispatcher.Invoke(delegate
+            try
+            {
+                App.Current.Dispatcher.Invoke(delegate
             {
                 return ManagePacket(newObject);
             });
+            }
+            catch (Exception ex)
+            {
+                Log.ErrorFormat("Main thread is currently not accessible.", ex);
+            }
             return false;
         }
 

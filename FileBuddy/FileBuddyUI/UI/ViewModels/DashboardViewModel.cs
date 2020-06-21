@@ -111,7 +111,7 @@ namespace FileBuddyUI.UI.ViewModels
             foreach (var alreadyFetchedFile in ReceivedFiles)
             {
                 if (displayedSharedFile.Id == alreadyFetchedFile.Id)
-                {                    
+                {
                     return true;
                 }
             }
@@ -133,7 +133,8 @@ namespace FileBuddyUI.UI.ViewModels
             {
                 try
                 {
-                    await ApiClient.Instance.Upload(UserInformation.Instance.CurrentUser.Id, new List<UserGroup>(), uploadFile.FullPath, UserInformation.Instance.CurrentUser.AccessToken);
+                    await ApiClient.Instance.Upload(UserInformation.Instance.CurrentUser.Id, new List<UserGroup>(), 
+                        uploadFile.FullPath, UserInformation.Instance.CurrentUser.AccessToken);
                     successfullSendFiles.Add(uploadFile);
 
                     if (!FileBuddyClient.Instance.IsConnected)
@@ -171,7 +172,7 @@ namespace FileBuddyUI.UI.ViewModels
             {
                 var savedPath = await ApiClient.Instance.Download(new DownloadRequest()
                 {
-                    ApiPath = SelectedDowloadFile.ApiPath,
+                    SharedFileId = SelectedDowloadFile.Id,
                     ReceiverId = UserInformation.Instance.CurrentUser.Id
                 }, UserInformation.Instance.CurrentUser.AccessToken);
 

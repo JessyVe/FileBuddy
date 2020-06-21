@@ -2,6 +2,7 @@
 using SharedRessources.Database;
 using SharedRessources.DisplayedTypes;
 using SharedRessources.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,15 +30,14 @@ namespace SharedRessources.DataAccess.UserAccess
                     .Select(access => access.SharedFileId).ToList();
 
                 var availableFiles = context.SharedFile.Where(file => fileIds.Contains(file.Id)).ToList();
-                foreach(var file in availableFiles)
+                foreach (var file in availableFiles)
                 {
                     var ownerName = context.AppUser.Where(user => user.Id == file.OwnerUserId).First().Name;
                     displayedSharedFiles.Add(new DisplayedSharedFile()
                     {
-                        Id = file.Id, 
-                        ApiPath = file.ApiPath, 
-                        SharedFileName = file.SharedFileName, 
-                        UploadDate = file.UploadDate, 
+                        Id = file.Id,
+                        SharedFileName = file.SharedFileName,
+                        UploadDate = file.UploadDate,
                         OwnerName = ownerName
                     });
                 }
@@ -51,17 +51,17 @@ namespace SharedRessources.DataAccess.UserAccess
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool UpdateUserInformation(AppUser user)
+        public AppUser UpdateUserInformation(AppUser user)
         {
             Log.Debug("Updating user information. ");
             using (var context = new SQLiteDBContext())
-            {
+            {                
                 context.AppUser.Update(user);
                 context.Entry(user).State = EntityState.Modified;
-
                 context.SaveChanges();
+
+                return context.AppUser.First(u => u.Id == user.Id);
             }
-            return true;
         }
 
         /// <summary>
@@ -97,24 +97,57 @@ namespace SharedRessources.DataAccess.UserAccess
         /// <param name="userId"></param>
         /// <returns></returns>
         public bool DeleteUser(int userId)
-        {
+        {      
             Log.Debug("Delete user request was received. ");
             using (var context = new SQLiteDBContext())
             {
-                var toDelete = context.AppUser.Where(user => user.Id == userId).ToList();
+                var toDeleteUser = context.AppUser.FirstOrDefault(user => user.Id == userId);
 
-                if (toDelete.Count == 0)
+                if (toDeleteUser == null)
                     return false;
 
-                foreach(var user in toDelete)
-                {
-                    context.AppUser.Remove(user);
-                    context.Entry(user).State = EntityState.Deleted;
-
-                    context.SaveChanges();
-                }
+                context.Entry(toDeleteUser).State = EntityState.Deleted;
+                context.SaveChanges();
             }
             return true;
+        }
+
+        /// <summary>
+        /// Deletes all entries regarding the given user. 
+        /// </summary>
+        /// <param name="userId"></param>
+        private void DeleteAssociationsOfUser(int userId)
+        {
+            DeleteAuthorizations(userId);
+            DeleteTransactions(userId);         
+        }
+
+        private void DeleteAuthorizations(int userId)
+        {
+            using (var context = new SQLiteDBContext())
+            {
+                var toDeleteAuthorizations = context.AuthorizedAccess.Where(access => access.UserId == userId);
+                foreach (var auth in toDeleteAuthorizations)
+                {
+                    context.Remove(context.AuthorizedAccess.Remove(auth));                   
+                    context.Entry(auth).State = EntityState.Deleted;
+                }
+                context.SaveChanges();
+            }
+        }
+
+        private void DeleteTransactions(int userId)
+        {
+            using (var context = new SQLiteDBContext())
+            {
+                var toDeleteTransactions = context.DownloadTransaction.Where(transaction => transaction.ReceiverUserId == userId);
+                foreach (var transaction in toDeleteTransactions)
+                {
+                    context.Remove(context.DownloadTransaction.Remove(transaction));
+                    context.Entry(transaction).State = EntityState.Deleted;
+                }
+                context.SaveChanges();
+            }
         }
     }
 }

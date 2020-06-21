@@ -90,7 +90,6 @@ namespace SharedRessources.DataAccess.FileDataAccess
             {
                 context.DownloadTransaction.Add(downloadTransaction);
                 context.Entry(downloadTransaction).State = EntityState.Added;
-
                 context.SaveChanges();
             }
         }

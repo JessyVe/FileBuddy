@@ -26,10 +26,7 @@ namespace BackendTests.DataAccessTests
                 UploadDate = DateTime.Now
             };
 
-            _authorizedAccessGrantedTo = new List<int>()
-            {
-                1
-            };
+            _authorizedAccessGrantedTo = new List<int>() { 1 };
         }
 
         [TestMethod]

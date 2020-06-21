@@ -80,18 +80,32 @@ namespace API.Controllers
         {
             Log.Debug("Download() - Method was called.");
 
-            var fileProvider = new FileExtensionContentTypeProvider();
-            if (!fileProvider.TryGetContentType(downloadRequest.ApiPath, out string contentType))
+            var apiPath = _fileDataAccess.GetApiPathOfFile(downloadRequest.SharedFileId);
+
+            if (string.IsNullOrEmpty(apiPath))
             {
-                var errorText = $"Unable to find Content Type for file name {downloadRequest.ApiPath}.";
+                var errorMessage = "File with given Id was not found!";
+                Log.Error(errorMessage);
+                return NotFound(errorMessage);
+            }
+
+            var fileProvider = new FileExtensionContentTypeProvider();
+            if (!fileProvider.TryGetContentType(apiPath, out string contentType))
+            {
+                var errorText = $"Unable to find Content Type for file name {apiPath}.";
 
                 Log.Error(errorText);
                 return BadRequest(errorText);
             }
-            _fileDataAccess.FileDownloaded(new DownloadTransaction()); // TODO: Create actual object (only for advance purposes; history of downloads)
-            Log.Debug("Successfully initialized download.");
+            _fileDataAccess.FileDownloaded(new DownloadTransaction()
+            {
+                DownloadDate = DateTime.Now, 
+                ReceiverUserId = downloadRequest.ReceiverId,
+                SharedFileId = downloadRequest.SharedFileId
+            }); 
+            Log.Debug("Successfully initialized download. Requested file will be returned.");
 
-            return PhysicalFile(downloadRequest.ApiPath, contentType, Path.GetFileName(downloadRequest.ApiPath));
+            return PhysicalFile(apiPath, contentType, Path.GetFileName(apiPath));
         }
     }
 }

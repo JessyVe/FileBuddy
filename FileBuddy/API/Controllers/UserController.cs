@@ -29,22 +29,47 @@ namespace API.Controllers
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("update/{user}")]
-        public IActionResult UpdateUserInformation(AppUser user)
+        [Route("update")]
+        public IActionResult UpdateUserInformation([FromBody]AppUser user)
         {
             Log.Debug("UpdateUserInformation() - Method was called.");
             try
             {
-                var success = _userAccess.UpdateUserInformation(user);
+                _userAccess.UpdateUserInformation(user);
+                Log.Debug("User data was updated successfully.");
+                return Accepted();
+            }
+            catch (Exception ex)
+            {
+                var errorText = "Update of user information failed.";
+
+                Log.ErrorFormat(errorText, ex);
+                return BadRequest(string.Format(ERROR_FORMAT, errorText, ex));
+            }
+        }
+
+        /// <summary>
+        /// Deletes a certain user from the database.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("delete")]
+        public IActionResult DeleteUser([FromBody]AppUser user)
+        {
+            Log.Debug("DeleteUser() - Method was called.");
+            try
+            {
+                var success = _userAccess.DeleteUser(user.Id);
                 if (success)
                 {
-                    Log.Debug("User data was updated successfully.");
+                    Log.Debug("User was deleted.");
                     return Accepted();
                 }
             }
             catch (Exception ex)
             {
-                var errorText = "Update of user information failed!";
+                var errorText = "User could not be deleted.";
 
                 Log.ErrorFormat(errorText, ex);
                 return BadRequest(string.Format(ERROR_FORMAT, errorText, ex));
