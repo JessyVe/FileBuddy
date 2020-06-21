@@ -34,6 +34,7 @@ namespace SharedRessources.DataAccess.UserAccess
                     var ownerName = context.AppUser.Where(user => user.Id == file.OwnerUserId).First().Name;
                     displayedSharedFiles.Add(new DisplayedSharedFile()
                     {
+                        Id = file.Id, 
                         ApiPath = file.ApiPath, 
                         SharedFileName = file.SharedFileName, 
                         UploadDate = file.UploadDate, 

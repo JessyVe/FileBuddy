@@ -96,6 +96,7 @@ namespace FileBuddyUI.UI.ViewModels
                         ReceivedFiles.Add(fetchedFile);
                     }
                 }
+                OnPropertyChanged(nameof(ReceivedFiles));
                 Log.Debug($"Received {newlyFetchedFiles} new files(s)! ");
             }
             catch (Exception ex)
@@ -109,7 +110,7 @@ namespace FileBuddyUI.UI.ViewModels
         {
             foreach (var alreadyFetchedFile in ReceivedFiles)
             {
-                if (displayedSharedFile.ApiPath == alreadyFetchedFile.ApiPath)
+                if (displayedSharedFile.Id == alreadyFetchedFile.Id)
                 {                    
                     return true;
                 }
