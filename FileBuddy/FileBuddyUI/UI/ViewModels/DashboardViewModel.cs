@@ -81,25 +81,40 @@ namespace FileBuddyUI.UI.ViewModels
             try
             {
                 var fetchedFiles = await ApiClient.Instance.FetchAvailableFiles(UserInformation.Instance.CurrentUser.Id, UserInformation.Instance.CurrentUser.AccessToken);
-                var fileCount = fetchedFiles.Count;
 
-                if (fileCount == 0)
+                if (fetchedFiles.Count == 0)
                     ToastMessenger.NotifierInstance.ShowInformation(UITexts.NoNewFiles);
                 else
                     ToastMessenger.NotifierInstance.ShowInformation(string.Format(UITexts.ReceivedFiles, fetchedFiles.Count));
 
-                ReceivedFiles.Clear();
-                foreach (var file in fetchedFiles)
+                int newlyFetchedFiles = 0;
+                foreach (var fetchedFile in fetchedFiles)
                 {
-                    ReceivedFiles.Add(file);
+                    if (!IsFileAlreadyFetched(fetchedFile))
+                    {
+                        newlyFetchedFiles++;
+                        ReceivedFiles.Add(fetchedFile);
+                    }
                 }
-                Log.Debug($"{fetchedFiles.Count} files(s) were fetched for current user. ");
+                Log.Debug($"Received {newlyFetchedFiles} new files(s)! ");
             }
             catch (Exception ex)
             {
                 Log.ErrorFormat("An error occured while fetching files from API. ", ex);
                 ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
+        }
+
+        private bool IsFileAlreadyFetched(DisplayedSharedFile displayedSharedFile)
+        {
+            foreach (var alreadyFetchedFile in ReceivedFiles)
+            {
+                if (displayedSharedFile.ApiPath == alreadyFetchedFile.ApiPath)
+                {                    
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>

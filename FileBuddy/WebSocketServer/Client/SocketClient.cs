@@ -20,14 +20,12 @@ namespace WebSocketServer.Client
         public int UserId { get; set; }
         public Socket Socket { get; private set; }
         public IPEndPoint EndPoint { get; private set; }
-        public IPAddress Address { get; private set; }
 
         public bool IsGuidAssigned { get; set; }
 
         public SocketClient(IPAddress ipAddress, int port, int userId)
         {
             UserId = userId;
-            Address = ipAddress;
             EndPoint = new IPEndPoint(ipAddress, port);
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }

@@ -3,7 +3,6 @@ using SharedRessources.DataAccess.Authentification;
 using SharedRessources.DataAccess.UserAccess;
 using SharedRessources.Dtos;
 using SharedRessources.Services.TokenLogic;
-using System;
 
 namespace API.Controllers
 {
@@ -111,14 +110,13 @@ namespace API.Controllers
             _tokenService.GenerateTokensForUser(appUser);
 
             var success = _userAccess.UpdateUserInformation(appUser);
-            if (success)
+            if (!success)
             {
                 var errorText = "Unable to save access tokens to database";
                 Log.Error(errorText);
 
                 return BadRequest(errorText);
             }
-
             Log.Debug("User was logged in successfully!");
             return appUser;
         }
