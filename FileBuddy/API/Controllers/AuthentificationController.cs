@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SharedRessources.DataAccess.Authentification;
+using SharedRessources.DataAccess.UserAccess;
 using SharedRessources.Dtos;
+using SharedRessources.Services.TokenLogic;
+using System;
 
 namespace API.Controllers
 {
@@ -15,11 +17,15 @@ namespace API.Controllers
         private static readonly log4net.ILog Log =
              log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        private readonly ITokenService _tokenService;
         private readonly IAuthentificationService _authentificationService;
+        private readonly IUserAccess _userAccess;
 
         public AuthentificationController()
         {
-            _authentificationService = new AuthentificationService();          
+            _tokenService = new TokenService();
+            _authentificationService = new AuthentificationService();
+            _userAccess = new UserAccess();
         }
 
         /// <summary>
@@ -33,14 +39,28 @@ namespace API.Controllers
         public ActionResult<AppUser> RegisterUser(AppUser user)
         {
             Log.Debug("RegisterUser()-Method was called.");
+            try
+            {
+                _tokenService.GenerateTokensForUser(user);               
+            }
+            catch (Exception ex)
+            {
+                var errorText = "Unable to create access token for new user.";
+                Log.ErrorFormat(errorText, ex);
+
+                return BadRequest(errorText);
+            }
+
             _authentificationService.RegisterUser(user);
 
             if (user.Id == 0)
             {
                 var errorText = "Unable to register user.";
                 Log.Error(errorText);
+
                 return BadRequest(errorText);
-            }
+            }         
+
             Log.Debug("User was registered successfully!");
             return Ok(user);
         }
@@ -55,16 +75,9 @@ namespace API.Controllers
         public ActionResult<AppUser> LoginWithMacAddress(string macAddress)
         {
             Log.Debug("LoginWithMacAddress()-Method was called.");
-            var loggedInUser = _authentificationService.LoginWithMacAddress(macAddress);
+            var appUser = _authentificationService.LoginWithMacAddress(macAddress);
 
-            if (loggedInUser == null)
-            {
-                var errorText = "Unable to login user with MAC-Address.";
-                Log.Error(errorText);
-                return BadRequest(errorText);
-            }
-            Log.Debug("User was logged in successfully!");
-            return loggedInUser;
+            return AssignTokens(appUser);
         }
 
         /// <summary>
@@ -79,16 +92,38 @@ namespace API.Controllers
         public ActionResult<AppUser> LoginWithMailAddress([FromBody] AppUser user)
         {
             Log.Debug("LoginWithMailAddress()-Method was called.");
-            var loggedInUser = _authentificationService.LoginWithMailAddress(user.MailAddress, user.Password);
+            var appUser = _authentificationService.LoginWithMailAddress(user.MailAddress, user.Password);
 
-            if (loggedInUser == null)
+            return AssignTokens(appUser);
+        }       
+
+        /// <summary>
+        /// Returns the user object with assigned tokens. 
+        /// </summary>
+        /// <param name="appUser"></param>
+        /// <returns></returns>
+        private ActionResult<AppUser> AssignTokens(AppUser appUser)
+        {           
+            if (appUser == null)
             {
-                var errorText = "Unable to login user with Mail-Address.";
+                var errorText = "Unable to login user.";
                 Log.Error(errorText);
+
                 return BadRequest(errorText);
             }
+            _tokenService.GenerateTokensForUser(appUser);
+
+            var success = _userAccess.UpdateUserInformation(appUser);
+            if (success)
+            {
+                var errorText = "Unable to save access tokens to database";
+                Log.Error(errorText);
+
+                return BadRequest(errorText);
+            }
+
             Log.Debug("User was logged in successfully!");
-            return loggedInUser;
-        }       
+            return appUser;
+        }
     }
 }

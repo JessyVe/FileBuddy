@@ -131,7 +131,7 @@ namespace WebSocketServer.Client
             {
                 using (var networkStream = new NetworkStream(Socket))
                 {
-                    StreamWriter writer = new StreamWriter(networkStream) { AutoFlush = true };
+                    var writer = new StreamWriter(networkStream) { AutoFlush = true };
                     writer.WriteLine(message);
 
                     return true;

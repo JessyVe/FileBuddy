@@ -67,10 +67,5 @@ namespace SharedRessources.DataAccess.Authentification
             Log.ErrorFormat("Login Failed.", ex);
             throw ex;
         }
-
-        private AuthentificationToken CreateAuthentificationToken(string userId)
-        {
-            return TokenGenerator.GenerateAuthentificationToken();
-        }
     }
 }

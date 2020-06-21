@@ -68,23 +68,28 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="requestUrl"></param>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        protected async Task<string> ExecuteCallWithMultipartFormDataContent(string requestUrl, string filePath)
+        protected async Task<string> ExecuteCallWithMultipartFormDataContent(string requestUrl, string filePath, string token)
         {
-            MultipartFormDataContent form = new MultipartFormDataContent();
+            if (!string.IsNullOrEmpty(token))
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var form = new MultipartFormDataContent();
             HttpContent content = new StringContent("fileToUpload");
             form.Add(content, "fileToUpload");
 
-            var stream = new FileStream(filePath, FileMode.Open);
-            content = new StreamContent(stream);
-            content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            using (var stream = new FileStream(filePath, FileMode.Open))
             {
-                Name = "fileToUpload",
-                FileName = Path.GetFileName(filePath)
-            };
-            form.Add(content);
+                content = new StreamContent(stream);
+                content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    Name = "fileToUpload",
+                    FileName = Path.GetFileName(filePath)
+                };
+                form.Add(content);
 
-            var response = await _client.PostAsync(requestUrl, form);
-            return await GetResponseOrError<string>(response);
+                var response = await _client.PostAsync(requestUrl, form);
+                return await GetResponseOrError<string>(response);
+            }
         }
 
         /// <summary>
@@ -120,8 +125,11 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="requestUrl"></param>
         /// <param name="downloadRequest"></param>
         /// <returns></returns>
-        public async Task<string> DownloadFile(string requestUrl, DownloadRequest downloadRequest)
+        public async Task<string> DownloadFile(string requestUrl, DownloadRequest downloadRequest, string token)
         {
+            if (!string.IsNullOrEmpty(token))
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await _client.PostAsJsonAsync(requestUrl, downloadRequest);
             Stream data = response.Content.ReadAsStreamAsync().Result;
 

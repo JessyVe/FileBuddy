@@ -28,6 +28,7 @@ namespace API.Controllers
         /// <param name="accessToken"></param>
         /// <returns></returns>
         [HttpPost]
+        [Route("refresh/{accessToken}/{refreshToken}")]
         public IActionResult RefreshToken(string accessToken, string refreshToken)
         {
             var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
@@ -55,6 +56,7 @@ namespace API.Controllers
         }
 
         [HttpPost, Authorize]
+        [Route("revoke")]
         public IActionResult RevokeToken()
         {
             var username = User.Identity.Name;

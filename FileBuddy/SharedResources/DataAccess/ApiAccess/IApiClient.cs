@@ -11,9 +11,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         Task<AppUser> LoginWithMacAddress(string macAddress);
         Task<AppUser> LoginWithMailAddress(AppUser user);
         Task<AppUser> RegisterUser(AppUser user);
-        Task Upload(int userId, IList<UserGroup> userGroups, string filePath);
-        Task<string> Download(DownloadRequest downloadRequest);
-        Task<ICollection<DisplayedSharedFile>> FetchAvailableFiles(int userId);
-        Task<IActionResult> UpdateUserInformation(AppUser user);     
+
+        Task Upload(int userId, IList<UserGroup> userGroups, string filePath, string accessToken);
+        Task<string> Download(DownloadRequest downloadRequest, string accessToken);
+        Task<ICollection<DisplayedSharedFile>> FetchAvailableFiles(int userId, string accessToken);
+        Task<IActionResult> UpdateUserInformation(AppUser user, string accessToken);
     }
 }

@@ -9,16 +9,15 @@ using System.Threading.Tasks;
 namespace SharedRessources.DataAccess.ApiAccess
 {
     /// <summary>
-    /// Implements methods to access the FileBuddy API
+    /// Implements methods to access the FileBuddy API.
     /// </summary>
     public class ApiClient : ApiClientBase, IApiClient
     {
-        // TODO: Inject all privates as configuration
-        // TODO: Extract into configuration
         private string _baseAddress = "http://localhost";
         private int _port = 5000;
 
         private const string AuthentificationControllerPath = "api/Authentification";
+        private const string TokenControllerPath = "api/Token";
         private const string FileControllerPath = "api/File";
         private const string UserControllerPath = "api/User";
 
@@ -34,7 +33,7 @@ namespace SharedRessources.DataAccess.ApiAccess
             }
         }
 
-        public ApiClient()
+        private ApiClient()
         {
             _client = new HttpClient
             {
@@ -54,6 +53,13 @@ namespace SharedRessources.DataAccess.ApiAccess
             var requestUrl = $"{AuthentificationControllerPath}/login/macaddress/{macAddress}";
             var result = await ExecuteCall<AppUser>(requestUrl);
             return result;
+        }
+
+        public Task<AppUser> RefreshAccessToken(AppUser loggedInUser)
+        {
+            var requestUrl = $"{TokenControllerPath}/refresh/{loggedInUser}";
+            //var result = await ExecuteCall<AppUser>(requestUrl, loggedInUser);
+            return default;
         }
 
         /// <summary>
@@ -90,10 +96,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="files"></param>
         /// <param name="userGroups"></param>
         /// <returns></returns>
-        public async Task Upload(int userId, IList<UserGroup> userGroups, string filePath)
+        public async Task Upload(int userId, IList<UserGroup> userGroups, string filePath, string accessToken)
         {
             var requestUrl = $"{FileControllerPath}/upload/{userId}/{userId}"; // TODO: Change to user group
-            await ExecuteCallWithMultipartFormDataContent(requestUrl, filePath); 
+            await ExecuteCallWithMultipartFormDataContent(requestUrl, filePath, accessToken); 
         }
 
         /// <summary>
@@ -103,10 +109,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <param name="files"></param>
         /// <param name="userGroups"></param>
         /// <returns></returns>
-        public async Task<string> Download(DownloadRequest downloadRequest)
+        public async Task<string> Download(DownloadRequest downloadRequest, string accessToken)
         {
             var requestUrl = $"{FileControllerPath}/download";
-            return await DownloadFile(requestUrl, downloadRequest);
+            return await DownloadFile(requestUrl, downloadRequest, accessToken);
         }
 
         /// <summary>
@@ -115,10 +121,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<ICollection<DisplayedSharedFile>> FetchAvailableFiles(int userId)
+        public async Task<ICollection<DisplayedSharedFile>> FetchAvailableFiles(int userId, string accessToken)
         {
             var requestUrl = $"{UserControllerPath}/fetchfiles/{userId}";
-            var result = await ExecuteCall<ICollection<DisplayedSharedFile>>(requestUrl);
+            var result = await ExecuteCall<ICollection<DisplayedSharedFile>>(requestUrl, accessToken);
             return result;
         }
 
@@ -127,10 +133,10 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<IActionResult> UpdateUserInformation(AppUser user)
+        public async Task<IActionResult> UpdateUserInformation(AppUser user, string accessToken)
         {
             var requestUrl = $"{UserControllerPath}/update/{user}";
-            var result = await ExecuteCall<IActionResult>(requestUrl);
+            var result = await ExecuteCall<IActionResult>(requestUrl, accessToken);
             return result;
         }
     }

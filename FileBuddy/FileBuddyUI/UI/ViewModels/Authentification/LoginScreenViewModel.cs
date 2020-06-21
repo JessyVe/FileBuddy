@@ -49,7 +49,7 @@ namespace FileBuddyUI.UI.ViewModels
                 var loggedInUser = await ApiClient.Instance.LoginWithMailAddress(user);
 
                 if (loggedInUser.Id > 0)
-                {                   
+                {
                     OnAuthentificationSuccess(new AuthentificationEventArgs()
                     {
                         AppUser = loggedInUser

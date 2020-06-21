@@ -80,7 +80,7 @@ namespace FileBuddyUI.UI.ViewModels
             Log.Debug("Attempting to fetch files from API.");
             try
             {
-                var fetchedFiles = await ApiClient.Instance.FetchAvailableFiles(UserInformation.Instance.CurrentUser.Id);
+                var fetchedFiles = await ApiClient.Instance.FetchAvailableFiles(UserInformation.Instance.CurrentUser.Id, UserInformation.Instance.CurrentUser.AccessToken);
                 var fileCount = fetchedFiles.Count;
 
                 if (fileCount == 0)
@@ -117,7 +117,7 @@ namespace FileBuddyUI.UI.ViewModels
             {
                 try
                 {
-                    await ApiClient.Instance.Upload(UserInformation.Instance.CurrentUser.Id, new List<UserGroup>(), uploadFile.FullPath);
+                    await ApiClient.Instance.Upload(UserInformation.Instance.CurrentUser.Id, new List<UserGroup>(), uploadFile.FullPath, UserInformation.Instance.CurrentUser.AccessToken);
                     successfullSendFiles.Add(uploadFile);
 
                     if (!FileBuddyClient.Instance.IsConnected)
@@ -138,8 +138,11 @@ namespace FileBuddyUI.UI.ViewModels
             }
             Log.Debug($"{ToUploadFiles.Count} file(s) were uploaded to the API. ");
 
-            successfullSendFiles.ForEach(file => RemoveFile(file));
-            ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.SuccessfullUpload, successfullSendFiles.Count));
+            if (successfullSendFiles.Count > 0)
+            {
+                successfullSendFiles.ForEach(file => RemoveFile(file));
+                ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.SuccessfullUpload, successfullSendFiles.Count));
+            }
         }
 
         /// <summary>
@@ -154,7 +157,8 @@ namespace FileBuddyUI.UI.ViewModels
                 {
                     ApiPath = SelectedDowloadFile.ApiPath,
                     ReceiverId = UserInformation.Instance.CurrentUser.Id
-                });
+                }, UserInformation.Instance.CurrentUser.AccessToken);
+
                 Log.Debug($"File was downloaded and save at: {savedPath}");
                 ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.FileSavedAt, savedPath));
             }

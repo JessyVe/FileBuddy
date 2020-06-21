@@ -1,0 +1,93 @@
+2020-06-21 11:08:19,656 [7] DEBUG API.Controllers.AuthentificationController - LoginWithMailAddress()-Method was called.
+2020-06-21 11:08:19,670 [7] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to login user with mail address.
+2020-06-21 11:08:20,662 [7] DEBUG API.Controllers.AuthentificationController - User was logged in successfully!
+2020-06-21 11:09:47,759 [4] DEBUG API.Controllers.AuthentificationController - LoginWithMailAddress()-Method was called.
+2020-06-21 11:09:47,771 [4] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to login user with mail address.
+2020-06-21 11:09:48,886 [4] DEBUG API.Controllers.AuthentificationController - User was logged in successfully!
+2020-06-21 11:15:47,084 [7] DEBUG API.Controllers.AuthentificationController - LoginWithMailAddress()-Method was called.
+2020-06-21 11:15:47,096 [7] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to login user with mail address.
+2020-06-21 11:15:48,583 [7] DEBUG API.Controllers.AuthentificationController - User was logged in successfully!
+2020-06-21 11:17:16,044 [10] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:17:16,055 [10] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:17:17,210 [10] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 11:18:47,054 [4] DEBUG API.Controllers.AuthentificationController - LoginWithMailAddress()-Method was called.
+2020-06-21 11:18:47,066 [4] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to login user with mail address.
+2020-06-21 11:18:48,266 [4] DEBUG API.Controllers.AuthentificationController - User was logged in successfully!
+2020-06-21 11:19:30,366 [5] DEBUG API.Controllers.AuthentificationController - LoginWithMailAddress()-Method was called.
+2020-06-21 11:19:30,377 [5] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to login user with mail address.
+2020-06-21 11:19:31,419 [5] DEBUG API.Controllers.AuthentificationController - User was logged in successfully!
+2020-06-21 11:20:52,102 [7] DEBUG API.Controllers.AuthentificationController - LoginWithMailAddress()-Method was called.
+2020-06-21 11:20:52,114 [7] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to login user with mail address.
+2020-06-21 11:20:53,106 [7] DEBUG API.Controllers.AuthentificationController - User was logged in successfully!
+2020-06-21 11:21:23,786 [7] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:21:23,931 [7] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:21:24,799 [7] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 11:22:33,009 [5] DEBUG API.Controllers.AuthentificationController - LoginWithMailAddress()-Method was called.
+2020-06-21 11:22:33,019 [5] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to login user with mail address.
+2020-06-21 11:22:34,073 [5] DEBUG API.Controllers.AuthentificationController - User was logged in successfully!
+2020-06-21 11:29:06,368 [15] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:29:06,519 [15] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:29:07,277 [15] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 11:29:30,265 [6] DEBUG API.Controllers.UserController - FetchAvailableFiles() - Method was called.
+2020-06-21 11:29:30,276 [6] DEBUG SharedRessources.DataAccess.UserAccess.UserAccess - Fetching available files. 
+2020-06-21 11:29:30,519 [6] DEBUG API.Controllers.UserController - 0 file(s)  were fetched for user.
+2020-06-21 11:34:12,011 [7] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:34:12,185 [7] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:34:17,198 [7] ERROR SharedRessources.DataAccess.Authentification.AuthentificationService - Unable to save user object to database. 
+2020-06-21 11:34:17,203 [7] ERROR API.Controllers.AuthentificationController - Unable to register user.
+2020-06-21 11:34:26,989 [5] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:34:26,990 [5] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:34:30,580 [5] ERROR SharedRessources.DataAccess.Authentification.AuthentificationService - Unable to save user object to database. 
+2020-06-21 11:34:30,581 [5] ERROR API.Controllers.AuthentificationController - Unable to register user.
+2020-06-21 11:34:40,385 [5] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:34:40,387 [5] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:34:47,305 [5] ERROR SharedRessources.DataAccess.Authentification.AuthentificationService - Unable to save user object to database. 
+2020-06-21 11:34:47,306 [5] ERROR API.Controllers.AuthentificationController - Unable to register user.
+2020-06-21 11:35:05,375 [16] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:35:05,376 [16] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:35:05,434 [16] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 11:42:44,508 [6] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:42:44,683 [6] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:42:45,812 [6] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 11:45:31,690 [7] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:45:31,856 [7] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:45:32,966 [7] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 11:46:24,899 [4] DEBUG API.Controllers.AuthentificationController - LoginWithMailAddress()-Method was called.
+2020-06-21 11:46:24,920 [4] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to login user with mail address.
+2020-06-21 11:46:26,410 [4] DEBUG API.Controllers.AuthentificationController - User was logged in successfully!
+2020-06-21 11:47:25,780 [10] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:47:25,931 [10] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:47:26,735 [10] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 11:52:02,367 [16] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:52:02,557 [16] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:52:03,752 [16] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 11:53:54,613 [6] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:53:54,761 [6] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:53:55,885 [6] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 11:57:46,653 [4] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 11:57:46,808 [4] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 11:57:47,798 [4] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 12:01:54,102 [7] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 12:01:54,264 [7] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 12:01:55,351 [7] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 12:07:27,212 [5] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 12:07:27,398 [5] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 12:07:28,614 [5] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 12:26:06,641 [6] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 12:26:06,825 [6] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 12:26:08,060 [6] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 12:26:39,229 [8] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 12:26:39,446 [8] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 12:26:40,725 [8] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 12:35:51,448 [5] DEBUG API.Controllers.AuthentificationController - LoginWithMailAddress()-Method was called.
+2020-06-21 12:35:51,459 [5] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to login user with mail address.
+2020-06-21 12:35:52,592 [5] ERROR SharedRessources.DataAccess.Authentification.AuthentificationService - Login Failed.
+2020-06-21 12:36:16,003 [7] DEBUG API.Controllers.AuthentificationController - RegisterUser()-Method was called.
+2020-06-21 12:36:16,140 [7] DEBUG SharedRessources.DataAccess.Authentification.AuthentificationService - Attempting to register user.
+2020-06-21 12:36:16,276 [7] DEBUG API.Controllers.AuthentificationController - User was registered successfully!
+2020-06-21 12:36:20,512 [5] DEBUG API.Controllers.UserController - FetchAvailableFiles() - Method was called.
+2020-06-21 12:36:20,515 [5] DEBUG SharedRessources.DataAccess.UserAccess.UserAccess - Fetching available files. 
+2020-06-21 12:36:20,693 [5] DEBUG API.Controllers.UserController - 0 file(s)  were fetched for user.
+2020-06-21 12:36:29,466 [6] DEBUG API.Controllers.UserController - FetchAvailableFiles() - Method was called.
+2020-06-21 12:36:29,467 [6] DEBUG SharedRessources.DataAccess.UserAccess.UserAccess - Fetching available files. 
+2020-06-21 12:36:29,474 [6] DEBUG API.Controllers.UserController - 0 file(s)  were fetched for user.
