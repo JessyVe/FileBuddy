@@ -6,7 +6,7 @@ This Repository is part of an educational course of University of Applied Scienc
 
 Bachelor program:
 
-- Mobile Software Development(<[https://www.fh-joanneum.at/mobile-software-development/bachelor/im-studium/das-studium/](https://www.fh-joanneum.at/mobile-software-development/bachelor/)>) (FH JOANNEUM)
+- [Mobile Software Development](<[https://www.fh-joanneum.at/mobile-software-development/bachelor/im-studium/das-studium/](https://www.fh-joanneum.at/mobile-software-development/bachelor/)>) (FH JOANNEUM)
 
 **Course:**
 
