@@ -11,7 +11,7 @@ namespace SharedResourcesTests
         public void IsMailAddressValidReturnTrue()
         {
             // arrange
-            var validMailAddress = "test.user@something.awesome.com";
+            const string validMailAddress = "test.user@something.awesome.com";
 
             // act
             var result = DataValidator.IsMailAddressValid(validMailAddress);
@@ -24,11 +24,13 @@ namespace SharedResourcesTests
         public void IsMailAddressValidThrowsException()
         {
             // arrange
-            var invalidMailAddress = "notAMailAddress";
+            const string invalidMailAddress = "notAMailAddress";
+
+            // act
+            var result = DataValidator.IsMailAddressValid(invalidMailAddress);
 
             // assert   
-            Assert.Throws<FormatException>(() => 
-                   DataValidator.IsMailAddressValid(invalidMailAddress));
+            Assert.IsFalse(result);
         }
     }
 }
