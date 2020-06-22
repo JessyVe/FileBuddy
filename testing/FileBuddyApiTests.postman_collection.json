@@ -1,0 +1,305 @@
+{
+	"info": {
+		"_postman_id": "7633fd91-85a1-454e-9b2b-7230911b7019",
+		"name": "FileBuddyApiTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register-new-user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fb3e6537-b03b-4f1d-ad44-1be25b9b93c4",
+						"exec": [
+							"var random = Math.random().toString(36).substring(2);\r",
+							"var mailAddress = random + \"@gmail.com\";\r",
+							"\r",
+							"pm.environment.set(\"mail_Address\", mailAddress);\r",
+							"pm.environment.set(\"password\", \"topsecret\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "971e6ee3-7d05-45a7-b175-a69b7479be4d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Was user id assigned\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).not.eql(0);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.json(); // parse response\r",
+							"pm.globals.set(\"user_id\", response.id); // set global id"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 0,\r\n  \"name\": \"MyTestUser\",\r\n  \"password\": \"{{password}}\",\r\n  \"mailAddress\": \"{{mail_Address}}\",\r\n  \"accountCreationDate\": \"2020-06-21T12:42:19.243Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/Authentification/register",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Authentification",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login-with-created-user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4dc58f58-4155-4331-a4f7-42baf5a8ac8e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Was user id assigned\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).not.eql(0);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.json(); \r",
+							"pm.environment.set(\"user_id\", response.id); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n  \"mailAddress\": \"{{mail_Address}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/Authentification/login/mailaddress",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"Authentification",
+						"login",
+						"mailaddress"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload-file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e091bfb1-1626-4208-9834-d2fbf7708aba",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "/C:/Users/Jessy/Desktop/Test.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/File/upload/{{user_id}}/{{user_id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"File",
+						"upload",
+						"{{user_id}}",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetch-files",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8655879d-53d5-4e1e-ab20-86d6c31d6624",
+						"exec": [
+							"pm.test(\"Received information about uploaded file\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.length).to.eql(1);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"const response = pm.response.json()[0];\r",
+							"pm.environment.set(\"file_id\", response.Id); "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/User/fetchfiles/{{user_id}}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"User",
+						"fetchfiles",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "download-file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "20853a52-21aa-4c45-abf9-1858f4eed1c0",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"apiPath\": \"{{api_path}}\",\r\n  \"receiverId\": {{user_id}},\r\n  \"sharedFileId\": {{file_id}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/File/download",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"File",
+						"download"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete-created-user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ba1e7d04-d0d0-45b6-9aaf-49f13802668c",
+						"exec": [
+							"pm.test(\"Status code is 202\", function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n  \"id\": {{user_id}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/User/delete",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"User",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
