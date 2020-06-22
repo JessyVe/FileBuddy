@@ -70,6 +70,8 @@ Currently the received list must be updated manually (refresh button; top-right 
 
 ![Main screen](images/received-screen-with-files.PNG)
 
+**NOTE: Files may be double-clicked for the download to start.**
+
 #### Main screen - "Share"
 
 ![Main screen](images/share-screen-with-files.PNG)
