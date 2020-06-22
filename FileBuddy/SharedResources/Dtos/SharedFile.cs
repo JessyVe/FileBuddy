@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SharedRessources.Dtos
+namespace SharedResources.Dtos
 {
     public class SharedFile
     {

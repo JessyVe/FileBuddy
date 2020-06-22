@@ -1,8 +1,9 @@
-﻿using SharedRessources.Dtos;
+﻿
+using SharedResources.Dtos;
 
-namespace SharedRessources.DataAccess.Authentification
+namespace SharedResources.DataAccess.Authentication
 {
-    public interface IAuthentificationService
+    public interface IAuthenticationService
     {
         public AppUser RegisterUser(AppUser user);
         public AppUser LoginWithMacAddress(string macAddress);

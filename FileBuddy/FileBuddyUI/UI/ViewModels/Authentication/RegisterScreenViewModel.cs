@@ -1,13 +1,13 @@
 ﻿using FileBuddyUI.Resources;
 using FileBuddyUI.UI.Helper;
 using FileBuddyUI.UI.Helper.CustomEventArgs;
-using SharedRessources.DataAccess.ApiAccess;
-using SharedRessources.Dtos;
 using System;
 using System.Windows.Input;
+using SharedResources.DataAccess.ApiAccess;
+using SharedResources.Dtos;
 using ToastNotifications.Messages;
 
-namespace FileBuddyUI.UI.ViewModels
+namespace FileBuddyUI.UI.ViewModels.Authentication
 {
     /// <summary>
     /// Implements interaction logic for the registration view. 
@@ -41,7 +41,7 @@ namespace FileBuddyUI.UI.ViewModels
                 var loggedInUser = await ApiClient.Instance.RegisterUser(user);
                 if (loggedInUser.Id > 0)
                 {
-                    OnAuthentificationSuccess(new AuthentificationEventArgs()
+                    OnAuthentificationSuccess(new AuthenticationEventArgs()
                     {
                         AppUser = loggedInUser,
                         IsNewUser = true
@@ -60,12 +60,11 @@ namespace FileBuddyUI.UI.ViewModels
 
         private bool ValidateInputData()
         {
-            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(MailAddress) || string.IsNullOrEmpty(Password))
-            {
-                ToastMessenger.NotifierInstance.Notifier.ShowWarning(UITexts.NoDataRegister);
-                return false;
-            }
-            return true;
+            if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(MailAddress) && !string.IsNullOrEmpty(Password)) 
+                return true;
+
+            ToastMessenger.NotifierInstance.Notifier.ShowWarning(UITexts.NoDataRegister);
+            return false;
         }
     }
 }

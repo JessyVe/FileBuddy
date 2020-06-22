@@ -1,8 +1,7 @@
 ﻿using System;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharedRessources.DataAccess.UserAccess;
-using SharedRessources.Dtos;
+using SharedResources.DataAccess.UserAccess;
+using SharedResources.Dtos;
 using SharedRessources.Services;
 
 namespace API.Controllers
@@ -15,7 +14,7 @@ namespace API.Controllers
         private static readonly log4net.ILog Log =
            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly string ERROR_FORMAT = "{0};{1}";
+        private const string ErrorFormat = "{0};{1}";
         private readonly IUserAccess _userAccess;
 
         public UserController()
@@ -44,7 +43,7 @@ namespace API.Controllers
                 var errorText = "Update of user information failed.";
 
                 Log.ErrorFormat(errorText, ex);
-                return BadRequest(string.Format(ERROR_FORMAT, errorText, ex));
+                return BadRequest(string.Format(ErrorFormat, errorText, ex));
             }
         }
 
@@ -72,7 +71,7 @@ namespace API.Controllers
                 var errorText = "User could not be deleted.";
 
                 Log.ErrorFormat(errorText, ex);
-                return BadRequest(string.Format(ERROR_FORMAT, errorText, ex));
+                return BadRequest(string.Format(ErrorFormat, errorText, ex));
             }
             return NotFound();
         }

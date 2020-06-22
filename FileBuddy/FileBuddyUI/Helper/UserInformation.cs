@@ -1,4 +1,4 @@
-﻿using SharedRessources.Dtos;
+﻿using SharedResources.Dtos;
 
 namespace FileBuddyUI.Helper
 {

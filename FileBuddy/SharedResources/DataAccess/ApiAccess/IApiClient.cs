@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SharedRessources.DisplayedTypes;
-using SharedRessources.Dtos;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SharedResources.Dtos;
 
-namespace SharedRessources.DataAccess.ApiAccess
+namespace SharedResources.DataAccess.ApiAccess
 {
     public interface IApiClient
     {

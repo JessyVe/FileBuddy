@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SharedRessources.Database;
-using SharedRessources.Dtos;
 using SharedRessources.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SharedResources.Database;
+using SharedResources.Dtos;
 
-namespace SharedRessources.DataAccess.Authentification
+namespace SharedResources.DataAccess.Authentication
 {
-    public class AuthentificationService : IAuthentificationService
+    public class AuthenticationService : IAuthenticationService
     {
         private static readonly log4net.ILog Log =
                 log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -70,7 +70,7 @@ namespace SharedRessources.DataAccess.Authentification
 
         public bool MailAddressAlreadyInUse(string mailAddress)
         {
-            Log.Debug("Chechking if mail address is already in use.");
+            Log.Debug("Checking if mail address is already in use.");
 
             using (var context = new SQLiteDBContext())
             {

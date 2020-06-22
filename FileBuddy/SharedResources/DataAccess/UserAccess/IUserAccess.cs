@@ -1,8 +1,8 @@
 ﻿using SharedRessources.DisplayedTypes;
-using SharedRessources.Dtos;
 using System.Collections.Generic;
+using SharedResources.Dtos;
 
-namespace SharedRessources.DataAccess.UserAccess
+namespace SharedResources.DataAccess.UserAccess
 {
     public interface IUserAccess
     {

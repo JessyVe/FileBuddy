@@ -1,4 +1,4 @@
-﻿using SharedRessources.Dtos;
+﻿using SharedResources.Dtos;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -7,7 +7,7 @@ using System.Net.Mail;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace SharedRessources.DataAccess.ApiAccess
+namespace SharedResources.DataAccess.ApiAccess
 {
     /// <summary>
     /// Implements the basic structure for sending requests to 
@@ -45,7 +45,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         }
 
         /// <summary>
-        /// Exceutes a post request to the API, using the given access token, 
+        /// Executes a post request to the API, using the given access token, 
         /// and returns the result. 
         /// </summary>
         /// <typeparam name="TRequest"></typeparam>
@@ -131,13 +131,13 @@ namespace SharedRessources.DataAccess.ApiAccess
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _client.PostAsJsonAsync(requestUrl, downloadRequest);
-            Stream data = response.Content.ReadAsStreamAsync().Result;
+            var data = response.Content.ReadAsStreamAsync().Result;
 
             var mailMessage = new MailMessage();
             mailMessage.Attachments.Add(new Attachment(data, response.Content.Headers.ContentDisposition.FileName));
 
             var filePath = Path.Combine(_destination, response.Content.Headers.ContentDisposition.FileName);
-            using (FileStream fs = File.Create(filePath))
+            await using (var fs = File.Create(filePath))
             {
                 data.Seek(0, SeekOrigin.Begin);
                 data.CopyTo(fs);

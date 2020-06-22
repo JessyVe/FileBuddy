@@ -1,14 +1,14 @@
 ﻿using FileBuddyUI.Resources;
 using FileBuddyUI.UI.Helper;
 using FileBuddyUI.UI.Helper.CustomEventArgs;
-using SharedRessources.DataAccess.ApiAccess;
-using SharedRessources.Dtos;
 using SharedRessources.Services;
 using System;
 using System.Windows.Input;
+using SharedResources.DataAccess.ApiAccess;
+using SharedResources.Dtos;
 using ToastNotifications.Messages;
 
-namespace FileBuddyUI.UI.ViewModels
+namespace FileBuddyUI.UI.ViewModels.Authentication
 {
     /// <summary>
     /// Implements interaction logic for the login view. 
@@ -27,7 +27,7 @@ namespace FileBuddyUI.UI.ViewModels
         private async void LoginUserWithMailAddress()
         {
             BusyCursorProvider.SetBusyState();
-            Log.Debug("Attmepting to login user with given credentials.");
+            Log.Debug("Attempting to login user with given credentials.");
             try
             {
                 if (!ValidateInputData())
@@ -59,13 +59,13 @@ namespace FileBuddyUI.UI.ViewModels
                 Log.Debug(UITexts.NoDataLoginError);
                 return false;
             }
-            else if (string.IsNullOrEmpty(Password))
+            if (string.IsNullOrEmpty(Password))
             {
                 ToastMessenger.NotifierInstance.Notifier.ShowWarning(UITexts.NoPasswordGiven);
                 Log.Debug(UITexts.NoPasswordGiven);
                 return false;
             }
-            else if (string.IsNullOrEmpty(MailAddress))
+            if (string.IsNullOrEmpty(MailAddress))
             {
                 ToastMessenger.NotifierInstance.Notifier.ShowWarning(UITexts.NoMailAddressGiven);
                 Log.Debug(UITexts.NoMailAddressGiven);
@@ -79,7 +79,7 @@ namespace FileBuddyUI.UI.ViewModels
             ToastMessenger.NotifierInstance.Notifier.ShowError(UITexts.OnlyForPremiumUser); // TODO: Remove after finished implementation
 
             BusyCursorProvider.SetBusyState();
-            Log.Debug("Attmepting to login user with mac address.");
+            Log.Debug("Attempting to login user with mac address.");
             try
             {
                 var loggedInUser = await ApiClient.Instance.LoginWithMacAddress(MacAddressRetriever.GetMacAddress());
@@ -97,7 +97,7 @@ namespace FileBuddyUI.UI.ViewModels
         {
             if (user.Id > 0)
             {
-                OnAuthentificationSuccess(new AuthentificationEventArgs()
+                OnAuthentificationSuccess(new AuthenticationEventArgs()
                 {
                     AppUser = user
                 });

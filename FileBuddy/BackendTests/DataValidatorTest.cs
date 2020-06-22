@@ -21,7 +21,7 @@ namespace SharedResourcesTests
         }
 
         [Test]
-        public void IsMailAddressValidThrowsExeception()
+        public void IsMailAddressValidThrowsException()
         {
             // arrange
             var invalidMailAddress = "notAMailAddress";

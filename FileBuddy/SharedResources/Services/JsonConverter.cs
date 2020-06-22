@@ -9,9 +9,9 @@ namespace SharedRessources.Services
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string GetAsJson(object obj)
+        public static string GetAsJson(object obj, Formatting formatting = Formatting.None)
         {
-            return JsonConvert.SerializeObject(obj, Formatting.Indented);
+            return JsonConvert.SerializeObject(obj, formatting);
         }
 
         /// <summary>

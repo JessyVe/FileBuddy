@@ -4,10 +4,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using SharedRessources.Dtos;
 using Microsoft.IdentityModel.Tokens;
+using SharedResources.Dtos;
 
-namespace SharedRessources.Services.TokenLogic
+namespace SharedResources.Services.TokenLogic
 {
     public class TokenService : ITokenService
     {

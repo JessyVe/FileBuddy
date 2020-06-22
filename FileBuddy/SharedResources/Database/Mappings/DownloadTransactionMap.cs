@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SharedRessources.Dtos;
+using SharedResources.Dtos;
 
-namespace DatabaseConnection.Database.Mappings
+namespace SharedResources.Database.Mappings
 {
     public class DownloadTransactionMap
     {

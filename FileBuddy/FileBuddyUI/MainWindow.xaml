@@ -4,39 +4,32 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         
+        xmlns:authUc="clr-namespace:FileBuddyUI.UI.Views.Authentication"
+        xmlns:authVm="clr-namespace:FileBuddyUI.UI.ViewModels.Authentication"
+
         xmlns:uc="clr-namespace:FileBuddyUI.UI.Views"
         xmlns:vm="clr-namespace:FileBuddyUI.UI.ViewModels"
         
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+       
         WindowStyle="None"
        
         Title="Login" 
         Width="Auto" Height="Auto" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"      
+     
         MouseLeftButtonDown="WindowMouseLeftButtonDown"
-        
         ResizeMode="NoResize">
-    <x:Code>
-        <![CDATA[            
-            private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-            {
-                DragMove();
-            }
-        ]]>
-    </x:Code>
 
     <Window.Resources>
-        <DataTemplate x:Name="loginViewTemplate" 
-                      DataType="{x:Type vm:LoginScreenViewModel}">
-            <uc:LoginScreen DataContext="{Binding}"/>
+        <DataTemplate DataType="{x:Type authVm:LoginScreenViewModel}">
+            <authUc:LoginScreen DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="registerViewTemplate" 
-                      DataType="{x:Type vm:RegisterScreenViewModel}">
-            <uc:RegisterScreen DataContext="{Binding}"/>
+        <DataTemplate DataType="{x:Type authVm:RegisterScreenViewModel}">
+            <authUc:RegisterScreen DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="dashboardViewTemplate" 
-                      DataType="{x:Type vm:DashboardViewModel}">
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
             <uc:Dashboard DataContext="{Binding}"/>
         </DataTemplate>
     </Window.Resources>
@@ -97,8 +90,8 @@
                HorizontalAlignment="Center">
             <TextBlock TextDecorations="Underline"
                        Text="create new account"
-                       MouseEnter="OnLoginLableMouseEnter"
-                       MouseLeave="OnLoginLableMouseLeave"
+                       MouseEnter="OnLoginLabelMouseEnter"
+                       MouseLeave="OnLoginLabelMouseLeave"
                        MouseDown="OnSwitchToRegisterScreen"
                        Margin="0 15 0 30"/>
         </Label>

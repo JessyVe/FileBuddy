@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using SharedRessources.DataAccess.FileDataAccess;
-using SharedRessources.Dtos;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
+using SharedResources.DataAccess.FileDataAccess;
+using SharedResources.Dtos;
 
 namespace API.Controllers
 {
@@ -28,10 +27,10 @@ namespace API.Controllers
 
         /// <summary>
         /// Uploads given files and makes them available for
-        /// definited users.
+        /// defined users.
         /// </summary>
-        /// <param name="files"></param>
-        /// <param name="userGroups"></param>
+        /// <param name="userId"></param>
+        /// <param name="receiverId"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("upload/{userId}/{receiverId}")]
@@ -72,7 +71,7 @@ namespace API.Controllers
         /// <summary>
         /// Returns the file save under the given path. 
         /// </summary>
-        /// <param name="apiPath"></param>
+        /// <param name="downloadRequest"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("download")]

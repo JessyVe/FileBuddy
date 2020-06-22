@@ -1,17 +1,18 @@
 ﻿using FileBuddyUI.Helper;
 using FileBuddyUI.Resources;
 using FileBuddyUI.UI.Helper;
-using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.DisplayedTypes;
-using SharedRessources.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using SharedResources.DataAccess.ApiAccess;
+using SharedResources.Dtos;
 using ToastNotifications.Messages;
 
 namespace FileBuddyUI.UI.ViewModels
@@ -29,7 +30,7 @@ namespace FileBuddyUI.UI.ViewModels
         public ObservableCollection<UploadFile> ToUploadFiles { get; set; }
 
         public UploadFile SelectedUploadFile { get; set; }
-        public DisplayedSharedFile SelectedDowloadFile { get; set; }
+        public DisplayedSharedFile SelectedDownloadFile { get; set; }
 
         public ICommand OnRemoveFileCommand { get; }
         public ICommand OnDownloadFile { get; }
@@ -83,19 +84,18 @@ namespace FileBuddyUI.UI.ViewModels
             {
                 var fetchedFiles = await ApiClient.Instance.FetchAvailableFiles(UserInformation.Instance.CurrentUser.Id, UserInformation.Instance.CurrentUser.AccessToken);
 
-                if (fetchedFiles.Count == 0)
-                    ToastMessenger.NotifierInstance.Notifier.ShowInformation(UITexts.NoNewFiles);
-                else
-                    ToastMessenger.NotifierInstance.Notifier.ShowInformation(string.Format(UITexts.ReceivedFiles, fetchedFiles.Count));
+                ToastMessenger.NotifierInstance.Notifier.ShowInformation(fetchedFiles.Count == 0
+                    ? UITexts.NoNewFiles
+                    : string.Format(UITexts.ReceivedFiles, fetchedFiles.Count));
 
-                int newlyFetchedFiles = 0;
+                var newlyFetchedFiles = 0;
                 foreach (var fetchedFile in fetchedFiles)
                 {
-                    if (!IsFileAlreadyFetched(fetchedFile))
-                    {
-                        newlyFetchedFiles++;
-                        ReceivedFiles.Add(fetchedFile);
-                    }
+                    if (IsFileAlreadyFetched(fetchedFile)) 
+                        continue;
+
+                    newlyFetchedFiles++;
+                    ReceivedFiles.Add(fetchedFile);
                 }
                 OnPropertyChanged(nameof(ReceivedFiles));
                 Log.Debug($"Received {newlyFetchedFiles} new files(s)! ");
@@ -109,14 +109,7 @@ namespace FileBuddyUI.UI.ViewModels
 
         private bool IsFileAlreadyFetched(DisplayedSharedFile displayedSharedFile)
         {
-            foreach (var alreadyFetchedFile in ReceivedFiles)
-            {
-                if (displayedSharedFile.Id == alreadyFetchedFile.Id)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return ReceivedFiles.Any(alreadyFetchedFile => displayedSharedFile.Id == alreadyFetchedFile.Id);
         }
 
         /// <summary>
@@ -173,7 +166,7 @@ namespace FileBuddyUI.UI.ViewModels
             {
                 var savedPath = await ApiClient.Instance.Download(new DownloadRequest()
                 {
-                    SharedFileId = SelectedDowloadFile.Id,
+                    SharedFileId = SelectedDownloadFile.Id,
                     ReceiverId = UserInformation.Instance.CurrentUser.Id
                 }, UserInformation.Instance.CurrentUser.AccessToken);
 

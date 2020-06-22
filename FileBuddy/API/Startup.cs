@@ -14,8 +14,8 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SharedResources.Services.TokenLogic;
 using SharedRessources.Services;
-using SharedRessources.Services.TokenLogic;
 
 namespace API
 {

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharedRessources.DataAccess.UserAccess;
-using SharedRessources.Services.TokenLogic;
-using System.Linq;
 using System.Security.Claims;
+using SharedResources.DataAccess.UserAccess;
+using SharedResources.Services.TokenLogic;
 
 namespace API.Controllers
 {
@@ -24,16 +24,17 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Returns a refreshed authentification token.
+        /// Returns a refreshed authentication token.
         /// </summary>
         /// <param name="accessToken"></param>
+        /// <param name="refreshToken"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("refresh/{accessToken}/{refreshToken}")]
         public IActionResult RefreshToken(string accessToken, string refreshToken)
         {
             var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
-            var mailAddress = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value; 
+            var mailAddress = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value; 
 
             if(mailAddress == null)
             {

@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 namespace WebSocketServer.Client
 {
     /// <summary>
-    /// Represents a client implementation for communcation 
-    /// with a web socket server. 
+    /// Represents a client implementation for
+    /// communication with a web socket server. 
     /// </summary>
     public class SocketClient
     {
@@ -35,8 +35,7 @@ namespace WebSocketServer.Client
 
         public async Task<bool> ConnectToServer()
         {
-            var result = await Task.Run(() => TryConnect());
-            string guid = string.Empty;
+            var result = await Task.Run(TryConnect);
 
             try
             {
@@ -70,7 +69,7 @@ namespace WebSocketServer.Client
 
         public async Task<object> ReceiveMessage()
         {
-            return await Task.Run(() => TryReceiveMessage());
+            return await Task.Run(TryReceiveMessage);
         }
 
         private object TryReceiveMessage()
@@ -78,19 +77,17 @@ namespace WebSocketServer.Client
             if (Socket.Available == 0)
                 return null;
 
-            byte[] data = new byte[Socket.ReceiveBufferSize];
+            var data = new byte[Socket.ReceiveBufferSize];
 
             try
             {
-                using (var networkStream = new NetworkStream(Socket))
-                {
-                    networkStream.Read(data, 0, data.Length);
-                    var memory = new MemoryStream(data) { Position = 0 };
-                    var formatter = new BinaryFormatter();
-                    var obj = formatter.Deserialize(memory);
+                using var networkStream = new NetworkStream(Socket);
+                networkStream.Read(data, 0, data.Length);
+                var memory = new MemoryStream(data) { Position = 0 };
+                var formatter = new BinaryFormatter();
+                var obj = formatter.Deserialize(memory);
 
-                    return obj;
-                }
+                return obj;
             }
             catch (Exception ex)
             {
@@ -103,18 +100,16 @@ namespace WebSocketServer.Client
         {
             try
             {
-                using (var networkStream = new NetworkStream(Socket))
-                {
-                    var memory = new MemoryStream();
-                    var formatter = new BinaryFormatter();
-                    formatter.Serialize(memory, obj);
+                using var networkStream = new NetworkStream(Socket);
+                var memory = new MemoryStream();
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(memory, obj);
 
-                    var newObj = memory.ToArray();
-                    memory.Position = 0;
+                var newObj = memory.ToArray();
+                memory.Position = 0;
 
-                    networkStream.Write(newObj, 0, newObj.Length);
-                    return true;
-                }
+                networkStream.Write(newObj, 0, newObj.Length);
+                return true;
             }
             catch (IOException ex)
             {
@@ -127,13 +122,11 @@ namespace WebSocketServer.Client
         {
             try
             {
-                using (var networkStream = new NetworkStream(Socket))
-                {
-                    var writer = new StreamWriter(networkStream) { AutoFlush = true };
-                    writer.WriteLine(message);
+                using var networkStream = new NetworkStream(Socket);
+                var writer = new StreamWriter(networkStream) { AutoFlush = true };
+                writer.WriteLine(message);
 
-                    return true;
-                }
+                return true;
             }
             catch (IOException ex)
             {
@@ -153,25 +146,6 @@ namespace WebSocketServer.Client
             {
                 Log.ErrorFormat("Unable to connect to server. ", ex);
                 return false;
-            }
-        }
-
-        public string ReceiveGuid()
-        {
-            try
-            {
-                using (var networkStream = new NetworkStream(Socket))
-                {
-                    var reader = new StreamReader(networkStream);
-                    networkStream.ReadTimeout = 5000;
-
-                    return reader.ReadLine();
-                }
-            }
-            catch (IOException ex)
-            {
-                Log.ErrorFormat("Unable to receive guid from server. ", ex);
-                return null;
             }
         }
 

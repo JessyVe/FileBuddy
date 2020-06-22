@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SharedRessources.DataAccess.Authentification;
-using SharedRessources.DataAccess.UserAccess;
-using SharedRessources.Dtos;
-using SharedRessources.Services.TokenLogic;
 using System;
+using SharedResources.DataAccess.Authentication;
+using SharedResources.DataAccess.UserAccess;
+using SharedResources.Dtos;
+using SharedResources.Services.TokenLogic;
 
 namespace API.Controllers
 {
@@ -12,19 +12,19 @@ namespace API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthentificationController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private static readonly log4net.ILog Log =
              log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly ITokenService _tokenService;
-        private readonly IAuthentificationService _authentificationService;
+        private readonly IAuthenticationService _authenticationService;
         private readonly IUserAccess _userAccess;
 
-        public AuthentificationController()
+        public AuthenticationController()
         {
             _tokenService = new TokenService();
-            _authentificationService = new AuthentificationService();
+            _authenticationService = new AuthenticationService();
             _userAccess = new UserAccess();
         }
 
@@ -40,7 +40,7 @@ namespace API.Controllers
         {
             Log.Debug("RegisterUser()-Method was called.");
 
-            if (_authentificationService.MailAddressAlreadyInUse(user.MailAddress))
+            if (_authenticationService.MailAddressAlreadyInUse(user.MailAddress))
             {
                 var errorText = "Mail address is already in use.";
                 Log.Error(errorText);
@@ -49,7 +49,7 @@ namespace API.Controllers
             }
 
             _tokenService.GenerateTokensForUser(user);
-            _authentificationService.RegisterUser(user);
+            _authenticationService.RegisterUser(user);
 
             if (user.Id == 0)
             {
@@ -64,7 +64,7 @@ namespace API.Controllers
 
         /// <summary>
         /// Returns the current user object to 
-        /// ensure that it is synchronised over all devices. 
+        /// ensure that it is synchronized over all devices. 
         /// </summary>
         /// <param name="macAddress"></param>
         [HttpPost]
@@ -72,24 +72,23 @@ namespace API.Controllers
         public ActionResult<AppUser> LoginWithMacAddress(string macAddress)
         {
             Log.Debug("LoginWithMacAddress()-Method was called.");
-            var appUser = _authentificationService.LoginWithMacAddress(macAddress);
+            var appUser = _authenticationService.LoginWithMacAddress(macAddress);
 
             return AssignTokens(appUser);
         }
 
         /// <summary>
         /// Returns the current user object to 
-        /// ensure that it is synchronised over all devices. 
+        /// ensure that it is synchronized over all devices. 
         /// </summary>
-        /// <param name="mailAddress"></param>
-        /// <param name="password"></param>
+        /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("login/mailaddress")]
         public ActionResult<AppUser> LoginWithMailAddress([FromBody] AppUser user)
         {
             Log.Debug("LoginWithMailAddress()-Method was called.");
-            var appUser = _authentificationService.LoginWithMailAddress(user.MailAddress, user.Password);
+            var appUser = _authenticationService.LoginWithMailAddress(user.MailAddress, user.Password);
 
             return AssignTokens(appUser);
         }

@@ -1,5 +1,4 @@
 ﻿using log4net;
-using SharedRessources.Services;
 using System;
 using System.IO;
 using System.Net;
@@ -35,8 +34,6 @@ namespace WebSocketServerUI
             Log.Info("*** Server will be available in short. Please wait ... ***");
             var server = new Server();
             server.StartServer();
-
-
 
             Console.Read();
         }

@@ -34,7 +34,7 @@ namespace FileBuddyUI.UI.ViewModels
         /// Is fired when authentification was successfull. 
         /// </summary>
         public event EventHandler AuthentificationSuccess;
-        protected virtual void OnAuthentificationSuccess(AuthentificationEventArgs e)
+        protected virtual void OnAuthentificationSuccess(AuthenticationEventArgs e)
         {
             Log.Debug("AuthentificationSuccess event was invoked.");
             EventHandler handler = AuthentificationSuccess;

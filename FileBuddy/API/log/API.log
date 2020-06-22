@@ -1,0 +1,49 @@
+2020-06-22 13:22:54,125 [8] DEBUG API.Controllers.AuthenticationController - RegisterUser()-Method was called.
+2020-06-22 13:22:54,167 [8] DEBUG SharedResources.DataAccess.Authentication.AuthenticationService - Checking if mail address is already in use.
+2020-06-22 13:22:57,180 [8] DEBUG SharedResources.DataAccess.Authentication.AuthenticationService - Attempting to register user.
+2020-06-22 13:22:57,645 [8] DEBUG API.Controllers.AuthenticationController - User was registered successfully!
+2020-06-22 13:22:58,495 [8] DEBUG API.Controllers.UserController - FetchAvailableFiles() - Method was called.
+2020-06-22 13:22:58,499 [8] DEBUG SharedResources.DataAccess.UserAccess.UserAccess - Fetching available files. 
+2020-06-22 13:22:58,752 [8] DEBUG API.Controllers.UserController - 0 file(s)  were fetched for user.
+2020-06-22 13:24:27,153 [5] DEBUG API.Controllers.AuthenticationController - RegisterUser()-Method was called.
+2020-06-22 13:24:27,188 [5] DEBUG SharedResources.DataAccess.Authentication.AuthenticationService - Checking if mail address is already in use.
+2020-06-22 13:24:29,202 [5] DEBUG SharedResources.DataAccess.Authentication.AuthenticationService - Attempting to register user.
+2020-06-22 13:24:29,598 [5] DEBUG API.Controllers.AuthenticationController - User was registered successfully!
+2020-06-22 13:24:30,033 [10] DEBUG API.Controllers.UserController - FetchAvailableFiles() - Method was called.
+2020-06-22 13:24:30,036 [10] DEBUG SharedResources.DataAccess.UserAccess.UserAccess - Fetching available files. 
+2020-06-22 13:24:30,311 [10] DEBUG API.Controllers.UserController - 0 file(s)  were fetched for user.
+2020-06-22 13:24:54,562 [4] DEBUG API.Controllers.FileController - Upload() - Method was called.
+2020-06-22 13:24:54,577 [4] DEBUG API.Controllers.FileController - File upload was completed. 
+2020-06-22 13:24:54,579 [4] DEBUG SharedResources.DataAccess.FileDataAccess.FileDataAccess - Information about new file upload will be save in database.
+2020-06-22 13:24:54,900 [7] DEBUG API.Controllers.FileController - Upload() - Method was called.
+2020-06-22 13:24:54,907 [7] DEBUG API.Controllers.FileController - File upload was completed. 
+2020-06-22 13:24:54,907 [7] DEBUG SharedResources.DataAccess.FileDataAccess.FileDataAccess - Information about new file upload will be save in database.
+2020-06-22 13:24:54,954 [5] DEBUG API.Controllers.UserController - FetchAvailableFiles() - Method was called.
+2020-06-22 13:24:54,966 [5] DEBUG SharedResources.DataAccess.UserAccess.UserAccess - Fetching available files. 
+2020-06-22 13:24:55,083 [5] DEBUG API.Controllers.UserController - 1 file(s)  were fetched for user.
+2020-06-22 13:24:55,329 [5] DEBUG API.Controllers.UserController - FetchAvailableFiles() - Method was called.
+2020-06-22 13:24:55,330 [5] DEBUG SharedResources.DataAccess.UserAccess.UserAccess - Fetching available files. 
+2020-06-22 13:24:55,394 [5] DEBUG API.Controllers.UserController - 2 file(s)  were fetched for user.
+2020-06-22 13:25:03,836 [9] DEBUG API.Controllers.FileController - Download() - Method was called.
+2020-06-22 13:25:03,838 [9] DEBUG SharedResources.DataAccess.FileDataAccess.FileDataAccess - File path was requested. 
+2020-06-22 13:25:03,901 [9] DEBUG SharedResources.DataAccess.FileDataAccess.FileDataAccess - File was downloaded. 
+2020-06-22 13:25:03,990 [9] DEBUG API.Controllers.FileController - Successfully initialized download. Requested file will be returned.
+2020-06-22 13:28:26,620 [4] DEBUG API.Controllers.AuthenticationController - RegisterUser()-Method was called.
+2020-06-22 13:28:26,659 [4] DEBUG SharedResources.DataAccess.Authentication.AuthenticationService - Checking if mail address is already in use.
+2020-06-22 13:28:29,478 [4] DEBUG SharedResources.DataAccess.Authentication.AuthenticationService - Attempting to register user.
+2020-06-22 13:28:30,044 [4] DEBUG API.Controllers.AuthenticationController - User was registered successfully!
+2020-06-22 13:28:30,670 [4] DEBUG API.Controllers.UserController - FetchAvailableFiles() - Method was called.
+2020-06-22 13:28:30,680 [4] DEBUG SharedResources.DataAccess.UserAccess.UserAccess - Fetching available files. 
+2020-06-22 13:28:31,070 [4] DEBUG API.Controllers.UserController - 0 file(s)  were fetched for user.
+2020-06-22 13:28:40,144 [7] DEBUG API.Controllers.FileController - Upload() - Method was called.
+2020-06-22 13:28:40,150 [7] DEBUG API.Controllers.FileController - File upload was completed. 
+2020-06-22 13:28:40,151 [7] DEBUG SharedResources.DataAccess.FileDataAccess.FileDataAccess - Information about new file upload will be save in database.
+2020-06-22 13:28:40,397 [7] DEBUG API.Controllers.FileController - Upload() - Method was called.
+2020-06-22 13:28:40,404 [7] DEBUG API.Controllers.FileController - File upload was completed. 
+2020-06-22 13:28:40,404 [7] DEBUG SharedResources.DataAccess.FileDataAccess.FileDataAccess - Information about new file upload will be save in database.
+2020-06-22 13:28:40,426 [4] DEBUG API.Controllers.UserController - FetchAvailableFiles() - Method was called.
+2020-06-22 13:28:40,427 [4] DEBUG SharedResources.DataAccess.UserAccess.UserAccess - Fetching available files. 
+2020-06-22 13:28:40,520 [8] DEBUG API.Controllers.UserController - FetchAvailableFiles() - Method was called.
+2020-06-22 13:28:40,520 [8] DEBUG SharedResources.DataAccess.UserAccess.UserAccess - Fetching available files. 
+2020-06-22 13:28:40,652 [4] DEBUG API.Controllers.UserController - 2 file(s)  were fetched for user.
+2020-06-22 13:28:40,802 [8] DEBUG API.Controllers.UserController - 2 file(s)  were fetched for user.

@@ -1,8 +1,8 @@
-﻿using SharedRessources.Dtos;
+﻿using SharedResources.Dtos;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace SharedRessources.Services.TokenLogic
+namespace SharedResources.Services.TokenLogic
 {
     public interface ITokenService
     {

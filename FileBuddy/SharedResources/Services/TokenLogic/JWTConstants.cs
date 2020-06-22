@@ -1,4 +1,4 @@
-﻿namespace SharedRessources.Services.TokenLogic
+﻿namespace SharedResources.Services.TokenLogic
 {
     /// <summary>
     /// Contains constant values for JSON web tokens.

@@ -1,37 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SharedRessources.DisplayedTypes;
-using SharedRessources.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SharedResources.Dtos;
 
-namespace SharedRessources.DataAccess.ApiAccess
+namespace SharedResources.DataAccess.ApiAccess
 {
     /// <summary>
     /// Implements methods to access the FileBuddy API.
     /// </summary>
     public class ApiClient : ApiClientBase, IApiClient
     {
-        private string _baseAddress = "http://localhost";
-        private int _port = 5000;
+        private readonly string _baseAddress = "http://localhost";
+        private readonly int _port = 5000;
 
-        private const string AuthentificationControllerPath = "api/Authentification";
+        private const string AuthenticationControllerPath = "api/Authentication";
         private const string TokenControllerPath = "api/Token";
         private const string FileControllerPath = "api/File";
         private const string UserControllerPath = "api/User";
 
         private static ApiClient _instance;
-        public static ApiClient Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new ApiClient();
-
-                return _instance;
-            }
-        }
+        public static ApiClient Instance => _instance ??= new ApiClient();
 
         private ApiClient()
         {
@@ -44,13 +35,12 @@ namespace SharedRessources.DataAccess.ApiAccess
 
         /// <summary>
         /// Returns the current user object to 
-        /// ensure that it is synchronised over all devices. 
+        /// ensure that it is synchronized over all devices. 
         /// </summary>
         /// <param name="macAddress"></param>
-        /// <param name="password"></param>
         public async Task<AppUser> LoginWithMacAddress(string macAddress)
         {
-            var requestUrl = $"{AuthentificationControllerPath}/login/macaddress/{macAddress}";
+            var requestUrl = $"{AuthenticationControllerPath}/login/macaddress/{macAddress}";
             var result = await ExecuteCall<AppUser>(requestUrl);
             return result;
         }
@@ -64,14 +54,13 @@ namespace SharedRessources.DataAccess.ApiAccess
 
         /// <summary>
         /// Returns the current user object to 
-        /// ensure that it is synchronised over all devices. 
+        /// ensure that it is synchronized over all devices. 
         /// </summary>
-        /// <param name="mailAddress"></param>
-        /// <param name="password"></param>
+        /// <param name="user"></param>
         /// <returns></returns>
         public async Task<AppUser> LoginWithMailAddress(AppUser user)
         {
-            var requestUrl = $"{AuthentificationControllerPath}/login/mailaddress";
+            var requestUrl = $"{AuthenticationControllerPath}/login/mailaddress";
             var result = await ExecutePostCall<AppUser, AppUser>(requestUrl, user);
             return result;
         }
@@ -84,17 +73,19 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// <returns></returns>
         public async Task<AppUser> RegisterUser(AppUser user)
         {
-            var requestUrl = $"{AuthentificationControllerPath}/register";
+            var requestUrl = $"{AuthenticationControllerPath}/register";
             var result = await ExecutePostCall<AppUser, AppUser>(requestUrl, user);
             return result;
         }
 
         /// <summary>
         /// Uploads given files and makes them available for
-        /// definited users.
+        /// defined users.
         /// </summary>
-        /// <param name="files"></param>
+        /// <param name="userId"></param>
         /// <param name="userGroups"></param>
+        /// <param name="filePath"></param>
+        /// <param name="accessToken"></param>
         /// <returns></returns>
         public async Task Upload(int userId, IList<UserGroup> userGroups, string filePath, string accessToken)
         {
@@ -104,10 +95,10 @@ namespace SharedRessources.DataAccess.ApiAccess
 
         /// <summary>
         /// Uploads given files and makes them available for
-        /// definited users.
+        /// defined users.
         /// </summary>
-        /// <param name="files"></param>
-        /// <param name="userGroups"></param>
+        /// <param name="downloadRequest"></param>
+        /// <param name="accessToken"></param>
         /// <returns></returns>
         public async Task<string> Download(DownloadRequest downloadRequest, string accessToken)
         {
@@ -120,6 +111,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// (Key=userId of sender; Value=list of file names)
         /// </summary>
         /// <param name="userId"></param>
+        /// <param name="accessToken"></param>
         /// <returns></returns>
         public async Task<ICollection<DisplayedSharedFile>> FetchAvailableFiles(int userId, string accessToken)
         {
@@ -132,6 +124,7 @@ namespace SharedRessources.DataAccess.ApiAccess
         /// Updates user-specific settings.
         /// </summary>
         /// <param name="user"></param>
+        /// <param name="accessToken"></param>
         /// <returns></returns>
         public async Task<IActionResult> UpdateUserInformation(AppUser user, string accessToken)
         {

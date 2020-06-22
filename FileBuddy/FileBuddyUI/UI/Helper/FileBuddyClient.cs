@@ -3,6 +3,7 @@ using FileBuddyUI.UI.Helper.CustomEventArgs;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using WebSocketServer.Client;
 using WebSocketServer.MessageTypes;
 
@@ -24,7 +25,6 @@ namespace FileBuddyUI.UI.Helper
         private DateTime _pingLastSent;
         private bool _pinged = false;
 
-        #region Singleton
         private static FileBuddyClient _instance;
         public static FileBuddyClient Instance
         {
@@ -39,12 +39,11 @@ namespace FileBuddyUI.UI.Helper
 
         private FileBuddyClient()
         { }
-        #endregion
 
         public event EventHandler NewUpdateRequestReceived;
         protected virtual void OnNewUpdateRequestReceived(UpdateRequestEventArgs e)
         {
-            EventHandler handler = NewUpdateRequestReceived;
+            var handler = NewUpdateRequestReceived;
             handler?.Invoke(this, e);
         }
 
@@ -89,9 +88,9 @@ namespace FileBuddyUI.UI.Helper
 
             if (IsConnected)
             {
-                _updateTask = Task.Run(() => Update());
+                _updateTask = Task.Run(Update);
                 await _client.SendObject(connectionPacket);
-                _connectionTask = Task.Run(() => MonitorConnection());
+                _connectionTask = Task.Run(MonitorConnection);
 
                 Log.Info("Connection to server was established successfully!");
                 return;
@@ -149,34 +148,30 @@ namespace FileBuddyUI.UI.Helper
                         var result = await _client.PingConnection();  // send a ping request
                         _pinged = true; // ping was executed
 
-                        Thread.Sleep(15000); // wait a pre-definied time for a response
+                        Thread.Sleep(15000); // wait a pre-defined time for a response
 
-                        if (_pinged) // _pinged should be rested to false by now (Method: ManagePacket)
-                        {
-                            Log.Debug("Ping was unsuccessfull. Client will be disconnected.");
-                            await Task.Run(() => DisconnectFromServer());
-                        }
+                        if (!_pinged) 
+                            continue;
+
+                        Log.Debug("Ping was unsuccessful. Client will be disconnected.");
+                        await Task.Run(DisconnectFromServer);
                     }
                 }
             }
         }
 
-        private async Task<bool> MonitorData()
+        private async Task MonitorData()
         {
             var newObject = await _client.ReceiveMessage();
 
             try
             {
-                App.Current.Dispatcher.Invoke(delegate
-            {
-                return ManagePacket(newObject);
-            });
+                Application.Current.Dispatcher.Invoke(() => ManagePacket(newObject));
             }
             catch (Exception ex)
             {
                 Log.ErrorFormat("Main thread is currently not accessible.", ex);
             }
-            return false;
         }
 
         /// <summary>
@@ -186,24 +181,23 @@ namespace FileBuddyUI.UI.Helper
         /// <returns></returns>
         private bool ManagePacket(object packet)
         {
-            if (packet != null)
+            switch (packet)
             {
-                if (packet is UpdateMessage)
-                {
+                case null:
+                    return false;
+                case UpdateMessage _:
                     Log.Debug("New update message was received. System will be notified.");
                     OnNewUpdateRequestReceived(new UpdateRequestEventArgs());
-                }
-                if (packet is PingMessage)
-                {
+                    break;
+                case PingMessage _:
                     Log.Debug("Ping succeeded!");
 
                     _pingLastSent = DateTime.Now;
                     _pingSent = _pingLastSent;
                     _pinged = false;
-                }
-                return true;
+                    break;
             }
-            return false;
+            return true;
         }
     }
 }

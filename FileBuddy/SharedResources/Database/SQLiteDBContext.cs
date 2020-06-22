@@ -1,9 +1,8 @@
-﻿using DatabaseConnection.Database.Mappings;
-using Microsoft.EntityFrameworkCore;
-using SharedRessources.Database.Mappings;
-using SharedRessources.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using SharedResources.Database.Mappings;
+using SharedResources.Dtos;
 
-namespace SharedRessources.Database
+namespace SharedResources.Database
 {
     public class SQLiteDBContext : DbContext
     {

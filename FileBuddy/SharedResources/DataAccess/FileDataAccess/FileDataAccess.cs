@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SharedRessources.Database;
-using SharedRessources.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SharedResources.Database;
+using SharedResources.Dtos;
 
-namespace SharedRessources.DataAccess.FileDataAccess
+namespace SharedResources.DataAccess.FileDataAccess
 {
     /// <summary>
     /// Records file specific transactions (up- and downloads)
@@ -24,17 +24,15 @@ namespace SharedRessources.DataAccess.FileDataAccess
         public string GetApiPathOfFile(int fileId)
         {
             Log.Debug("File path was requested. ");
-            using (var context = new SQLiteDBContext())
-            {
-                return context.SharedFile.First(file => file.Id == fileId)?.ApiPath ?? default;
-            }
+            using var context = new SQLiteDBContext();
+            return context.SharedFile.First(file => file.Id == fileId)?.ApiPath ?? default;
         }
 
         /// <summary>
-        /// Saves information about successfull file shares.
+        /// Saves information about successful file shares.
         /// </summary>
         /// <param name="sharedFile"></param>
-        /// <param name="AuthorizedAccessGrantedTo"></param>
+        /// <param name="authorizedAccessGrantedTo"></param>
         /// <returns></returns>
         public void UploadFile(SharedFile sharedFile, IList<int> authorizedAccessGrantedTo)
         {
@@ -49,7 +47,7 @@ namespace SharedRessources.DataAccess.FileDataAccess
             if (sharedFile.Id == 0)
             {
                 Log.Error("Unable to save file information in database.");
-                throw new Exception("Database insert faild.");
+                throw new Exception("Database insert failed.");
             }
             SaveAuthorizedAccessGranted(authorizedAccessGrantedTo, sharedFile.Id);
         }
@@ -62,20 +60,18 @@ namespace SharedRessources.DataAccess.FileDataAccess
         /// <returns></returns>
         private void SaveAuthorizedAccessGranted(IList<int> authorizedAccessGrantedTo, int sharedFileId)
         {
-            using (var context = new SQLiteDBContext())
+            using var context = new SQLiteDBContext();
+            foreach (var userId in authorizedAccessGrantedTo)
             {
-                foreach (var userId in authorizedAccessGrantedTo)
+                var authorizedAccess = new AuthorizedAccess()
                 {
-                    var authorizedAccess = new AuthorizedAccess()
-                    {
-                        SharedFileId = sharedFileId,
-                        UserId = userId
-                    };
-                    context.AuthorizedAccess.Add(authorizedAccess);
-                    context.Entry(authorizedAccess).State = EntityState.Added;
-                }
-                context.SaveChanges();
+                    SharedFileId = sharedFileId,
+                    UserId = userId
+                };
+                context.AuthorizedAccess.Add(authorizedAccess);
+                context.Entry(authorizedAccess).State = EntityState.Added;
             }
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -86,12 +82,10 @@ namespace SharedRessources.DataAccess.FileDataAccess
         public void FileDownloaded(DownloadTransaction downloadTransaction)
         {
             Log.Debug("File was downloaded. ");
-            using (var context = new SQLiteDBContext())
-            {
-                context.DownloadTransaction.Add(downloadTransaction);
-                context.Entry(downloadTransaction).State = EntityState.Added;
-                context.SaveChanges();
-            }
+            using var context = new SQLiteDBContext();
+            context.DownloadTransaction.Add(downloadTransaction);
+            context.Entry(downloadTransaction).State = EntityState.Added;
+            context.SaveChanges();
         }
 
         /// <summary>
@@ -103,8 +97,8 @@ namespace SharedRessources.DataAccess.FileDataAccess
         {
             Log.Debug("File delete request was received. ");
 
-            var authorizedAccesses = new List<AuthorizedAccess>();
-            var sharedFiles = new List<SharedFile>();
+            List<AuthorizedAccess> authorizedAccesses;
+            List<SharedFile> sharedFiles;
             using (var context = new SQLiteDBContext())
             {
                 authorizedAccesses = context.AuthorizedAccess.Where(access => access.SharedFileId == fileId).ToList();
@@ -114,30 +108,26 @@ namespace SharedRessources.DataAccess.FileDataAccess
             RemoveFiles(sharedFiles);
         }
 
-        private void RemoveAuthorizations(IList<AuthorizedAccess> authorizedAccesses)
+        private void RemoveAuthorizations(IEnumerable<AuthorizedAccess> authorizedAccesses)
         {
-            using (var context = new SQLiteDBContext())
+            using var context = new SQLiteDBContext();
+            foreach (var access in authorizedAccesses)
             {
-                foreach (var access in authorizedAccesses)
-                {
-                    context.AuthorizedAccess.Remove(access);
-                    context.Entry(access).State = EntityState.Deleted;
-                }
-                context.SaveChanges();
+                context.AuthorizedAccess.Remove(access);
+                context.Entry(access).State = EntityState.Deleted;
             }
+            context.SaveChanges();
         }
 
-        private void RemoveFiles(IList<SharedFile> sharedFiles)
+        private void RemoveFiles(IEnumerable<SharedFile> sharedFiles)
         {
-            using (var context = new SQLiteDBContext())
+            using var context = new SQLiteDBContext();
+            foreach (var sharedFile in sharedFiles)
             {
-                foreach (var sharedFile in sharedFiles)
-                {
-                    context.SharedFile.Remove(sharedFile);
-                    context.Entry(sharedFile).State = EntityState.Deleted;
-                }
-                context.SaveChanges();
+                context.SharedFile.Remove(sharedFile);
+                context.Entry(sharedFile).State = EntityState.Deleted;
             }
+            context.SaveChanges();
         }
     }
 }

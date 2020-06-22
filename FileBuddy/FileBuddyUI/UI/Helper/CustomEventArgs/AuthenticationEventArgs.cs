@@ -1,9 +1,9 @@
-﻿using SharedRessources.Dtos;
-using System;
+﻿using System;
+using SharedResources.Dtos;
 
 namespace FileBuddyUI.UI.Helper.CustomEventArgs
 {
-    public class AuthentificationEventArgs : EventArgs
+    public class AuthenticationEventArgs : EventArgs
     {
         public AppUser AppUser { get; set; }
         public bool IsNewUser { get; set; }

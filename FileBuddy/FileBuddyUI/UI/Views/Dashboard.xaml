@@ -49,7 +49,7 @@
                                   ScrollViewer.VerticalScrollBarVisibility="Visible"
                                   ScrollViewer.CanContentScroll="False"
                                   ItemsSource="{Binding ReceivedFiles}"
-                                  SelectedItem="{Binding SelectedDowloadFile}">
+                                  SelectedItem="{Binding SelectedDownloadFile}">
 
                             <ListView.ItemTemplate>
                                 <DataTemplate>

@@ -1,4 +1,4 @@
-﻿namespace SharedRessources.Dtos
+﻿namespace SharedResources.Dtos
 {
     public class DownloadRequest
     {

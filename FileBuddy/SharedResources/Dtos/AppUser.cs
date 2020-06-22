@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SharedRessources.Dtos
+namespace SharedResources.Dtos
 {
     public class AppUser
     {
@@ -10,7 +10,7 @@ namespace SharedRessources.Dtos
         public string Password { get; set; }
         public string MailAddress { get; set; }
         public DateTime AccountCreationDate { get; set; }
-        public byte[] ProfilPicture { get; set; }
+        public byte[] ProfilePicture { get; set; }
         public string UserDevices { get; set; }
         public string UserGroups { get; set; }
 

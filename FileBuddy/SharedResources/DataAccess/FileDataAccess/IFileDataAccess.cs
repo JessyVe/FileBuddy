@@ -1,12 +1,12 @@
-﻿using SharedRessources.Dtos;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using SharedResources.Dtos;
 
-namespace SharedRessources.DataAccess.FileDataAccess
+namespace SharedResources.DataAccess.FileDataAccess
 {
     public interface IFileDataAccess
     {
         string GetApiPathOfFile(int fileId);
-        void UploadFile(SharedFile sharedFile, IList<int> AuthorizedAccessGrantedTo);
+        void UploadFile(SharedFile sharedFile, IList<int> authorizedAccessGrantedTo);
         void FileDownloaded(DownloadTransaction downloadTransaction);
         void FileDelete(int fileId);
     }

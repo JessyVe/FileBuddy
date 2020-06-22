@@ -5,12 +5,11 @@ using System.Windows;
 using System.Windows.Input;
 using ToastNotifications.Messages;
 using System.Threading.Tasks;
-using System.Xml;
-using System.IO;
 using System.Reflection;
 using SharedRessources.Services;
 using FileBuddyUI.UI.Helper.CustomEventArgs;
 using FileBuddyUI.Resources;
+using FileBuddyUI.UI.ViewModels.Authentication;
 
 namespace FileBuddyUI
 {
@@ -39,8 +38,8 @@ namespace FileBuddyUI
             _registerScreenViewModel = new RegisterScreenViewModel();
             _dashboardViewModel = new DashboardViewModel();
 
-            _loginScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;
-            _registerScreenViewModel.AuthentificationSuccess += OnAuthentificationenSuccess;
+            _loginScreenViewModel.AuthentificationSuccess += OnAuthenticationSuccess;
+            _registerScreenViewModel.AuthentificationSuccess += OnAuthenticationSuccess;
 
             DataContext = _loginScreenViewModel;
 
@@ -48,22 +47,21 @@ namespace FileBuddyUI
         }
 
         /// <summary>
-        /// Handles the AuthentificationSuccess event fired by either 
+        /// Handles the AuthenticationSuccess event fired by either 
         /// the login or the registration view.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void OnAuthentificationenSuccess(object sender, System.EventArgs e)
+        private async void OnAuthenticationSuccess(object sender, System.EventArgs e)
         {
-            Log.Debug("User authentification succeeded.");
+            Log.Debug("User authentication succeeded.");
 
-            var args = e as AuthentificationEventArgs;
+            var args = e as AuthenticationEventArgs;
             UserInformation.Instance.CurrentUser = args.AppUser;
 
-            if(args.IsNewUser)
-                ToastMessenger.NotifierInstance.Notifier.ShowSuccess(UITexts.WelcomeText);
-            else
-                ToastMessenger.NotifierInstance.Notifier.ShowSuccess(string.Format(UITexts.WelcomeBack, args.AppUser.Name));
+            ToastMessenger.NotifierInstance.Notifier.ShowSuccess(args.IsNewUser
+                ? UITexts.WelcomeText
+                : string.Format(UITexts.WelcomeBack, args.AppUser.Name));
 
             DataContext = _dashboardViewModel;
 
@@ -97,19 +95,20 @@ namespace FileBuddyUI
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             Log.Debug("Data context of main window was changed. UI will be updated.");
-            if (DataContext is LoginScreenViewModel)
+            switch (DataContext)
             {
-                btBackToLogin.Visibility = Visibility.Hidden;
-                lbRegister.Visibility = Visibility.Visible;
-            }
-            else if (DataContext is RegisterScreenViewModel)
-            {
-                btBackToLogin.Visibility = Visibility.Visible;
-                lbRegister.Visibility = Visibility.Hidden;
-            } else if (DataContext is DashboardViewModel)
-            {
-                btBackToLogin.Visibility = Visibility.Hidden;
-                lbRegister.Visibility = Visibility.Collapsed;
+                case LoginScreenViewModel _:
+                    btBackToLogin.Visibility = Visibility.Hidden;
+                    lbRegister.Visibility = Visibility.Visible;
+                    break;
+                case RegisterScreenViewModel _:
+                    btBackToLogin.Visibility = Visibility.Visible;
+                    lbRegister.Visibility = Visibility.Hidden;
+                    break;
+                case DashboardViewModel _:
+                    btBackToLogin.Visibility = Visibility.Hidden;
+                    lbRegister.Visibility = Visibility.Collapsed;
+                    break;
             }
         }
 
@@ -121,7 +120,8 @@ namespace FileBuddyUI
 
         private void OnWindowMinimize(object sender, RoutedEventArgs e)
         {
-            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            if (Application.Current.MainWindow != null)
+                Application.Current.MainWindow.WindowState = WindowState.Minimized;
         }
 
         private void OnSwitchToLoginScreen(object sender, RoutedEventArgs e)
@@ -134,14 +134,19 @@ namespace FileBuddyUI
             DataContext = _registerScreenViewModel;
         }
 
-        private void OnLoginLableMouseEnter(object sender, MouseEventArgs e)
+        private void OnLoginLabelMouseEnter(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Hand;
         }
 
-        private void OnLoginLableMouseLeave(object sender, MouseEventArgs e)
+        private void OnLoginLabelMouseLeave(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Arrow;
+        }
+
+        private void WindowMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }
