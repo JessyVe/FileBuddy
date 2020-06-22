@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FileBuddyUI {
+namespace FileBuddyUI.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace FileBuddyUI {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FileBuddyUI.UITexts", typeof(UITexts).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FileBuddyUI.Resources.UITexts", typeof(UITexts).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -174,6 +174,15 @@ namespace FileBuddyUI {
         internal static string NoUsernameGiven {
             get {
                 return ResourceManager.GetString("NoUsernameGiven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This feature is only available for premium user!.
+        /// </summary>
+        internal static string OnlyForPremiumUser {
+            get {
+                return ResourceManager.GetString("OnlyForPremiumUser", resourceCulture);
             }
         }
         

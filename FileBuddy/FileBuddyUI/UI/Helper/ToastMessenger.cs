@@ -6,23 +6,33 @@ using ToastNotifications.Position;
 
 namespace FileBuddyUI.UI.Helper
 {
+    /// <summary>
+    /// Provides a globally accessible implemention of 
+    /// the Toast messenger for the UI.
+    /// </summary>
     public class ToastMessenger
     {
-        private static Notifier _notifier;
-        public static Notifier NotifierInstance
+        public Notifier Notifier { get; set; }
+
+        private static ToastMessenger _instance;
+        public static ToastMessenger NotifierInstance
         {
             get
             {
-                if (_notifier == null)
-                    InitializeNotifier();
+                if (_instance == null)
+                    _instance = new ToastMessenger();
 
-                return _notifier;
+                    return _instance;
             }
         }
-
-        private static void InitializeNotifier()
+        private ToastMessenger()
         {
-            _notifier = new Notifier(cfg =>
+            InitializeNotifier();
+        }
+
+        private void InitializeNotifier()
+        {
+            Notifier = new Notifier(cfg =>
            {
                cfg.PositionProvider = new WindowPositionProvider(
                    parentWindow: Application.Current.MainWindow,

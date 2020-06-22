@@ -156,6 +156,9 @@
   <data name="NoUsernameGiven" xml:space="preserve">
     <value>No username was given!</value>
   </data>
+  <data name="OnlyForPremiumUser" xml:space="preserve">
+    <value>This feature is only available for premium user!</value>
+  </data>
   <data name="ReceivedFiles" xml:space="preserve">
     <value>{0} files are available for you to download.</value>
   </data>

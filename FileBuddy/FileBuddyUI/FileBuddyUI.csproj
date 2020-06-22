@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="UITexts.Designer.cs">
+    <Compile Update="Resources\UITexts.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>UITexts.resx</DependentUpon>
@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="UITexts.resx">
+    <EmbeddedResource Update="Resources\UITexts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>UITexts.Designer.cs</LastGenOutput>
     </EmbeddedResource>

@@ -1,4 +1,5 @@
 ﻿using FileBuddyUI.Helper;
+using FileBuddyUI.UI.Helper.CustomEventArgs;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace FileBuddyUI.UI.Helper
         #endregion
 
         public event EventHandler NewUpdateRequestReceived;
-        protected virtual void OnNewUpdateRequestReceived(EventArgs e)
+        protected virtual void OnNewUpdateRequestReceived(UpdateRequestEventArgs e)
         {
             EventHandler handler = NewUpdateRequestReceived;
             handler?.Invoke(this, e);
@@ -179,7 +180,7 @@ namespace FileBuddyUI.UI.Helper
         }
 
         /// <summary>
-        /// Handles recevied message from server. 
+        /// Handles received messages from server. 
         /// </summary>
         /// <param name="packet"></param>
         /// <returns></returns>
@@ -189,12 +190,13 @@ namespace FileBuddyUI.UI.Helper
             {
                 if (packet is UpdateMessage)
                 {
-                    Log.Debug("New update message was received. Event will be fired.");
-                    OnNewUpdateRequestReceived(new EventArgs());
+                    Log.Debug("New update message was received. System will be notified.");
+                    OnNewUpdateRequestReceived(new UpdateRequestEventArgs());
                 }
                 if (packet is PingMessage)
                 {
                     Log.Debug("Ping succeeded!");
+
                     _pingLastSent = DateTime.Now;
                     _pingSent = _pingLastSent;
                     _pinged = false;

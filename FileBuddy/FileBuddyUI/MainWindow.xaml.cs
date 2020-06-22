@@ -9,6 +9,8 @@ using System.Xml;
 using System.IO;
 using System.Reflection;
 using SharedRessources.Services;
+using FileBuddyUI.UI.Helper.CustomEventArgs;
+using FileBuddyUI.Resources;
 
 namespace FileBuddyUI
 {
@@ -45,6 +47,12 @@ namespace FileBuddyUI
             Log.Debug("Initialization of components finished!");
         }
 
+        /// <summary>
+        /// Handles the AuthentificationSuccess event fired by either 
+        /// the login or the registration view.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void OnAuthentificationenSuccess(object sender, System.EventArgs e)
         {
             Log.Debug("User authentification succeeded.");
@@ -52,10 +60,10 @@ namespace FileBuddyUI
             var args = e as AuthentificationEventArgs;
             UserInformation.Instance.CurrentUser = args.AppUser;
 
-            if(args.RegisteredAsNewUser)
-                ToastMessenger.NotifierInstance.ShowSuccess(UITexts.WelcomeText);
+            if(args.IsNewUser)
+                ToastMessenger.NotifierInstance.Notifier.ShowSuccess(UITexts.WelcomeText);
             else
-                ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.WelcomeBack, args.AppUser.Name));
+                ToastMessenger.NotifierInstance.Notifier.ShowSuccess(string.Format(UITexts.WelcomeBack, args.AppUser.Name));
 
             DataContext = _dashboardViewModel;
 
@@ -66,6 +74,10 @@ namespace FileBuddyUI
             await ConnectToSocketServer();
         }
 
+        /// <summary>
+        /// Connects the application to the configured web server.
+        /// </summary>
+        /// <returns></returns>
         private async Task ConnectToSocketServer()
         {
             await FileBuddyClient.Instance.ConnectToServer().ContinueWith(_ =>
@@ -77,6 +89,11 @@ namespace FileBuddyUI
             });
         }
 
+        /// <summary>
+        /// Changes the UI appearance based on the current context.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             Log.Debug("Data context of main window was changed. UI will be updated.");
@@ -98,6 +115,7 @@ namespace FileBuddyUI
 
         private void OnClose(object sender, RoutedEventArgs e)
         {
+            Log.Info("Application is closing!");
             Application.Current.Shutdown();
         }
 

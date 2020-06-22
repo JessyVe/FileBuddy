@@ -1,4 +1,6 @@
-﻿using FileBuddyUI.UI.Helper;
+﻿using FileBuddyUI.Resources;
+using FileBuddyUI.UI.Helper;
+using FileBuddyUI.UI.Helper.CustomEventArgs;
 using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.Dtos;
 using System;
@@ -7,6 +9,9 @@ using ToastNotifications.Messages;
 
 namespace FileBuddyUI.UI.ViewModels
 {
+    /// <summary>
+    /// Implements interaction logic for the registration view. 
+    /// </summary>
     public class RegisterScreenViewModel : BaseAuthentificationViewModel
     {
         public string Username { get; set; }
@@ -19,12 +24,11 @@ namespace FileBuddyUI.UI.ViewModels
 
         private async void RegisterUser()
         {
+            BusyCursorProvider.SetBusyState();
             try
             {
-                if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(MailAddress) || string.IsNullOrEmpty(Password))
-                {
-                    ToastMessenger.NotifierInstance.ShowWarning(UITexts.NoDataRegister);
-                }
+                if (!ValidateInputData())
+                    return;
 
                 var user = new AppUser()
                 {
@@ -33,26 +37,35 @@ namespace FileBuddyUI.UI.ViewModels
                     Password = Password,
                     AccountCreationDate = DateTime.Now
                 };
-
-                UIService.SetBusyState();
+               
                 var loggedInUser = await ApiClient.Instance.RegisterUser(user);
                 if (loggedInUser.Id > 0)
                 {
                     OnAuthentificationSuccess(new AuthentificationEventArgs()
                     {
                         AppUser = loggedInUser,
-                        RegisteredAsNewUser = true
+                        IsNewUser = true
                     });
                 }
                 else
                 {
-                    ToastMessenger.NotifierInstance.ShowError(UITexts.AuthentificationFailed);
+                    ToastMessenger.NotifierInstance.Notifier.ShowError(UITexts.AuthentificationFailed);
                 }
             }
             catch (Exception ex)
             {
-                ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
+                ToastMessenger.NotifierInstance.Notifier.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
+        }
+
+        private bool ValidateInputData()
+        {
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(MailAddress) || string.IsNullOrEmpty(Password))
+            {
+                ToastMessenger.NotifierInstance.Notifier.ShowWarning(UITexts.NoDataRegister);
+                return false;
+            }
+            return true;
         }
     }
 }

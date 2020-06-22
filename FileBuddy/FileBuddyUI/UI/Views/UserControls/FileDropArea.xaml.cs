@@ -1,4 +1,5 @@
-﻿using FileBuddyUI.UI.ViewModels;
+﻿using FileBuddyUI.Resources;
+using FileBuddyUI.UI.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -26,7 +27,6 @@ namespace FileBuddyUI.UI.Views
 
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                // Note that you can have more than one file.
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
                 var context = DataContext as DashboardViewModel;
@@ -36,7 +36,7 @@ namespace FileBuddyUI.UI.Views
             }
         }
 
-        private void cDragArea_DragEnter(object sender, DragEventArgs e)
+        private void DragArea_DragEnter(object sender, DragEventArgs e)
         {
             _lastState = lbDrop.Content?.ToString();
             _lastBrush = cDragArea.Background;
@@ -45,7 +45,7 @@ namespace FileBuddyUI.UI.Views
             cDragArea.Background = AnimationBrush;
         }
 
-        private void cDragArea_DragLeave(object sender, DragEventArgs e)
+        private void DragArea_DragLeave(object sender, DragEventArgs e)
         {
             ReturnToDefault();
         }

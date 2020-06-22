@@ -45,7 +45,7 @@
                 Background="{StaticResource BuddyOrange}"
                 Foreground="WhiteSmoke"
                 Margin="90 20 90 0"
-                Command="{Binding OnLogin}"
+                Command="{Binding OnLoginWithMailAddress}"
                 IsDefault="True"/>
 
             <Button Content="Login with MAC"

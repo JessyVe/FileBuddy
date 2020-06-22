@@ -2,6 +2,9 @@
 
 namespace FileBuddyUI.Helper
 {
+    /// <summary>
+    /// Representens the needed client settings. 
+    /// </summary>
     public class ApplicationSettings
     {
         public IPAddress SocketServerAddress { get; set; }

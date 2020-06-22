@@ -3,12 +3,11 @@
 namespace FileBuddyUI.Helper
 {
     /// <summary>
-    /// Holds informations of currently locked in user.
+    /// Holds the information of currently logged in user.
     /// </summary>
     public class UserInformation
     {
         private static UserInformation _instance;
-
         public static UserInformation Instance
         {
             get
@@ -19,7 +18,6 @@ namespace FileBuddyUI.Helper
                 return _instance;
             }
         }
-
         private UserInformation() { }
 
         public AppUser CurrentUser { get; set; }

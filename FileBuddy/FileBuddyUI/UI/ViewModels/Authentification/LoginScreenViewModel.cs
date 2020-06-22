@@ -1,4 +1,6 @@
-﻿using FileBuddyUI.UI.Helper;
+﻿using FileBuddyUI.Resources;
+using FileBuddyUI.UI.Helper;
+using FileBuddyUI.UI.Helper.CustomEventArgs;
 using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.Dtos;
 using SharedRessources.Services;
@@ -8,36 +10,28 @@ using ToastNotifications.Messages;
 
 namespace FileBuddyUI.UI.ViewModels
 {
+    /// <summary>
+    /// Implements interaction logic for the login view. 
+    /// </summary>
     public class LoginScreenViewModel : BaseAuthentificationViewModel
     {
-        public ICommand OnLogin { get; }
+        public ICommand OnLoginWithMailAddress { get; }
         public ICommand OnLoginWithMac { get; }
 
         public LoginScreenViewModel()
         {
-            OnLogin = new RelayCommand(o => LoginUser());
+            OnLoginWithMailAddress = new RelayCommand(o => LoginUserWithMailAddress());
             OnLoginWithMac = new RelayCommand(o => LoginUserWithMac());
-        }      
+        }
 
-        private async void LoginUser()
+        private async void LoginUserWithMailAddress()
         {
+            BusyCursorProvider.SetBusyState();
+            Log.Debug("Attmepting to login user with given credentials.");
             try
             {
-                if (string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(MailAddress))
-                {
-                    ToastMessenger.NotifierInstance.ShowWarning(UITexts.NoDataLoginError);
+                if (!ValidateInputData())
                     return;
-                }
-                else if (string.IsNullOrEmpty(Password))
-                {
-                    ToastMessenger.NotifierInstance.ShowWarning(UITexts.NoPasswordGiven);
-                    return;
-                }
-                else if (string.IsNullOrEmpty(MailAddress))
-                {
-                    ToastMessenger.NotifierInstance.ShowWarning(UITexts.NoMailAddressGiven);
-                    return;
-                }
 
                 var user = new AppUser()
                 {
@@ -45,46 +39,72 @@ namespace FileBuddyUI.UI.ViewModels
                     Password = Password
                 };
 
-                UIService.SetBusyState();
                 var loggedInUser = await ApiClient.Instance.LoginWithMailAddress(user);
+                ValidateLoginResult(loggedInUser);
 
-                if (loggedInUser.Id > 0)
-                {
-                    OnAuthentificationSuccess(new AuthentificationEventArgs()
-                    {
-                        AppUser = loggedInUser
-                    });
-                } else
-                {
-                    ToastMessenger.NotifierInstance.ShowError(UITexts.AuthentificationFailed);
-                }
-            } catch(Exception ex)
-            {
-                ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
+            catch (Exception ex)
+            {
+                var errorMessage = $"{UITexts.ExceptionThrown} ({ex.Message})";
+                ToastMessenger.NotifierInstance.Notifier.ShowError(errorMessage);
+                Log.Debug(errorMessage);
+            }
+        }
+
+        private bool ValidateInputData()
+        {
+            if (string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(MailAddress))
+            {
+                ToastMessenger.NotifierInstance.Notifier.ShowWarning(UITexts.NoDataLoginError);
+                Log.Debug(UITexts.NoDataLoginError);
+                return false;
+            }
+            else if (string.IsNullOrEmpty(Password))
+            {
+                ToastMessenger.NotifierInstance.Notifier.ShowWarning(UITexts.NoPasswordGiven);
+                Log.Debug(UITexts.NoPasswordGiven);
+                return false;
+            }
+            else if (string.IsNullOrEmpty(MailAddress))
+            {
+                ToastMessenger.NotifierInstance.Notifier.ShowWarning(UITexts.NoMailAddressGiven);
+                Log.Debug(UITexts.NoMailAddressGiven);
+                return false;
+            }
+            return true;
         }
 
         private async void LoginUserWithMac()
         {
+            ToastMessenger.NotifierInstance.Notifier.ShowError(UITexts.OnlyForPremiumUser); // TODO: Remove after finished implementation
+
+            BusyCursorProvider.SetBusyState();
+            Log.Debug("Attmepting to login user with mac address.");
             try
             {
-                UIService.SetBusyState();
                 var loggedInUser = await ApiClient.Instance.LoginWithMacAddress(MacAddressRetriever.GetMacAddress());
-                if (loggedInUser.Id > 0)
-                {
-                    OnAuthentificationSuccess(new AuthentificationEventArgs()
-                    {
-                        AppUser = loggedInUser
-                    });
-                }
-                else
-                {
-                    ToastMessenger.NotifierInstance.ShowError(UITexts.AuthentificationFailed);
-                }
+                ValidateLoginResult(loggedInUser);
             }
             catch (Exception ex)
             {
-                ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
+                var errorMessage = $"{UITexts.ExceptionThrown} ({ex.Message})";
+                ToastMessenger.NotifierInstance.Notifier.ShowError(errorMessage);
+                Log.Debug(errorMessage);
+            }
+        }
+
+        private void ValidateLoginResult(AppUser user)
+        {
+            if (user.Id > 0)
+            {
+                OnAuthentificationSuccess(new AuthentificationEventArgs()
+                {
+                    AppUser = user
+                });
+            }
+            else
+            {
+                ToastMessenger.NotifierInstance.Notifier.ShowError(UITexts.AuthentificationFailed);
             }
         }
     }

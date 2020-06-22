@@ -20,8 +20,8 @@
 
     <Grid AllowDrop="true"
           Drop="File_Drop"
-          DragEnter="cDragArea_DragEnter" 
-          DragLeave="cDragArea_DragLeave">
+          DragEnter="DragArea_DragEnter" 
+          DragLeave="DragArea_DragLeave">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.8*"/>
             <RowDefinition Height="0.2*"/>

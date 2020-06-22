@@ -1,4 +1,5 @@
 ﻿using FileBuddyUI.Helper;
+using FileBuddyUI.Resources;
 using FileBuddyUI.UI.Helper;
 using SharedRessources.DataAccess.ApiAccess;
 using SharedRessources.DisplayedTypes;
@@ -16,7 +17,7 @@ using ToastNotifications.Messages;
 namespace FileBuddyUI.UI.ViewModels
 {
     /// <summary>
-    /// Logic for the dashboard UI.
+    /// Implements interaction logic for the main overview (Dashboard)
     /// </summary>
     public class DashboardViewModel : PropertyChangedBase
     {
@@ -83,9 +84,9 @@ namespace FileBuddyUI.UI.ViewModels
                 var fetchedFiles = await ApiClient.Instance.FetchAvailableFiles(UserInformation.Instance.CurrentUser.Id, UserInformation.Instance.CurrentUser.AccessToken);
 
                 if (fetchedFiles.Count == 0)
-                    ToastMessenger.NotifierInstance.ShowInformation(UITexts.NoNewFiles);
+                    ToastMessenger.NotifierInstance.Notifier.ShowInformation(UITexts.NoNewFiles);
                 else
-                    ToastMessenger.NotifierInstance.ShowInformation(string.Format(UITexts.ReceivedFiles, fetchedFiles.Count));
+                    ToastMessenger.NotifierInstance.Notifier.ShowInformation(string.Format(UITexts.ReceivedFiles, fetchedFiles.Count));
 
                 int newlyFetchedFiles = 0;
                 foreach (var fetchedFile in fetchedFiles)
@@ -102,7 +103,7 @@ namespace FileBuddyUI.UI.ViewModels
             catch (Exception ex)
             {
                 Log.ErrorFormat("An error occured while fetching files from API. ", ex);
-                ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
+                ToastMessenger.NotifierInstance.Notifier.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
         }
 
@@ -140,7 +141,7 @@ namespace FileBuddyUI.UI.ViewModels
                     if (!FileBuddyClient.Instance.IsConnected)
                     {
                         Log.Error("An error occured while uploading files. Update request to web server could not be send. Not connected to server. ");
-                        ToastMessenger.NotifierInstance.ShowError("You are not connected to a server. Realtime update may not be possible!");
+                        ToastMessenger.NotifierInstance.Notifier.ShowError("You are not connected to a server. Realtime update may not be possible!");
                     }
                     else
                     {
@@ -150,7 +151,7 @@ namespace FileBuddyUI.UI.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
+                    ToastMessenger.NotifierInstance.Notifier.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
                 }
             }
             Log.Debug($"{ToUploadFiles.Count} file(s) were uploaded to the API. ");
@@ -158,7 +159,7 @@ namespace FileBuddyUI.UI.ViewModels
             if (successfullSendFiles.Count > 0)
             {
                 successfullSendFiles.ForEach(file => RemoveFile(file));
-                ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.SuccessfullUpload, successfullSendFiles.Count));
+                ToastMessenger.NotifierInstance.Notifier.ShowSuccess(string.Format(UITexts.SuccessfullUpload, successfullSendFiles.Count));
             }
         }
 
@@ -177,12 +178,12 @@ namespace FileBuddyUI.UI.ViewModels
                 }, UserInformation.Instance.CurrentUser.AccessToken);
 
                 Log.Debug($"File was downloaded and save at: {savedPath}");
-                ToastMessenger.NotifierInstance.ShowSuccess(string.Format(UITexts.FileSavedAt, savedPath));
+                ToastMessenger.NotifierInstance.Notifier.ShowSuccess(string.Format(UITexts.FileSavedAt, savedPath));
             }
             catch (Exception ex)
             {
                 Log.ErrorFormat("An error occured while downloading files from API. ", ex);
-                ToastMessenger.NotifierInstance.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
+                ToastMessenger.NotifierInstance.Notifier.ShowError($"{UITexts.ExceptionThrown} ({ex.Message})");
             }
         }
 
@@ -220,13 +221,13 @@ namespace FileBuddyUI.UI.ViewModels
         {
             if (_currentUploadPaths.Contains(fullFilePath))
             {
-                ToastMessenger.NotifierInstance.ShowInformation(UITexts.FileIsAlreadyShared);
+                ToastMessenger.NotifierInstance.Notifier.ShowInformation(UITexts.FileIsAlreadyShared);
                 return;
             }
             // filenames containing blanks can not be processed by the API
             if (Path.GetFileName(fullFilePath).Contains(" "))
             {
-                ToastMessenger.NotifierInstance.ShowWarning(UITexts.FilenameWithBlanks);
+                ToastMessenger.NotifierInstance.Notifier.ShowWarning(UITexts.FilenameWithBlanks);
                 return;
             }
 

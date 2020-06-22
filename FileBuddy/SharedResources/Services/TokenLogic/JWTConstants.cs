@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SharedRessources.Services.TokenLogic
+﻿namespace SharedRessources.Services.TokenLogic
 {
+    /// <summary>
+    /// Contains constant values for JSON web tokens.
+    /// </summary>
     public static class JWTConstants
     {
         public static string Issuer = "FileBuddy";

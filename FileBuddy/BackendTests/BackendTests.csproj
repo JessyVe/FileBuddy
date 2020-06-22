@@ -16,10 +16,4 @@
     <ProjectReference Include="..\SharedResources\SharedRessources.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="resources\hello-world.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

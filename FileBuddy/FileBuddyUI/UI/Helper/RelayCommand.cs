@@ -4,7 +4,7 @@ using System.Windows.Input;
 namespace FileBuddyUI.UI.Helper
 {
     /// <summary>
-    /// Contains the implementation for sucessfully implement button commands.
+    /// Enable to binding to none-event-providing ui components. 
     /// </summary>
     public class RelayCommand : ICommand
     {

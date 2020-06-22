@@ -4,19 +4,38 @@ using System.Windows.Threading;
 
 namespace FileBuddyUI.UI.Helper
 {
-    public static class UIService
+    /// <summary>
+    /// Provides a global entry point for changing the 
+    /// mouse cursor apperence.
+    /// </summary>
+    public static class BusyCursorProvider
     {
         /// <summary>
-        ///   A value indicating whether the UI is currently busy
+        /// A value indicating whether the cursor 
+        /// should be shown as busy or not. 
         /// </summary>
         private static bool IsBusy;
 
         /// <summary>
-        /// Sets the busystate as busy.
+        /// Sets the busystate to busy.
         /// </summary>
         public static void SetBusyState()
         {
             SetBusyState(true);
+        }
+
+        /// <summary>
+        /// Handles the Tick event of the dispatcherTimer.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private static void DispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            if (sender is DispatcherTimer dispatcherTimer)
+            {
+                SetBusyState(false);
+                dispatcherTimer.Stop();
+            }
         }
 
         /// <summary>
@@ -33,23 +52,8 @@ namespace FileBuddyUI.UI.Helper
                 if (IsBusy)
                 {
                     new DispatcherTimer(TimeSpan.FromSeconds(0), DispatcherPriority.ApplicationIdle, 
-                        dispatcherTimer_Tick, System.Windows.Application.Current.Dispatcher);
+                        DispatcherTimer_Tick, System.Windows.Application.Current.Dispatcher);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Handles the Tick event of the dispatcherTimer control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        private static void dispatcherTimer_Tick(object sender, EventArgs e)
-        {
-            var dispatcherTimer = sender as DispatcherTimer;
-            if (dispatcherTimer != null)
-            {
-                SetBusyState(false);
-                dispatcherTimer.Stop();
             }
         }
     }
