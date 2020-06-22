@@ -56,7 +56,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Authentification/register",
+					"raw": "https://localhost:5001/api/Authentication/register",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -64,7 +64,7 @@
 					"port": "5001",
 					"path": [
 						"api",
-						"Authentification",
+						"Authentication",
 						"register"
 					]
 				}
@@ -108,7 +108,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/Authentification/login/mailaddress",
+					"raw": "https://localhost:5001/api/Authentication/login/mailaddress",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -116,7 +116,7 @@
 					"port": "5001",
 					"path": [
 						"api",
-						"Authentification",
+						"Authentication",
 						"login",
 						"mailaddress"
 					]
@@ -151,7 +151,10 @@
 							"type": "file",
 							"src": "/C:/Users/Jessy/Desktop/Test.txt"
 						}
-					]
+					],
+					"options": {
+						"formdata": {}
+					}
 				},
 				"url": {
 					"raw": "https://localhost:5001/api/File/upload/{{user_id}}/{{user_id}}",
@@ -233,7 +236,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"apiPath\": \"{{api_path}}\",\r\n  \"receiverId\": {{user_id}},\r\n  \"sharedFileId\": {{file_id}}\r\n}",
+					"raw": "{\r\n  \"receiverId\": {{user_id}},\r\n  \"sharedFileId\": {{file_id}}\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
