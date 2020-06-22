@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SharedRessources.DisplayedTypes;
+using SharedResources.DisplayedTypes;
 using System.Collections.Generic;
 using System.Linq;
 using SharedResources.Database;

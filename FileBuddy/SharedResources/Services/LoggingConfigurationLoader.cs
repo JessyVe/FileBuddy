@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Xml;
 
-namespace SharedRessources.Services
+namespace SharedResources.Services
 {
     /// <summary>
     /// Loads a log4net configuration with the given

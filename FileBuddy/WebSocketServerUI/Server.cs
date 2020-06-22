@@ -14,7 +14,8 @@ namespace WebSocketServerUI
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly string Port = "8000";
+        private const string Port = "8000";
+        private const string IpAddress = "127.0.0.1";
 
         private bool _isRunning;
 
@@ -25,11 +26,11 @@ namespace WebSocketServerUI
 
         public static void Main(string[] args) 
         {
-            var log4netConfig = new XmlDocument();
-            log4netConfig.Load(File.OpenRead("log4net.config"));
+            var log4NetConfig = new XmlDocument();
+            log4NetConfig.Load(File.OpenRead("log4net.config"));
             var repo = log4net.LogManager.CreateRepository(Assembly.GetEntryAssembly(),
                        typeof(log4net.Repository.Hierarchy.Hierarchy));
-            log4net.Config.XmlConfigurator.Configure(repo, log4netConfig["log4net"]);
+            log4net.Config.XmlConfigurator.Configure(repo, log4NetConfig["log4net"]);
 
             Log.Info("*** Server will be available in short. Please wait ... ***");
             var server = new Server();
@@ -43,22 +44,21 @@ namespace WebSocketServerUI
             SetupServer();
 
             _listenTask = Task.Run(() => _socketServer.StartServer());
-            _updateTask = Task.Run(() => Update());
+            _updateTask = Task.Run(Update);
         }
 
         private void SetupServer()
         {
             Log.Info("Validating data...");
-            var isValidPort = int.TryParse(Port, out int socketPort);
+            var isValidPort = int.TryParse(Port, out var socketPort);
 
             if (!isValidPort)
             {
                 Log.Error("Port value is not valid.");
                 return;
             }
-
             Log.Info("Setting up server...");
-            _socketServer = new SocketServer(IPAddress.Any, socketPort);
+            _socketServer = new SocketServer(IPAddress.Parse(IpAddress), socketPort);
             Log.Info($"Variables are initialized. The server is now online ({_socketServer.ConnectionInformation})");
         }
 
@@ -81,7 +81,7 @@ namespace WebSocketServerUI
                 Thread.Sleep(5);
                 if (!_socketServer.IsRunning)
                 {
-                    Task.Run(() => Stop());
+                    Task.Run(Stop);
                     return;
                 }
                 Log.Debug("Server is online...");

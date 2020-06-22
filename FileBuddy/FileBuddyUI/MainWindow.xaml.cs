@@ -6,7 +6,7 @@ using System.Windows.Input;
 using ToastNotifications.Messages;
 using System.Threading.Tasks;
 using System.Reflection;
-using SharedRessources.Services;
+using SharedResources.Services;
 using FileBuddyUI.UI.Helper.CustomEventArgs;
 using FileBuddyUI.Resources;
 using FileBuddyUI.UI.ViewModels.Authentication;

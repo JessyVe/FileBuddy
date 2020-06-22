@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Net.Mail;
 
-namespace SharedRessources.Services
+namespace SharedResources.Services
 {
     /// <summary>
     /// Contains methods to validate the correctness of the given data. 
     /// </summary>
     public static class DataValidator
     {
-        public static bool IsMailAddressValid(string emailaddress)
+        public static bool IsMailAddressValid(string emailAddress)
         {
             try
             {
-                MailAddress m = new MailAddress(emailaddress);
+                _ = new MailAddress(emailAddress);
                 return true;
             }
             catch (FormatException)

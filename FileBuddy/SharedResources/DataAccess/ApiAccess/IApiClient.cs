@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SharedRessources.DisplayedTypes;
+using SharedResources.DisplayedTypes;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SharedResources.Dtos;

@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using SharedRessources.Services;
+using SharedResources.Services;
 using System.Collections.Generic;
 
 namespace SharedResourcesTests

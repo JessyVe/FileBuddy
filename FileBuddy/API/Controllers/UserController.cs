@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedResources.DataAccess.UserAccess;
 using SharedResources.Dtos;
-using SharedRessources.Services;
+using SharedResources.Services;
 
 namespace API.Controllers
 {

@@ -1,7 +1,7 @@
 ﻿using FileBuddyUI.Helper;
 using FileBuddyUI.Resources;
 using FileBuddyUI.UI.Helper;
-using SharedRessources.DisplayedTypes;
+using SharedResources.DisplayedTypes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

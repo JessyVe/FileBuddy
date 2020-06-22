@@ -29,7 +29,7 @@ namespace WebSocketServer.Server
 
         public string ConnectionInformation { get; private set; }
 
-        public ServerBase(IPAddress address, int port)
+        protected ServerBase(IPAddress address, int port)
         {
             EndPoint = new IPEndPoint(address, port);
             Connections = new List<SocketClient>();
@@ -87,7 +87,6 @@ namespace WebSocketServer.Server
                     try
                     {
                         var newConnection = Socket.Accept();
-                        if (newConnection != null)
                         {
                             var client = new SocketClient();
                             var newGuid = await client.CreateGuid(newConnection);
@@ -140,18 +139,16 @@ namespace WebSocketServer.Server
         /// <returns></returns>
         protected object ReadMessage(Socket clientSocket)
         {
-            byte[] data = new byte[clientSocket.ReceiveBufferSize];
+            var data = new byte[clientSocket.ReceiveBufferSize];
 
             try
             {
-                using (var networkStream = new NetworkStream(clientSocket))
-                {
-                    networkStream.Read(data, 0, data.Length);
-                    var memory = new MemoryStream(data) { Position = 0 };
-                    var formatter = new BinaryFormatter();
+                using var networkStream = new NetworkStream(clientSocket);
+                networkStream.Read(data, 0, data.Length);
+                var memory = new MemoryStream(data) { Position = 0 };
+                var formatter = new BinaryFormatter();
 
-                    return formatter.Deserialize(memory);
-                }
+                return formatter.Deserialize(memory);
             } catch(Exception ex)
             {
                 Log.ErrorFormat("Error while reading message from client. Request can not be processed. ", ex);

@@ -1,7 +1,7 @@
 ﻿using FileBuddyUI.Resources;
 using FileBuddyUI.UI.Helper;
 using FileBuddyUI.UI.Helper.CustomEventArgs;
-using SharedRessources.Services;
+using SharedResources.Services;
 using System;
 using ToastNotifications.Messages;
 

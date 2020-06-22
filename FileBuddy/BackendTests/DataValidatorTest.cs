@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
-using SharedRessources.Services;
-using System;
+using SharedResources.Services;
 
 namespace SharedResourcesTests
 {

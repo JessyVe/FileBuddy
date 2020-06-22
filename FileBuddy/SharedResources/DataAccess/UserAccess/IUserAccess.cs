@@ -1,4 +1,4 @@
-﻿using SharedRessources.DisplayedTypes;
+﻿using SharedResources.DisplayedTypes;
 using System.Collections.Generic;
 using SharedResources.Dtos;
 

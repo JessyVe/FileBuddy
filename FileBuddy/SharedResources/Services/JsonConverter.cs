@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SharedRessources.Services
+namespace SharedResources.Services
 {
     public static class JsonConverter
     {

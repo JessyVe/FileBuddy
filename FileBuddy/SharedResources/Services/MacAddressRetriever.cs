@@ -1,6 +1,6 @@
 ﻿using System.Net.NetworkInformation;
 
-namespace SharedRessources.Services
+namespace SharedResources.Services
 {
     public static class MacAddressRetriever
     {
