@@ -7,9 +7,6 @@ namespace WebSocketServerUI
 {
     public class SocketServer : ServerBase
     {
-        private static readonly log4net.ILog Log =
-                 log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public SocketServer(IPAddress address, int port) : base(address, port)
         { }
 

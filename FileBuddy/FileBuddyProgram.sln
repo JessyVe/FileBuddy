@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSocketServer", "WebSocke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{7AE809FB-F1CA-4CFA-9C0A-F2CC517B8D7B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTests", "BackendTests\BackendTests.csproj", "{B87608AD-5497-4799-AB5F-CAA5AD831F57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedResourcesTests", "BackendTests\SharedResourcesTests.csproj", "{B87608AD-5497-4799-AB5F-CAA5AD831F57}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileBuddyUI", "FileBuddyUI\FileBuddyUI.csproj", "{311A9C8D-79CC-40E2-9CAE-8BC4325A739B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedRessources", "SharedResources\SharedRessources.csproj", "{18EF5CD3-4228-406D-80E9-31011DDD1810}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedResources", "SharedResources\SharedResources.csproj", "{18EF5CD3-4228-406D-80E9-31011DDD1810}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSocketServerUI", "WebSocketServerUI\WebSocketServerUI.csproj", "{F24D51BB-E3C2-47B7-B545-C2EA8D0CF406}"
 EndProject

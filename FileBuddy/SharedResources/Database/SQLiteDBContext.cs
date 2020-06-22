@@ -13,7 +13,7 @@ namespace SharedRessources.Database
 
         public DbSet<AuthorizedAccess> AuthorizedAccess { get; set; }
 
-        private const string DatabaseSource = "resources/file-buddy-01.db";
+        private const string DatabaseSource = "Resources/file-buddy.db";
 
         public SQLiteDBContext()
         {
